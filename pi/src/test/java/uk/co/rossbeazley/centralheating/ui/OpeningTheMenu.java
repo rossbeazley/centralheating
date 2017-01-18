@@ -1,6 +1,5 @@
 package uk.co.rossbeazley.centralheating.ui;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.isA;
@@ -9,7 +8,7 @@ import static org.junit.Assert.assertThat;
 public class OpeningTheMenu {
 
 
-    @Test @Ignore("Currently being spec-ed")
+    @Test
     public void openMenuFromOverviewScreen() {
 
         NavigationController navigationController = new CapturingNavigationController();
@@ -27,10 +26,16 @@ public class OpeningTheMenu {
     }
 
     private class OverviewScreenController {
+        private final NavigationController navigationController;
+
         public OverviewScreenController(NavigationController navigationController) {
+            this.navigationController = navigationController;
         }
 
         public void buttonPress() {
+            this.navigationController.present(new MenuView() {
+                
+            });
         }
     }
 
