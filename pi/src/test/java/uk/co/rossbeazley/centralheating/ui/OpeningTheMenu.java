@@ -11,6 +11,8 @@ public class OpeningTheMenu {
     @Test
     public void openMenuFromOverviewScreen() {
 
+//        class ViewFactory
+
         NavigationController navigationController = new CapturingNavigationController();
 
         OverviewScreenController controller = new OverviewScreenController(navigationController);
