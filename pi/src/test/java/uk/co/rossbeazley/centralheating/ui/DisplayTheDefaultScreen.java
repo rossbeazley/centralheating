@@ -22,9 +22,6 @@ public class DisplayTheDefaultScreen {
     }
 
 
-    private interface ScheduleView {
-    }
-
     private class PresentationTier {
         private final ViewFramework viewFramework;
 
