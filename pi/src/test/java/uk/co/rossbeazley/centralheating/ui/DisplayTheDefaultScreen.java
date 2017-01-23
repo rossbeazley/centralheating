@@ -21,34 +21,4 @@ public class DisplayTheDefaultScreen {
         assertThat(screenDisplayed,is(equalTo(ScheduleView.class)));
     }
 
-
-    private class PresentationTier {
-        private final ViewFramework viewFramework;
-
-        public PresentationTier(ViewFramework viewFramework) {
-            this.viewFramework = viewFramework;
-
-            this.viewFramework.create(ScheduleView.class);
-        }
-
-    }
-
-    private interface ViewFramework {
-        void create(Class<ScheduleView> view);
-
-    }
-
-    private class CapturingViewFramework implements ViewFramework {
-
-        Class<ScheduleView> presentedView;
-
-        @Override
-        public void create(Class<ScheduleView> view) {
-            presentedView = view;
-        }
-
-        public Class<ScheduleView> lastCapturedScreen() {
-            return presentedView;
-        }
-    }
 }

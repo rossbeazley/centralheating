@@ -8,6 +8,8 @@ class PresentationTier {
 
     public PresentationTier(ViewFramework viewFramework) {
         this.viewFramework = viewFramework;
+
+        this.viewFramework.create(ScheduleView.class);
     }
 
     public void buttonPress() {
