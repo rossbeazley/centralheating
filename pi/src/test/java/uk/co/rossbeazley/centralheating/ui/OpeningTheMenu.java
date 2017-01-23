@@ -2,7 +2,9 @@ package uk.co.rossbeazley.centralheating.ui;
 
 import org.junit.Test;
 
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.isA;
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 public class OpeningTheMenu {
@@ -11,53 +13,46 @@ public class OpeningTheMenu {
     @Test
     public void openMenuFromOverviewScreen() {
 
-//        class ViewFactory
+        CapturingViewFramework capturingViewFramework = new CapturingViewFramework();
 
-        NavigationController navigationController = new CapturingNavigationController();
+        PresentationTier presentationTier = new PresentationTier(capturingViewFramework);
+        presentationTier.buttonPress();
 
-        OverviewScreenController controller = new OverviewScreenController(navigationController);
-
-        controller.buttonPress();
-
-        MenuView screenDisplayed = navigationController.topScreen();
-        assertThat(screenDisplayed,isA(MenuView.class));
+        Class screenDisplayed = capturingViewFramework.lastCapturedScreen();
+        assertThat(screenDisplayed,is(equalTo(MenuView.class)));
     }
 
 
     private interface MenuView {
     }
 
-    private class OverviewScreenController {
-        private final NavigationController navigationController;
+    private class PresentationTier {
+        private final ViewFramework viewFramework;
 
-        public OverviewScreenController(NavigationController navigationController) {
-            this.navigationController = navigationController;
+        public PresentationTier(ViewFramework viewFramework) {
+            this.viewFramework = viewFramework;
         }
 
         public void buttonPress() {
-            this.navigationController.present(new MenuView() {
-                
-            });
+            this.viewFramework.create(MenuView.class);
         }
     }
 
-    private interface NavigationController {
-        void present(MenuView view);
+    private interface ViewFramework {
+        void create(Class<MenuView> view);
 
-        MenuView topScreen();
     }
 
-    private class CapturingNavigationController implements NavigationController {
+    private class CapturingViewFramework implements ViewFramework {
 
-        MenuView presentedView;
+        Class<MenuView> presentedView;
 
         @Override
-        public void present(MenuView view) {
+        public void create(Class<MenuView> view) {
             presentedView = view;
         }
 
-        @Override
-        public MenuView topScreen() {
+        public Class<MenuView> lastCapturedScreen() {
             return presentedView;
         }
     }
