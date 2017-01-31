@@ -10,7 +10,7 @@ public class DisplayTheDefaultScreen {
 
 
     @Test
-    public void openMenuFromScheduleScreen() {
+    public void theScheduleView() {
 
         CapturingViewFramework capturingViewFramework = new CapturingViewFramework();
 
