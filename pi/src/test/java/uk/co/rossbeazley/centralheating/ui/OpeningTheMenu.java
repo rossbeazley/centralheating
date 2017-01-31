@@ -10,7 +10,7 @@ public class OpeningTheMenu {
 
 
     @Test
-    public void openMenuFromOverviewScreen() {
+    public void openMenuFromScheduleView() {
 
         CapturingViewFramework capturingViewFramework = new CapturingViewFramework();
 
