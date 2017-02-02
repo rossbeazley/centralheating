@@ -10,15 +10,25 @@ class PresentationTier {
     public PresentationTier(ViewFramework viewFramework) {
         this.viewFramework = viewFramework;
 
+        presentScheduleView();
+    }
+
+    private void presentScheduleView() {
         this.viewFramework.create(ScheduleView.class);
+        inMenuView = false;
     }
 
     public void buttonPress() {
-        if(inMenuView){
-            this.viewFramework.create(ScheduleView.class);
+        if (inMenuView) {
+            presentScheduleView();
         } else {
-            inMenuView = true;
-            this.viewFramework.create(MenuView.class);
+            presentMenuView();
         }
+    }
+
+    private void presentMenuView() {
+        inMenuView = true;
+        MenuView menuView = this.viewFramework.create(MenuView.class);
+        menuView.presentOption("Close");
     }
 }

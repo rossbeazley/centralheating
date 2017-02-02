@@ -11,6 +11,15 @@ import static org.junit.Assert.assertThat;
  */
 public class TheMenuViewReturnsToTheScheduleViewWhenClosed {
 
+
+    @Test
+    public void displaysCloseOption() throws Exception {
+        CapturingViewFramework capturingViewFramework = new CapturingViewFramework();
+        PresentationTier presentationTier = imInTheMenuview(capturingViewFramework);
+        FakeMenuView fakeMenuView = capturingViewFramework.lastCapturedScreenFake();
+        assertThat(fakeMenuView.optionDisplayed, is("Close"));
+    }
+
     @Test
     public void closeIsTheReturnsToScheduleView() {
 
@@ -20,7 +29,7 @@ public class TheMenuViewReturnsToTheScheduleViewWhenClosed {
 
         presentationTier.buttonPress();
 
-        Class screenDisplayed = capturingViewFramework.lastCapturedScreen();
+        Class screenDisplayed = capturingViewFramework.lastCapturedScreenClass();
         assertThat(screenDisplayed,is(equalTo(ScheduleView.class)));
     }
 
@@ -28,7 +37,7 @@ public class TheMenuViewReturnsToTheScheduleViewWhenClosed {
         PresentationTier presentationTier = new PresentationTier(capturingViewFramework);
         presentationTier.buttonPress();
 
-        Class screenDisplayed = capturingViewFramework.lastCapturedScreen();
+        Class screenDisplayed = capturingViewFramework.lastCapturedScreenClass();
         assertThat("Precondition failed, screen displayed",screenDisplayed,is(equalTo(MenuView.class)));
 
         return presentationTier;

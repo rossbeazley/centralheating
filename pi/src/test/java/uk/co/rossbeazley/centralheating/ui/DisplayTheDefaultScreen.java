@@ -17,7 +17,7 @@ public class DisplayTheDefaultScreen {
         PresentationTier presentationTier = new PresentationTier(capturingViewFramework);
 
 
-        Class screenDisplayed = capturingViewFramework.lastCapturedScreen();
+        Class screenDisplayed = capturingViewFramework.lastCapturedScreenClass();
         assertThat(screenDisplayed,is(equalTo(ScheduleView.class)));
     }
 

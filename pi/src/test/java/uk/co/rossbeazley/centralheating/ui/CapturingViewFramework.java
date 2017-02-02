@@ -5,14 +5,20 @@ package uk.co.rossbeazley.centralheating.ui;
  */
 class CapturingViewFramework implements ViewFramework {
 
-    Class<?> presentedView;
+    private final FakeMenuView fakeMenuView = new FakeMenuView();
+    Class<?> presentedViewClass;
 
     @Override
-    public void create(Class<?> view) {
-        presentedView = view;
+    public FakeMenuView create(Class<?> view) {
+        presentedViewClass = view;
+        return fakeMenuView;
     }
 
-    public Class<?> lastCapturedScreen() {
-        return presentedView;
+    public Class<?> lastCapturedScreenClass() {
+        return presentedViewClass;
+    }
+
+    public FakeMenuView lastCapturedScreenFake() {
+        return fakeMenuView;
     }
 }
