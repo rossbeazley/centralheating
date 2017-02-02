@@ -5,6 +5,7 @@ package uk.co.rossbeazley.centralheating.ui;
  */
 class PresentationTier {
     private final ViewFramework viewFramework;
+    private boolean inMenuView = false;
 
     public PresentationTier(ViewFramework viewFramework) {
         this.viewFramework = viewFramework;
@@ -13,6 +14,11 @@ class PresentationTier {
     }
 
     public void buttonPress() {
-        this.viewFramework.create(MenuView.class);
+        if(inMenuView){
+            this.viewFramework.create(ScheduleView.class);
+        } else {
+            inMenuView = true;
+            this.viewFramework.create(MenuView.class);
+        }
     }
 }
