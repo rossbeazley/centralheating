@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsCollectionContaining.hasItems;
 import static org.junit.Assert.assertThat;
 
 /**
@@ -11,6 +12,21 @@ import static org.junit.Assert.assertThat;
  */
 public class TheMenuViewReturnsToTheScheduleViewWhenClosed {
 
+
+    @Test
+    public void
+    showAMenuOption() throws Exception {
+
+        //model present an option (UI will add the close option)
+        CapturingViewFramework capturingViewFramework = new CapturingViewFramework();
+        PresentationTier presentationTier = imInTheMenuview(capturingViewFramework);
+
+        //MODEL NEEDS TO BE MADE
+
+
+        FakeMenuView fakeMenuView = capturingViewFramework.lastCapturedScreenFake();
+        assertThat(fakeMenuView.optionsDisplayed, hasItems("Option1", "Close"));
+    }
 
     @Test
     public void displaysCloseOption() throws Exception {
