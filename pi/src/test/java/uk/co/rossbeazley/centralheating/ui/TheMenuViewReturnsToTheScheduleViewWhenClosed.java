@@ -8,12 +8,21 @@ import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsCollectionContaining.hasItems;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 /**
  * Created by beazlr02 on 31/01/17.
  */
 public class TheMenuViewReturnsToTheScheduleViewWhenClosed {
 
+
+    @Test
+    public void
+    anOptionBecomesSelected() throws Exception {
+
+        fail("TO BE SPEC-ED");
+
+    }
 
     @Test
     public void
