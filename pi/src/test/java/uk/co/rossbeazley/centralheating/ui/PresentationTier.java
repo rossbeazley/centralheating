@@ -1,14 +1,21 @@
 package uk.co.rossbeazley.centralheating.ui;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.function.Consumer;
+
 /**
  * Created by beazlr02 on 23/01/17.
  */
 class PresentationTier {
     private final ViewFramework viewFramework;
+    private Model model;
     private boolean inMenuView = false;
 
-    public PresentationTier(ViewFramework viewFramework) {
+    public PresentationTier(ViewFramework viewFramework, Model model) {
         this.viewFramework = viewFramework;
+        this.model = model;
 
         presentScheduleView();
     }
@@ -29,6 +36,10 @@ class PresentationTier {
     private void presentMenuView() {
         inMenuView = true;
         MenuView menuView = this.viewFramework.create(MenuView.class);
-        menuView.presentOption("Close");
+        List<String> optionsAsString = new ArrayList<>();
+        model.options().forEach(option -> optionsAsString.add(option.name()));
+
+        optionsAsString.add("Close");
+        menuView.presentOptions(optionsAsString.toArray(new String[optionsAsString.size()]));
     }
 }

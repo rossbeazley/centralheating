@@ -14,7 +14,7 @@ public class DisplayTheDefaultScreen {
 
         CapturingViewFramework capturingViewFramework = new CapturingViewFramework();
 
-        PresentationTier presentationTier = new PresentationTier(capturingViewFramework);
+        PresentationTier presentationTier = new PresentationTier(capturingViewFramework, null);
 
 
         Class screenDisplayed = capturingViewFramework.lastCapturedScreenClass();
