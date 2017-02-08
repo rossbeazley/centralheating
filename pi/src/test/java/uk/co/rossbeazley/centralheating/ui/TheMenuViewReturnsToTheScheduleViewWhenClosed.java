@@ -18,10 +18,16 @@ public class TheMenuViewReturnsToTheScheduleViewWhenClosed {
 
     @Test
     public void
-    anOptionBecomesSelected() throws Exception {
+    firstOptionIsSelectedByDefault() throws Exception {
 
-        fail("TO BE SPEC-ED");
 
+        Model model = buildCoreModelWithConfigOptions("Option1");
+        CapturingViewFramework capturingViewFramework = new CapturingViewFramework();
+
+        PresentationTier presentationTier = imInTheMenuview(capturingViewFramework, model);
+
+        FakeMenuView fakeMenuView = capturingViewFramework.lastCapturedScreenFake();
+        assertThat(fakeMenuView.optionSelected, is("Option1"));
     }
 
     @Test

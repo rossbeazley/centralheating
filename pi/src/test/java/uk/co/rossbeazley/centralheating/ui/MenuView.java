@@ -5,4 +5,6 @@ package uk.co.rossbeazley.centralheating.ui;
  */
 interface MenuView {
     void presentOptions(String... optionStrings);
+
+    void selectOption(int indexFromZero);
 }

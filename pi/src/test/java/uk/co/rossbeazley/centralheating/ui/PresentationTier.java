@@ -41,5 +41,7 @@ class PresentationTier {
 
         optionsAsString.add("Close");
         menuView.presentOptions(optionsAsString.toArray(new String[optionsAsString.size()]));
+
+        menuView.selectOption(0);
     }
 }
