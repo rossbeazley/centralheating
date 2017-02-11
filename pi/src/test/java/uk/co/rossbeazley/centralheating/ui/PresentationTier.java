@@ -12,6 +12,7 @@ class PresentationTier {
     private final ViewFramework viewFramework;
     private Model model;
     private boolean inMenuView = false;
+    private String selectedOption;
 
     public PresentationTier(ViewFramework viewFramework, Model model) {
         this.viewFramework = viewFramework;
@@ -27,10 +28,18 @@ class PresentationTier {
 
     public void buttonPress() {
         if (inMenuView) {
+            if(selectedOption.equals("Close"))
             presentScheduleView();
+            else
+                presentConfigurationDialog();
         } else {
             presentMenuView();
         }
+    }
+
+    private void presentConfigurationDialog() {
+        this.viewFramework.create(ConfigurationDialogView.class);
+        inMenuView = false;
     }
 
     private void presentMenuView() {
@@ -41,6 +50,8 @@ class PresentationTier {
 
         optionsAsString.add("Close");
         menuView.presentOptions(optionsAsString.toArray(new String[optionsAsString.size()]));
+
+        this.selectedOption = optionsAsString.get(0);
 
         menuView.selectOption(0);
     }
