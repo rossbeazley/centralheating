@@ -8,7 +8,7 @@ import java.util.List;
  */
 class PresentationTier {
     private final ViewFramework viewFramework;
-    private ButtonPressCommand buttonPressCommand;
+    private ViewController topViewController;
     private Model model;
 
     public PresentationTier(ViewFramework viewFramework, Model model) {
@@ -18,12 +18,12 @@ class PresentationTier {
     }
 
     public void buttonPress() {
-        buttonPressCommand.buttonPress();
+        topViewController.buttonPress();
     }
 
     private void presentScheduleView() {
         this.viewFramework.create(ScheduleView.class);
-        buttonPressCommand = new ScheduleController(this);
+        topViewController = new ScheduleController(this);
     }
 
     private void presentConfigurationDialog() {
@@ -32,16 +32,16 @@ class PresentationTier {
 
     private void presentMenuView() {
         MenuView menuView = this.viewFramework.create(MenuView.class);
-        buttonPressCommand = new MenuController(this,menuView,model);
+        topViewController = new MenuController(this,menuView,model);
     }
 
 
 
-    private static class MenuController implements ButtonPressCommand {
+    private static class MenuController implements ViewController {
         private final PresentationTier presentationTier;
         private Model model;
         private int selectedIndex;
-        private List<String> optionsAsString;
+        private String[] optionsAsString;
         private int closeIndex;
 
 
@@ -49,13 +49,20 @@ class PresentationTier {
 
             this.presentationTier = presentationTier;
             this.model = model;
-            optionsAsString = new ArrayList<>();
-            this.model.options().forEach(option -> optionsAsString.add(option.name()));
-            optionsAsString.add("Close");
-            this.closeIndex = optionsAsString.indexOf("Close");
-            menuView.presentOptions(optionsAsString.toArray(new String[optionsAsString.size()]));
-            selectedIndex = 0;
+
+            this.optionsAsString = buildOptionsViewModel();
+            this.selectedIndex = 0;
+
+            menuView.presentOptions(optionsAsString);
             menuView.selectOption(selectedIndex);
+        }
+
+        private String[] buildOptionsViewModel() {
+            List<String> optionsAsString = new ArrayList<>();
+            this.model.options().forEach(option -> optionsAsString.add(option.name()));
+            optionsAsString.add("Close"); // add close at the end
+            this.closeIndex = optionsAsString.indexOf("Close"); // this write operation stinks
+            return optionsAsString.toArray(new String[optionsAsString.size()]);
         }
 
         @Override
@@ -68,7 +75,7 @@ class PresentationTier {
         }
     }
 
-    private static class ScheduleController implements ButtonPressCommand {
+    private static class ScheduleController implements ViewController {
         private final PresentationTier presentationTier;
 
         public ScheduleController(PresentationTier presentationTier) {

@@ -1,5 +1,5 @@
 package uk.co.rossbeazley.centralheating.ui;
 
-public interface ButtonPressCommand {
+public interface ViewController {
     void buttonPress();
 }
