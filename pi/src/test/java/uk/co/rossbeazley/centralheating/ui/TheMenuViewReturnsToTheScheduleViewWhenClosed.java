@@ -1,6 +1,5 @@
 package uk.co.rossbeazley.centralheating.ui;
 
-import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -21,7 +20,7 @@ public class TheMenuViewReturnsToTheScheduleViewWhenClosed {
     firstOptionIsSelectedByDefault() throws Exception {
 
 
-        Model model = buildCoreModelWithConfigOptions("Option1");
+        Model model = TestDataBuilder.buildCoreModelWithConfigOptions("Option1");
         CapturingViewFramework capturingViewFramework = new CapturingViewFramework();
 
         PresentationTier presentationTier = imInTheMenuview(capturingViewFramework, model);
@@ -34,7 +33,7 @@ public class TheMenuViewReturnsToTheScheduleViewWhenClosed {
     public void
     showAMenuOption() throws Exception {
 
-        Model model = buildCoreModelWithConfigOptions("Option1");
+        Model model = TestDataBuilder.buildCoreModelWithConfigOptions("Option1");
         CapturingViewFramework capturingViewFramework = new CapturingViewFramework();
 
         PresentationTier presentationTier = imInTheMenuview(capturingViewFramework, model);
@@ -43,14 +42,10 @@ public class TheMenuViewReturnsToTheScheduleViewWhenClosed {
         assertThat(fakeMenuView.optionsDisplayed, hasItems("Option1", "Close"));
     }
 
-    private Model buildCoreModelWithConfigOptions(String option1) {
-        return new Model(option1);
-    }
-
     @Test
     public void displaysCloseOption() throws Exception {
         CapturingViewFramework capturingViewFramework = new CapturingViewFramework();
-        PresentationTier presentationTier = imInTheMenuview(capturingViewFramework, buildCoreModelWithConfigOptions("Option1"));
+        PresentationTier presentationTier = imInTheMenuview(capturingViewFramework, TestDataBuilder.buildCoreModelWithConfigOptions("Option1"));
         FakeMenuView fakeMenuView = capturingViewFramework.lastCapturedScreenFake();
         assertThat(fakeMenuView.optionsDisplayed, hasItem("Close"));
     }
@@ -60,7 +55,7 @@ public class TheMenuViewReturnsToTheScheduleViewWhenClosed {
 
         CapturingViewFramework capturingViewFramework = new CapturingViewFramework();
 
-        PresentationTier presentationTier = imInTheMenuview(capturingViewFramework, buildCoreModelWithConfigOptions("Option1"));
+        PresentationTier presentationTier = imInTheMenuview(capturingViewFramework, TestDataBuilder.buildCoreModelWithConfigOptions("Option1"));
 
         presentationTier.buttonPress();
 
