@@ -13,6 +13,9 @@ class PresentationTier {
     private Model model;
     private boolean inMenuView = false;
     private String selectedOption;
+    private int selectedIndex;
+    private List<String> optionsAsString;
+    private int closeIndex;
 
     public PresentationTier(ViewFramework viewFramework, Model model) {
         this.viewFramework = viewFramework;
@@ -21,20 +24,21 @@ class PresentationTier {
         presentScheduleView();
     }
 
-    private void presentScheduleView() {
-        this.viewFramework.create(ScheduleView.class);
-        inMenuView = false;
-    }
-
     public void buttonPress() {
         if (inMenuView) {
-            if(selectedOption.equals("Close"))
-            presentScheduleView();
-            else
+            if (selectedIndex == closeIndex) {
+                presentScheduleView();
+            } else {
                 presentConfigurationDialog();
+            }
         } else {
             presentMenuView();
         }
+    }
+
+    private void presentScheduleView() {
+        this.viewFramework.create(ScheduleView.class);
+        inMenuView = false;
     }
 
     private void presentConfigurationDialog() {
@@ -45,14 +49,18 @@ class PresentationTier {
     private void presentMenuView() {
         inMenuView = true;
         MenuView menuView = this.viewFramework.create(MenuView.class);
-        List<String> optionsAsString = new ArrayList<>();
+        optionsAsString = new ArrayList<>();
         model.options().forEach(option -> optionsAsString.add(option.name()));
 
         optionsAsString.add("Close");
+
+        this.closeIndex = optionsAsString.indexOf("Close");
         menuView.presentOptions(optionsAsString.toArray(new String[optionsAsString.size()]));
 
-        this.selectedOption = optionsAsString.get(0);
+        selectedIndex = 0;
 
-        menuView.selectOption(0);
+        this.selectedOption = optionsAsString.get(selectedIndex);
+
+        menuView.selectOption(selectedIndex);
     }
 }
