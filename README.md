@@ -9,3 +9,10 @@ tft display
 jog dial with push button
 
 SDL
+
+
+Heating boost - 30 / 60 / 90 / 120
+Mode - on / off / timer / external timer
+Edit timer - big gui thing
+Temp control - range
+
