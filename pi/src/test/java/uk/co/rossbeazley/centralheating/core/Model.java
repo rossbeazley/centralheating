@@ -1,7 +1,6 @@
 package uk.co.rossbeazley.centralheating.core;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class Model {
@@ -14,18 +13,6 @@ public class Model {
         }
     }
 
-
-    public static class Option {
-        private String option1;
-
-        public Option(String option1) {
-            this.option1 = option1;
-        }
-
-        public String name() {
-            return option1;
-        }
-    }
 
     public List<Option> options() {
         return this.options;
