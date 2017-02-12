@@ -1,6 +1,7 @@
 package uk.co.rossbeazley.centralheating.ui;
 
 import org.junit.Test;
+import uk.co.rossbeazley.centralheating.core.Model;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItem;

@@ -1,5 +1,7 @@
 package uk.co.rossbeazley.centralheating.ui;
 
+import uk.co.rossbeazley.centralheating.core.Model;
+
 public class TestDataBuilder {
     public static Model buildCoreModelWithConfigOptions(String... option1) {
         return new Model(option1);

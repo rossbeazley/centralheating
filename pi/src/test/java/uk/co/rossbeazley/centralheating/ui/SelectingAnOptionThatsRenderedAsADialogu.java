@@ -1,6 +1,7 @@
 package uk.co.rossbeazley.centralheating.ui;
 
 import org.junit.Test;
+import uk.co.rossbeazley.centralheating.core.Model;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItem;
@@ -11,7 +12,7 @@ import static org.junit.Assert.assertThat;
 /**
  * Created by beazlr02 on 31/01/17.
  */
-public class SelectingAnOption {
+public class SelectingAnOptionThatsRenderedAsADialogu {
 
     @Test
     public void

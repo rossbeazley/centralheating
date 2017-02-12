@@ -1,10 +1,10 @@
-package uk.co.rossbeazley.centralheating.ui;
+package uk.co.rossbeazley.centralheating.core;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-class Model {
+public class Model {
     private List<Option> options;
 
     public Model(String... option1) {

@@ -1,5 +1,7 @@
 package uk.co.rossbeazley.centralheating.ui;
 
+import uk.co.rossbeazley.centralheating.core.Model;
+
 import java.util.ArrayList;
 import java.util.List;
 
