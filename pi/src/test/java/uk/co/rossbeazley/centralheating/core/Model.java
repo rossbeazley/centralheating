@@ -1,5 +1,6 @@
 package uk.co.rossbeazley.centralheating.core;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class Model {
@@ -7,6 +8,10 @@ public class Model {
 
     public Model(List<Option> options) {
         this.options = options;
+    }
+
+    public Model(Option... options) {
+        this.options = Arrays.asList(options);
     }
 
 
