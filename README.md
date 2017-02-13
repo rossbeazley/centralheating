@@ -12,7 +12,7 @@ SDL
 
 
 Heating boost - 30 / 60 / 90 / 120
-Mode - on / off / timer / external timer
+Heating Mode - on / off / timer / external timer
 Edit timer - big gui thing
 Temp control - range
 
