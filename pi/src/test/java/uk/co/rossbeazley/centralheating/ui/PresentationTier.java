@@ -89,4 +89,8 @@ class PresentationTier {
             this.presentationTier.presentMenuView();
         }
     }
+
+    public void clockWise() {
+
+    }
 }

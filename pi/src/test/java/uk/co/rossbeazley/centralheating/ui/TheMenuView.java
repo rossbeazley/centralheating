@@ -27,6 +27,23 @@ public class TheMenuView {
 
     @Test
     public void
+    selectTheSecondOption() throws Exception {
+
+
+        Model model = buildCoreModelWithConfigOptions("Option1");
+        CapturingViewFramework capturingViewFramework = new CapturingViewFramework();
+
+        PresentationTier presentationTier = imInTheMenuview(capturingViewFramework, model);
+
+
+        presentationTier.clockWise();
+
+        FakeMenuView fakeMenuView = capturingViewFramework.lastCapturedScreenFake();
+        assertThat(fakeMenuView.optionSelected, is("Close"));
+    }
+
+    @Test
+    public void
     showAMenuOption() throws Exception {
 
         Model model = TestDataBuilder.buildCoreModelWithConfigOptions("Option1");
