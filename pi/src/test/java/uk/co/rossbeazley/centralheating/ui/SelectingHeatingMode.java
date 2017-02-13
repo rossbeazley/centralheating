@@ -1,7 +1,6 @@
 package uk.co.rossbeazley.centralheating.ui;
 
 import org.junit.Test;
-import uk.co.rossbeazley.centralheating.core.HeatingBoostOption;
 import uk.co.rossbeazley.centralheating.core.HeatingModeOption;
 import uk.co.rossbeazley.centralheating.core.Model;
 
@@ -23,7 +22,7 @@ public class SelectingHeatingMode {
         Model model = new Model(new HeatingModeOption(heatingModeTitle));
         CapturingViewFramework capturingViewFramework = new CapturingViewFramework();
 
-        PresentationTier presentationTier = imInTheMenuview(capturingViewFramework, model);
+        PresentationTier presentationTier = TestDataBuilder.imInTheMenuview(capturingViewFramework, model);
 
         FakeMenuView fakeMenuView = capturingViewFramework.lastCapturedScreenFake();
         assertThat(fakeMenuView.optionsDisplayed, hasItems(heatingModeTitle));
@@ -38,7 +37,7 @@ public class SelectingHeatingMode {
         Model model = new Model(new HeatingModeOption("Heaating Moode"));
         CapturingViewFramework capturingViewFramework = new CapturingViewFramework();
 
-        PresentationTier presentationTier = imInTheMenuview(capturingViewFramework, model);
+        PresentationTier presentationTier = TestDataBuilder.imInTheMenuview(capturingViewFramework, model);
 
         presentationTier.buttonPress();
 
@@ -47,16 +46,5 @@ public class SelectingHeatingMode {
         assertThat(capturingViewFramework.lastCapturedScreenClass(),is(equalTo(ConfigurationDialogView.class)));
     }
 
-
-
-    private static PresentationTier imInTheMenuview(CapturingViewFramework capturingViewFramework, Model model) {
-        PresentationTier presentationTier = new PresentationTier(capturingViewFramework, model);
-        presentationTier.buttonPress();
-
-        Class screenDisplayed = capturingViewFramework.lastCapturedScreenClass();
-        assertThat("Precondition failed, screen displayed",screenDisplayed,is(equalTo(MenuView.class)));
-
-        return presentationTier;
-    }
 
 }
