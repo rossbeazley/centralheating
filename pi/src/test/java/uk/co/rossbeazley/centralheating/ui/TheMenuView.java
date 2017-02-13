@@ -30,7 +30,7 @@ public class TheMenuView {
     selectTheSecondOption() throws Exception {
 
 
-        Model model = buildCoreModelWithConfigOptions("Option1");
+        Model model = TestDataBuilder.buildCoreModelWithConfigOptions("Option1");
         CapturingViewFramework capturingViewFramework = new CapturingViewFramework();
 
         PresentationTier presentationTier = imInTheMenuview(capturingViewFramework, model);

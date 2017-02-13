@@ -23,6 +23,10 @@ class PresentationTier {
         topViewController.buttonPress();
     }
 
+    public void clockWise() {
+            topViewController.buttonClockwise();
+    }
+
     private void presentScheduleView() {
         this.viewFramework.create(ScheduleView.class);
         topViewController = new ScheduleController(this);
@@ -41,6 +45,7 @@ class PresentationTier {
 
     private static class MenuController implements ViewController {
         private final PresentationTier presentationTier;
+        private MenuView menuView;
         private Model model;
         private int selectedIndex;
         private String[] optionsAsString;
@@ -50,6 +55,7 @@ class PresentationTier {
         public MenuController(PresentationTier presentationTier, MenuView menuView, Model model) {
 
             this.presentationTier = presentationTier;
+            this.menuView = menuView;
             this.model = model;
 
             this.optionsAsString = buildOptionsViewModel();
@@ -75,6 +81,12 @@ class PresentationTier {
                 this.presentationTier.presentConfigurationDialog();
             }
         }
+
+        @Override
+        public void buttonClockwise() {
+            this.selectedIndex++;
+            menuView.selectOption(selectedIndex);
+        }
     }
 
     private static class ScheduleController implements ViewController {
@@ -88,9 +100,11 @@ class PresentationTier {
         public void buttonPress() {
             this.presentationTier.presentMenuView();
         }
+
+        @Override
+        public void buttonClockwise() {
+
+        }
     }
 
-    public void clockWise() {
-
-    }
 }
