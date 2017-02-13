@@ -42,6 +42,25 @@ public class TheMenuView {
         assertThat(fakeMenuView.optionSelected, is("Close"));
     }
 
+
+    @Test
+    public void
+    wrapRoundTheSelection() throws Exception {
+
+
+        Model model = TestDataBuilder.buildCoreModelWithConfigOptions("Option1");
+        CapturingViewFramework capturingViewFramework = new CapturingViewFramework();
+
+        PresentationTier presentationTier = imInTheMenuview(capturingViewFramework, model);
+
+
+        presentationTier.clockWise();
+        presentationTier.clockWise();
+
+        FakeMenuView fakeMenuView = capturingViewFramework.lastCapturedScreenFake();
+        assertThat(fakeMenuView.optionSelected, is("Option1"));
+    }
+
     @Test
     public void
     showAMenuOption() throws Exception {
