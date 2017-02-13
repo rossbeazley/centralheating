@@ -85,8 +85,12 @@ class PresentationTier {
         @Override
         public void buttonClockwise() {
             this.selectedIndex++;
-            this.selectedIndex = this.selectedIndex % this.optionsAsString.length;
+            wrapAroundToStart();
             menuView.selectOption(selectedIndex);
+        }
+
+        private void wrapAroundToStart() {
+            this.selectedIndex = this.selectedIndex % this.optionsAsString.length;
         }
     }
 
