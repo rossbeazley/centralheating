@@ -6,12 +6,22 @@ package uk.co.rossbeazley.centralheating.ui;
 class CapturingViewFramework implements ViewFramework {
 
     private final FakeMenuView fakeMenuView = new FakeMenuView();
+    private final FakeConfigurationDialogView fakeConfigurationDialogView = new FakeConfigurationDialogView();
     Class<?> presentedViewClass;
+    private Object lastCapturedScreenFake;
 
     @Override
-    public FakeMenuView create(Class<?> view) {
-        presentedViewClass = view;
-        return fakeMenuView;
+    public <V> V create(Class<V> clazz) {
+        presentedViewClass = clazz;
+        V result = null;
+        if ( clazz.equals(MenuView.class) ) {
+            result = (V) fakeMenuView;
+        } else if ( clazz.equals(ConfigurationDialogView.class) ){
+            result = (V) fakeConfigurationDialogView;
+        }
+
+        this.lastCapturedScreenFake = result;
+        return result;
     }
 
     public Class<?> lastCapturedScreenClass() {
@@ -20,5 +30,15 @@ class CapturingViewFramework implements ViewFramework {
 
     public FakeMenuView lastCapturedScreenFake() {
         return fakeMenuView;
+    }
+
+    public <S extends T, T> S lastCapturedScreenFakeIfIsClass(Class<T> clazz) {
+        S result = null;
+
+        if ( clazz.equals(presentedViewClass) ) {
+            result = (S) lastCapturedScreenFake;
+        }
+
+        return result;
     }
 }

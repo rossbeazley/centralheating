@@ -1,5 +1,6 @@
 package uk.co.rossbeazley.centralheating.ui;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import uk.co.rossbeazley.centralheating.core.HeatingModeOption;
 import uk.co.rossbeazley.centralheating.core.Model;
@@ -30,7 +31,7 @@ public class SelectingTemperature {
     }
 
 
-    @Test
+    @Test @Ignore("WIP")
     public void
     displaysConfigurationDialog() throws Exception {
 
