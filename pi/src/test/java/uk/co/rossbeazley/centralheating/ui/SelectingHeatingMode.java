@@ -1,6 +1,7 @@
 package uk.co.rossbeazley.centralheating.ui;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import uk.co.rossbeazley.centralheating.core.HeatingModeOption;
 import uk.co.rossbeazley.centralheating.core.Model;
@@ -22,7 +23,7 @@ public class SelectingHeatingMode {
     public void
     showAMenuOptionForHeatingBoost() throws Exception {
         String heatingModeTitle = "Heating Mode";
-        Model model = new Model(new HeatingModeOption(heatingModeTitle));
+        Model model = new Model(HeatingModeOption.createHeatingModeOption(heatingModeTitle));
 
         PresentationTier presentationTier = TestDataBuilder.imInTheMenuview(capturingViewFramework, model);
 
@@ -40,7 +41,7 @@ public class SelectingHeatingMode {
     @Test
     public void
     displaysConfigurationDialogForHeatingMode() throws Exception {
-        Model model = new Model(new HeatingModeOption("Heaating Moode"));
+        Model model = new Model(HeatingModeOption.createHeatingModeOption("Heaating Moode"));
         PresentationTier presentationTier = TestDataBuilder.imInTheMenuview(capturingViewFramework, model);
 
         presentationTier.buttonPress();
@@ -51,7 +52,7 @@ public class SelectingHeatingMode {
     }
 
 
-    @Test
+    @Test @Ignore("To be redefined")
     public void
     presentsConfigForHeatingMode() throws Exception {
 

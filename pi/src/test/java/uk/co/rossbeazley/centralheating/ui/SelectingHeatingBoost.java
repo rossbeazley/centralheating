@@ -19,7 +19,7 @@ public class SelectingHeatingBoost {
     showAMenuOptionForHeatingBoost() throws Exception {
 
         String heatingBoostTitle = "Heaating Boost";
-        Model model = new Model(new HeatingBoostOption(heatingBoostTitle));
+        Model model = new Model(HeatingBoostOption.createHeatingBoostOption(heatingBoostTitle));
         CapturingViewFramework capturingViewFramework = new CapturingViewFramework();
 
         PresentationTier presentationTier = imInTheMenuview(capturingViewFramework, model);
@@ -34,7 +34,7 @@ public class SelectingHeatingBoost {
     displaysConfigurationDialog() throws Exception {
 
 
-        Model model = new Model(new HeatingBoostOption("Heaating Boost"));
+        Model model = new Model(HeatingBoostOption.createHeatingBoostOption("Heaating Boost"));
         CapturingViewFramework capturingViewFramework = new CapturingViewFramework();
 
         PresentationTier presentationTier = imInTheMenuview(capturingViewFramework, model);
