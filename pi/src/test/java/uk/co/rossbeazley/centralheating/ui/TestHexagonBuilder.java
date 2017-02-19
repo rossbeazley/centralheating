@@ -1,5 +1,7 @@
 package uk.co.rossbeazley.centralheating.ui;
 
+import com.sun.xml.internal.bind.v2.runtime.reflect.Lister;
+import uk.co.rossbeazley.centralheating.core.HeatingModeOption;
 import uk.co.rossbeazley.centralheating.core.Model;
 import uk.co.rossbeazley.centralheating.core.Option;
 
@@ -13,31 +15,37 @@ import static org.junit.Assert.assertThat;
 public class TestHexagonBuilder {
 
     private Model model;
+    private List<Option> options = new ArrayList<>(10);
 
-    public Model buildCoreModelWithGenericConfigOptions(String... option1) {
-        List<Option> options = new ArrayList<>(option1.length);
+    public TestHexagonBuilder withHeatingSubsystemTitled(String heatingModeTitle) {
+        addOption(HeatingModeOption.createHeatingModeOption(heatingModeTitle));
+        return this;
+    }
+
+    public TestHexagonBuilder withGenericConfigOptions(String... option1) {
+
         for (String option : option1) {
-            options.add(new Option(option));
+            addOption(new Option(option));
         }
-        model = new Model(options);
-        return model;
+        return this;
+    }
+
+    private List<Option> addOption(Option e) {
+        options.add(e);
+        return options;
     }
 
     public Model build() {
-        return model;
+        return (model = new Model(options));
     }
 
-    public static Model buildAnyCoreModel() {
-        return new TestHexagonBuilder().buildCoreModelWithGenericConfigOptions("Option1");
+
+    public TestHexagonBuilder withAnyOptions() {
+        addOption(new Option("any option"));
+        return this;
     }
 
-    static PresentationTier imInTheMenuview(CapturingViewFramework capturingViewFramework, Model model) {
-        PresentationTier presentationTier = new PresentationTier(capturingViewFramework, model);
-        presentationTier.buttonPress();
-
-        Class screenDisplayed = capturingViewFramework.lastCapturedScreenClass();
-        assertThat("Precondition failed, screen displayed",screenDisplayed,is(equalTo(MenuView.class)));
-
-        return presentationTier;
+    public TestHexagonBuilder withNoConfigOptions() {
+        return this;
     }
 }

@@ -14,7 +14,7 @@ public class OpeningTheMenu {
 
         CapturingViewFramework capturingViewFramework = new CapturingViewFramework();
 
-        PresentationTier presentationTier = new PresentationTier(capturingViewFramework, TestHexagonBuilder.buildAnyCoreModel());
+        PresentationTier presentationTier = new PresentationTier(capturingViewFramework, new TestHexagonBuilder().withAnyOptions().build());
         presentationTier.buttonPress();
 
         Class screenDisplayed = capturingViewFramework.lastCapturedScreenClass();

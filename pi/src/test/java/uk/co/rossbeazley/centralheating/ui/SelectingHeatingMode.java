@@ -3,7 +3,6 @@ package uk.co.rossbeazley.centralheating.ui;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import uk.co.rossbeazley.centralheating.core.HeatingModeOption;
 import uk.co.rossbeazley.centralheating.core.Model;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -18,31 +17,33 @@ import static org.junit.Assert.assertThat;
 public class SelectingHeatingMode {
 
     private CapturingViewFramework capturingViewFramework;
+    private Model model;
+    private String heatingModeTitle;
+
+    @Before
+    public void initialiseHeatingSubSystem() throws Exception {
+        heatingModeTitle = "Heating Mode";
+        model = new TestHexagonBuilder().withHeatingSubsystemTitled(heatingModeTitle).build();
+    }
+
 
     @Test
     public void
     showAMenuOptionForHeatingBoost() throws Exception {
-        String heatingModeTitle = "Heating Mode";
-        Model model = new Model(HeatingModeOption.createHeatingModeOption(heatingModeTitle));
+        capturingViewFramework = new CapturingViewFramework();
 
-        PresentationTier presentationTier = TestHexagonBuilder.imInTheMenuview(capturingViewFramework, model);
+        PresentationTier presentationTier = UIContext.imInTheMenuview(capturingViewFramework, model);
 
         FakeMenuView fakeMenuView = capturingViewFramework.lastCapturedScreenFake();
         assertThat(fakeMenuView.optionsDisplayed, hasItems(heatingModeTitle));
     }
 
-
-    @Before
-    public void setUp() throws Exception {
-        capturingViewFramework = new CapturingViewFramework();
-
-    }
-
     @Test
     public void
     displaysConfigurationDialogForHeatingMode() throws Exception {
-        Model model = new Model(HeatingModeOption.createHeatingModeOption("Heaating Moode"));
-        PresentationTier presentationTier = TestHexagonBuilder.imInTheMenuview(capturingViewFramework, model);
+        capturingViewFramework = new CapturingViewFramework();
+        Model model = new TestHexagonBuilder().withHeatingSubsystemTitled("Heaating Moode").build();
+        PresentationTier presentationTier = UIContext.imInTheMenuview(capturingViewFramework, model);
 
         presentationTier.buttonPress();
 
@@ -56,6 +57,7 @@ public class SelectingHeatingMode {
     public void
     presentsConfigForHeatingMode() throws Exception {
 
+        capturingViewFramework = new CapturingViewFramework();
         displaysConfigurationDialogForHeatingMode();
 
         FakeConfigurationDialogView fakeConfigurationDialog = capturingViewFramework.lastCapturedScreenFakeIfIsClass(ConfigurationDialogView.class);

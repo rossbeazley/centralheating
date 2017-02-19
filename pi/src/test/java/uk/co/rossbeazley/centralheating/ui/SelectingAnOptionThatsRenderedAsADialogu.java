@@ -19,7 +19,7 @@ public class SelectingAnOptionThatsRenderedAsADialogu {
     firstOptionIsSelectedByDefault() throws Exception {
 
 
-        Model model = new TestHexagonBuilder().buildCoreModelWithGenericConfigOptions("Option1");
+        Model model = new TestHexagonBuilder().withGenericConfigOptions("Option1").build();
         CapturingViewFramework capturingViewFramework = new CapturingViewFramework();
 
         PresentationTier presentationTier = imInTheMenuview(capturingViewFramework, model);
