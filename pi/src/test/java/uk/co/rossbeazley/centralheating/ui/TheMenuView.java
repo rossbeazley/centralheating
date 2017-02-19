@@ -19,7 +19,7 @@ public class TheMenuView {
     @Test
     public void displaysCloseOption() throws Exception {
         CapturingViewFramework capturingViewFramework = new CapturingViewFramework();
-        PresentationTier presentationTier = imInTheMenuview(capturingViewFramework, TestDataBuilder.buildCoreModelWithConfigOptions("Option1"));
+        PresentationTier presentationTier = imInTheMenuview(capturingViewFramework, new TestHexagonBuilder().buildCoreModelWithGenericConfigOptions("Option1"));
         FakeMenuView fakeMenuView = capturingViewFramework.lastCapturedScreenFake();
         assertThat(fakeMenuView.optionsDisplayed, hasItem("Close"));
     }
@@ -30,7 +30,7 @@ public class TheMenuView {
     selectTheSecondOption() throws Exception {
 
 
-        Model model = TestDataBuilder.buildCoreModelWithConfigOptions("Option1");
+        Model model = new TestHexagonBuilder().buildCoreModelWithGenericConfigOptions("Option1");
         CapturingViewFramework capturingViewFramework = new CapturingViewFramework();
 
         PresentationTier presentationTier = imInTheMenuview(capturingViewFramework, model);
@@ -48,7 +48,7 @@ public class TheMenuView {
     wrapRoundTheSelection() throws Exception {
 
 
-        Model model = TestDataBuilder.buildCoreModelWithConfigOptions("Option1");
+        Model model = new TestHexagonBuilder().buildCoreModelWithGenericConfigOptions("Option1");
         CapturingViewFramework capturingViewFramework = new CapturingViewFramework();
 
         PresentationTier presentationTier = imInTheMenuview(capturingViewFramework, model);
@@ -65,7 +65,7 @@ public class TheMenuView {
     public void
     showAMenuOption() throws Exception {
 
-        Model model = TestDataBuilder.buildCoreModelWithConfigOptions("Option1");
+        Model model = new TestHexagonBuilder().buildCoreModelWithGenericConfigOptions("Option1");
         CapturingViewFramework capturingViewFramework = new CapturingViewFramework();
 
         PresentationTier presentationTier = imInTheMenuview(capturingViewFramework, model);
@@ -79,7 +79,7 @@ public class TheMenuView {
     firstOptionIsSelectedByDefault() throws Exception {
 
 
-        Model model = TestDataBuilder.buildCoreModelWithConfigOptions("Option1");
+        Model model = new TestHexagonBuilder().buildCoreModelWithGenericConfigOptions("Option1");
         CapturingViewFramework capturingViewFramework = new CapturingViewFramework();
 
         PresentationTier presentationTier = imInTheMenuview(capturingViewFramework, model);
@@ -93,7 +93,7 @@ public class TheMenuView {
     public void closeIsTheReturnsToScheduleView() {
 
         CapturingViewFramework capturingViewFramework = new CapturingViewFramework();
-        PresentationTier presentationTier = imInTheMenuview(capturingViewFramework, TestDataBuilder.buildCoreModelWithConfigOptions());
+        PresentationTier presentationTier = imInTheMenuview(capturingViewFramework, new TestHexagonBuilder().buildCoreModelWithGenericConfigOptions());
         presentationTier.buttonPress();
 
         Class screenDisplayed = capturingViewFramework.lastCapturedScreenClass();

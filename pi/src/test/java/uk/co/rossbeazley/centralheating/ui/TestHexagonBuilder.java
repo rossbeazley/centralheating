@@ -10,17 +10,25 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
-public class TestDataBuilder {
-    public static Model buildCoreModelWithConfigOptions(String... option1) {
+public class TestHexagonBuilder {
+
+    private Model model;
+
+    public Model buildCoreModelWithGenericConfigOptions(String... option1) {
         List<Option> options = new ArrayList<>(option1.length);
         for (String option : option1) {
             options.add(new Option(option));
         }
-        return new Model(options);
+        model = new Model(options);
+        return model;
+    }
+
+    public Model build() {
+        return model;
     }
 
     public static Model buildAnyCoreModel() {
-        return buildCoreModelWithConfigOptions("Option1");
+        return new TestHexagonBuilder().buildCoreModelWithGenericConfigOptions("Option1");
     }
 
     static PresentationTier imInTheMenuview(CapturingViewFramework capturingViewFramework, Model model) {

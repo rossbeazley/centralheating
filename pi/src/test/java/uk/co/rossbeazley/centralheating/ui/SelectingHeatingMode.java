@@ -25,7 +25,7 @@ public class SelectingHeatingMode {
         String heatingModeTitle = "Heating Mode";
         Model model = new Model(HeatingModeOption.createHeatingModeOption(heatingModeTitle));
 
-        PresentationTier presentationTier = TestDataBuilder.imInTheMenuview(capturingViewFramework, model);
+        PresentationTier presentationTier = TestHexagonBuilder.imInTheMenuview(capturingViewFramework, model);
 
         FakeMenuView fakeMenuView = capturingViewFramework.lastCapturedScreenFake();
         assertThat(fakeMenuView.optionsDisplayed, hasItems(heatingModeTitle));
@@ -42,7 +42,7 @@ public class SelectingHeatingMode {
     public void
     displaysConfigurationDialogForHeatingMode() throws Exception {
         Model model = new Model(HeatingModeOption.createHeatingModeOption("Heaating Moode"));
-        PresentationTier presentationTier = TestDataBuilder.imInTheMenuview(capturingViewFramework, model);
+        PresentationTier presentationTier = TestHexagonBuilder.imInTheMenuview(capturingViewFramework, model);
 
         presentationTier.buttonPress();
 
