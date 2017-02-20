@@ -5,7 +5,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 import uk.co.rossbeazley.centralheating.core.Model;
 
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.isA;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsCollectionContaining.hasItems;
@@ -23,7 +22,7 @@ public class SelectingHeatingMode {
     @Before
     public void initialiseHeatingSubSystem() throws Exception {
         heatingModeTitle = "Heating Mode";
-        model = new TestHexagonBuilder().withHeatingSubsystemTitled(heatingModeTitle).build();
+        model = new TestHexagonBuilder().withHeatingSubsystemTitled("On","Off","External Timer Clock", "Boost").build();
     }
 
 
@@ -35,31 +34,22 @@ public class SelectingHeatingMode {
         PresentationTier presentationTier = UIContext.imInTheMenuview(capturingViewFramework, model);
 
         FakeMenuView fakeMenuView = capturingViewFramework.lastCapturedScreenFake();
-        assertThat(fakeMenuView.optionsDisplayed, hasItems("On","Off","External Timer", "Boost"));
+        assertThat(fakeMenuView.optionsDisplayed, hasItems("On","Off","External Timer Clock", "Boost"));
     }
 
-    @Test @Ignore("To Be Redefined")
+    @Test
     public void
-    displaysConfigurationDialogForHeatingMode() throws Exception {
+    selectingBoostDisplaysConfigDialog() throws Exception {
         capturingViewFramework = new CapturingViewFramework();
         PresentationTier presentationTier = UIContext.imInTheMenuview(capturingViewFramework, model);
 
+        presentationTier.clockWise();
+        presentationTier.clockWise();
+        presentationTier.clockWise();
         presentationTier.buttonPress();
 
         FakeConfigurationDialogView fakeConfigurationDialogView = capturingViewFramework.lastCapturedScreenFakeIfIsClass(ConfigurationDialogView.class);
         assertThat(fakeConfigurationDialogView, isA(FakeConfigurationDialogView.class));
-    }
-
-
-    @Test @Ignore("To be redefined")
-    public void
-    presentsConfigForHeatingMode() throws Exception {
-
-        capturingViewFramework = new CapturingViewFramework();
-        displaysConfigurationDialogForHeatingMode();
-
-        FakeConfigurationDialogView fakeConfigurationDialog = capturingViewFramework.lastCapturedScreenFakeIfIsClass(ConfigurationDialogView.class);
-        assertThat(fakeConfigurationDialog.choices, hasItems("Choice1"));
     }
 
 }
