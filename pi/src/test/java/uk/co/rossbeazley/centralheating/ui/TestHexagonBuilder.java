@@ -18,7 +18,11 @@ public class TestHexagonBuilder {
     private List<Option> options = new ArrayList<>(10);
 
     public TestHexagonBuilder withHeatingSubsystemTitled(String heatingModeTitle) {
-        addOption(HeatingModeOption.createHeatingModeOption(heatingModeTitle));
+        //addOption(HeatingModeOption.createHeatingModeOption(heatingModeTitle));
+        addOption(new Option("On"));
+        addOption(new Option("Off"));
+        addOption(new Option("External Timer"));
+        addOption(new Option("Boost"));
         return this;
     }
 

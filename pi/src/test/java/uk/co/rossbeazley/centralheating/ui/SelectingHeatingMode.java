@@ -29,27 +29,25 @@ public class SelectingHeatingMode {
 
     @Test
     public void
-    showAMenuOptionForHeatingBoost() throws Exception {
+    showMenuOptionsForHeatingMode() throws Exception {
         capturingViewFramework = new CapturingViewFramework();
 
         PresentationTier presentationTier = UIContext.imInTheMenuview(capturingViewFramework, model);
 
         FakeMenuView fakeMenuView = capturingViewFramework.lastCapturedScreenFake();
-        assertThat(fakeMenuView.optionsDisplayed, hasItems(heatingModeTitle));
+        assertThat(fakeMenuView.optionsDisplayed, hasItems("On","Off","External Timer", "Boost"));
     }
 
-    @Test
+    @Test @Ignore("To Be Redefined")
     public void
     displaysConfigurationDialogForHeatingMode() throws Exception {
         capturingViewFramework = new CapturingViewFramework();
-        Model model = new TestHexagonBuilder().withHeatingSubsystemTitled("Heaating Moode").build();
         PresentationTier presentationTier = UIContext.imInTheMenuview(capturingViewFramework, model);
 
         presentationTier.buttonPress();
 
-        FakeMenuView fakeMenuView = capturingViewFramework.lastCapturedScreenFake();
-        assertThat(capturingViewFramework.lastCapturedScreenClass(),is(equalTo(ConfigurationDialogView.class)));
-        assertThat( capturingViewFramework.lastCapturedScreenFakeIfIsClass(ConfigurationDialogView.class), isA(FakeConfigurationDialogView.class));
+        FakeConfigurationDialogView fakeConfigurationDialogView = capturingViewFramework.lastCapturedScreenFakeIfIsClass(ConfigurationDialogView.class);
+        assertThat(fakeConfigurationDialogView, isA(FakeConfigurationDialogView.class));
     }
 
 
