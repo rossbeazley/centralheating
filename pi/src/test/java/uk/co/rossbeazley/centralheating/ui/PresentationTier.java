@@ -1,6 +1,7 @@
 package uk.co.rossbeazley.centralheating.ui;
 
 import uk.co.rossbeazley.centralheating.core.Model;
+import uk.co.rossbeazley.centralheating.core.Option;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +51,7 @@ class PresentationTier {
         private int selectedIndex;
         private String[] optionsAsString;
         private int closeIndex;
+        private List<Option> options;
 
 
         public MenuController(PresentationTier presentationTier, MenuView menuView, Model model) {
@@ -67,7 +69,8 @@ class PresentationTier {
 
         private String[] buildOptionsViewModel() {
             List<String> optionsAsString = new ArrayList<>();
-            this.model.options().forEach(option -> optionsAsString.add(option.name()));
+            options = this.model.options();
+            options.forEach(option -> optionsAsString.add(option.name()));
             optionsAsString.add("Close"); // add close at the end
             this.closeIndex = optionsAsString.indexOf("Close"); // this write operation stinks
             return optionsAsString.toArray(new String[optionsAsString.size()]);
@@ -78,7 +81,18 @@ class PresentationTier {
             if (selectedIndex == closeIndex) {
                 this.presentationTier.presentScheduleView();
             } else {
-                this.presentationTier.presentConfigurationDialog();
+                model.configure(options.get(selectedIndex), new Model.Callback() {
+                    @Override
+                    public void OK() {
+                        presentationTier.presentConfirmationDialog();
+                    }
+
+                    @Override
+                    public void NOTOK() {
+                        presentationTier.presentConfigurationDialog();
+                    }
+                });
+
             }
         }
 
@@ -92,6 +106,10 @@ class PresentationTier {
         private void wrapAroundToStart() {
             this.selectedIndex = this.selectedIndex % this.optionsAsString.length;
         }
+    }
+
+    private void presentConfirmationDialog() {
+        this.viewFramework.create(ConfirmationDialogView.class);
     }
 
     private static class ScheduleController implements ViewController {

@@ -7,6 +7,7 @@ class CapturingViewFramework implements ViewFramework {
 
     private final FakeMenuView fakeMenuView = new FakeMenuView();
     private final FakeConfigurationDialogView fakeConfigurationDialogView = new FakeConfigurationDialogView();
+    private final FakeConfirmationDialogView fakeConfirmationDialogView = new FakeConfirmationDialogView();
     Class<?> presentedViewClass;
     private Object lastCapturedScreenFake;
 
@@ -18,6 +19,8 @@ class CapturingViewFramework implements ViewFramework {
             result = (V) fakeMenuView;
         } else if ( clazz.equals(ConfigurationDialogView.class) ){
             result = (V) fakeConfigurationDialogView;
+        } else if( clazz.equals(ConfirmationDialogView.class ) ) {
+            result = (V) fakeConfirmationDialogView;
         }
 
         this.lastCapturedScreenFake = result;

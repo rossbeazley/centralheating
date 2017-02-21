@@ -24,7 +24,7 @@ public class TestHexagonBuilder {
     public TestHexagonBuilder withGenericConfigOptions(String... option1) {
 
         for (String option : option1) {
-            addOptions(new Option(option));
+            addOptions(new Option(option,false));
         }
         return this;
     }
@@ -40,7 +40,7 @@ public class TestHexagonBuilder {
 
 
     public TestHexagonBuilder withAnyOptions() {
-        addOptions(new Option("any option"));
+        addOptions(new Option("any option",false));
         return this;
     }
 

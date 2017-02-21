@@ -6,6 +6,6 @@ public class HeatingBoostOption  {
 
 
     public static Option createHeatingBoostOption(String option1) {
-        return new Option(option1);
+        return new Option(option1,false);
     }
 }

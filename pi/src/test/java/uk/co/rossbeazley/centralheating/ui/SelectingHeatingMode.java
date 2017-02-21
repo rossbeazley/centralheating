@@ -52,4 +52,17 @@ public class SelectingHeatingMode {
         assertThat(fakeConfigurationDialogView, isA(FakeConfigurationDialogView.class));
     }
 
+    @Test
+    public void
+    selectingONDisplaysConfirmationDialog() throws Exception {
+        capturingViewFramework = new CapturingViewFramework();
+        PresentationTier presentationTier = UIContext.imInTheMenuview(capturingViewFramework, model);
+
+        presentationTier.clockWise();
+        presentationTier.buttonPress();
+
+        FakeConfirmationDialogView fakeConfigurationDialogView = capturingViewFramework.lastCapturedScreenFakeIfIsClass(ConfirmationDialogView.class);
+        assertThat(fakeConfigurationDialogView, isA(FakeConfirmationDialogView.class));
+    }
+
 }

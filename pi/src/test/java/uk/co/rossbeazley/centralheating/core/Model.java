@@ -18,4 +18,18 @@ public class Model {
     public List<Option> options() {
         return this.options;
     }
+
+    public void configure(Option option, Model.Callback callback) {
+        if(option.hasSubOptions()) {
+            callback.NOTOK();
+        } else {
+            callback.OK();
+        }
+    }
+
+    public static interface Callback {
+        void OK();
+
+        void NOTOK();
+    }
 }
