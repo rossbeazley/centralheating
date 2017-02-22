@@ -1,5 +1,6 @@
 package uk.co.rossbeazley.centralheating.ui;
 
+import uk.co.rossbeazley.centralheating.core.FakeModel;
 import uk.co.rossbeazley.centralheating.core.Model;
 import uk.co.rossbeazley.centralheating.core.Option;
 
@@ -81,7 +82,7 @@ class PresentationTier {
             if (selectedIndex == closeIndex) {
                 this.presentationTier.presentScheduleView();
             } else {
-                model.configure(options.get(selectedIndex), new Model.Callback() {
+                model.configure(options.get(selectedIndex), new FakeModel.Callback() {
                     @Override
                     public void OK() {
                         presentationTier.presentConfirmationDialog();

@@ -3,6 +3,8 @@ package uk.co.rossbeazley.centralheating.ui;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import uk.co.rossbeazley.centralheating.core.FakeModel;
+import uk.co.rossbeazley.centralheating.core.FakeOption;
 import uk.co.rossbeazley.centralheating.core.Model;
 
 import static org.hamcrest.CoreMatchers.isA;
@@ -16,13 +18,16 @@ import static org.junit.Assert.assertThat;
 public class SelectingHeatingMode {
 
     private CapturingViewFramework capturingViewFramework;
-    private Model model;
+    private FakeModel model;
     private String heatingModeTitle;
 
     @Before
     public void initialiseHeatingSubSystem() throws Exception {
         heatingModeTitle = "Heating Mode";
-        model = new TestHexagonBuilder().withHeatingSubsystemTitled("On","Off","External Timer Clock", "Boost").build();
+        model = new TestHexagonBuilder()
+                .withHeatingSubsystemTitled("On", "Off", "External Timer Clock", "Boost")
+                .withHeatingBoostSubsystemMinutesRange(1, 60)
+                .build();
     }
 
 
@@ -61,8 +66,35 @@ public class SelectingHeatingMode {
         presentationTier.clockWise();
         presentationTier.buttonPress();
 
+        assertThat(model.lastOptionConfigured(), is(new FakeOption("Off",false)));
         FakeConfirmationDialogView fakeConfigurationDialogView = capturingViewFramework.lastCapturedScreenFakeIfIsClass(ConfirmationDialogView.class);
         assertThat(fakeConfigurationDialogView, isA(FakeConfirmationDialogView.class));
     }
 
+
+    @Test
+    public void
+    showsBoostOptions() throws Exception {
+
+    }
+
+
+    @Test @Ignore("Dont do yet")
+    public void
+    confirmationDialogCloses() throws Exception {
+        capturingViewFramework = new CapturingViewFramework();
+        PresentationTier presentationTier = UIContext.imInTheMenuview(capturingViewFramework, model);
+        thenImInTheConfirmationDialogu(presentationTier);
+
+        presentationTier.buttonPress(); // <- is a close operation really
+
+        FakeMenuView fakeConfigurationDialogView = capturingViewFramework.lastCapturedScreenFakeIfIsClass(MenuView.class);
+        assertThat(fakeConfigurationDialogView, isA(FakeMenuView.class));
+
+    }
+
+    public void thenImInTheConfirmationDialogu(PresentationTier presentationTier) {
+        presentationTier.clockWise();
+        presentationTier.buttonPress();
+    }
 }

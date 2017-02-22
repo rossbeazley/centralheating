@@ -2,6 +2,7 @@ package uk.co.rossbeazley.centralheating.ui;
 
 import org.junit.Ignore;
 import org.junit.Test;
+import uk.co.rossbeazley.centralheating.core.FakeModel;
 import uk.co.rossbeazley.centralheating.core.Model;
 import uk.co.rossbeazley.centralheating.core.TemperatureOption;
 
@@ -20,7 +21,7 @@ public class SelectingTemperature {
     showAMenuOptionForHeatingBoost() throws Exception {
 
         String temperatureTitle = "TemperatureOption Mode";
-        Model model = new Model(TemperatureOption.createTemperatureOption(temperatureTitle));
+        Model model = new FakeModel(TemperatureOption.createTemperatureOption(temperatureTitle));
         CapturingViewFramework capturingViewFramework = new CapturingViewFramework();
 
         PresentationTier presentationTier = imInTheMenuview(capturingViewFramework, model);
@@ -35,7 +36,7 @@ public class SelectingTemperature {
     displaysConfigurationDialog() throws Exception {
 
 
-        Model model = new Model(TemperatureOption.createTemperatureOption("TEMP Moode"));
+        Model model = new FakeModel(TemperatureOption.createTemperatureOption("TEMP Moode"));
         CapturingViewFramework capturingViewFramework = new CapturingViewFramework();
 
         PresentationTier presentationTier = imInTheMenuview(capturingViewFramework, model);

@@ -1,8 +1,6 @@
 package uk.co.rossbeazley.centralheating.ui;
 
-import uk.co.rossbeazley.centralheating.core.HeatingModeOption;
-import uk.co.rossbeazley.centralheating.core.Model;
-import uk.co.rossbeazley.centralheating.core.Option;
+import uk.co.rossbeazley.centralheating.core.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,7 +11,7 @@ import static org.junit.Assert.assertThat;
 
 public class TestHexagonBuilder {
 
-    private Model model;
+    private FakeModel model;
     private List<Option> options = new ArrayList<>(10);
 
     public TestHexagonBuilder withHeatingSubsystemTitled(String on, String off, String s, String boost) {
@@ -24,7 +22,7 @@ public class TestHexagonBuilder {
     public TestHexagonBuilder withGenericConfigOptions(String... option1) {
 
         for (String option : option1) {
-            addOptions(new Option(option,false));
+            addOptions(new FakeOption(option,false));
         }
         return this;
     }
@@ -34,17 +32,21 @@ public class TestHexagonBuilder {
         return options;
     }
 
-    public Model build() {
-        return (model = new Model(options));
+    public FakeModel build() {
+        return (model = new FakeModel(options));
     }
 
 
     public TestHexagonBuilder withAnyOptions() {
-        addOptions(new Option("any option",false));
+        addOptions(new FakeOption("any option",false));
         return this;
     }
 
     public TestHexagonBuilder withNoConfigOptions() {
+        return this;
+    }
+
+    public TestHexagonBuilder withHeatingBoostSubsystemMinutesRange(int from, int to) {
         return this;
     }
 }
