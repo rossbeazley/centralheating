@@ -1,7 +1,6 @@
 package uk.co.rossbeazley.centralheating.ui;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import uk.co.rossbeazley.centralheating.core.FakeModel;
 import uk.co.rossbeazley.centralheating.core.FakeOption;
@@ -28,7 +27,7 @@ public class SelectingHeatingMode {
     public void initialiseHeatingSubSystem() throws Exception {
         heatingModeTitle = "Heating Mode";
         defaultHeatingTimeValue = HeatingTime.createFromTimeUnit(2, TimeUnit.SECONDS);
-        HeatingTimeRange heatingTimeRange = new HeatingTimeRange(HeatingTime.createFromTimeUnit(1, TimeUnit.SECONDS), HeatingTime.createFromTimeUnit(3, TimeUnit.SECONDS));
+        HeatingTimeRange heatingTimeRange = new HeatingTimeRange(HeatingTime.createFromTimeUnit(1, TimeUnit.SECONDS), HeatingTime.createFromTimeUnit(3, TimeUnit.SECONDS), null);
 
         model = new TestHexagonBuilder()
                 .withHeatingSubsystemSingleOptionsTitled("On", "Off", "External Timer Clock")

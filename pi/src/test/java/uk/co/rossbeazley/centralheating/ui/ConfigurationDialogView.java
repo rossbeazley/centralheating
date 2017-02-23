@@ -6,4 +6,6 @@ public interface ConfigurationDialogView {
     void highlightOptions();
 
     void highlightCancel();
+
+    void highlightSave();
 }

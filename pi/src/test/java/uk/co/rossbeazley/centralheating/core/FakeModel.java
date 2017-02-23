@@ -37,4 +37,8 @@ public class FakeModel implements Model {
     public FakeOption lastOptionConfigured() {
         return lastOptionConfigured;
     }
+
+    public void lastOptionConfiguredClear() {
+        lastOptionConfigured = null;
+    }
 }

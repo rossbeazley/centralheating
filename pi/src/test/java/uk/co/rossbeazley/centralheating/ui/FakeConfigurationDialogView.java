@@ -5,9 +5,11 @@ import java.util.List;
 
 public class FakeConfigurationDialogView implements ConfigurationDialogView {
 
-    public static final Object NONE = "none";
-    public static final Object CHOICES = "choices";
-    public static final Object CANCEL = "cancel";
+    public static final Object  NONE = "none",
+                                CHOICES = "choices",
+                                CANCEL = "cancel",
+                                SAVE = "save";
+
     public List<String> choices;
     private Object highlightedViewWidget = NONE;
 
@@ -24,6 +26,11 @@ public class FakeConfigurationDialogView implements ConfigurationDialogView {
     @Override
     public void highlightCancel() {
         this.highlightedViewWidget = CANCEL;
+    }
+
+    @Override
+    public void highlightSave() {
+        this.highlightedViewWidget = SAVE;
     }
 
     public Object highlightedViewWidget() {

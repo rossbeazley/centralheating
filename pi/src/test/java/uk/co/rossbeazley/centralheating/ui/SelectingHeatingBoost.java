@@ -24,11 +24,16 @@ public class SelectingHeatingBoost {
     private FakeModel model;
     private SelectingHeatingMode.HeatingTime defaultHeatingTimeValue;
     private PresentationTier presentationTier;
+    private HeatingTimeRange heatingTimeRange;
 
     @Before
     public void initialiseHeatingSubSystem() throws Exception {
+        FakeOption expectedBoostTime = new FakeOption("expectedBoostTime",false);
+
         defaultHeatingTimeValue = SelectingHeatingMode.HeatingTime.createFromTimeUnit(2, TimeUnit.SECONDS);
-        HeatingTimeRange heatingTimeRange = new HeatingTimeRange(SelectingHeatingMode.HeatingTime.createFromTimeUnit(1, TimeUnit.SECONDS), SelectingHeatingMode.HeatingTime.createFromTimeUnit(3, TimeUnit.SECONDS));
+        heatingTimeRange = new HeatingTimeRange(SelectingHeatingMode.HeatingTime.createFromTimeUnit(1, TimeUnit.SECONDS), SelectingHeatingMode.HeatingTime.createFromTimeUnit(3, TimeUnit.SECONDS), expectedBoostTime);
+
+
 
         model = new TestHexagonBuilder()
                 //.withHeatingSubsystemSingleOptionsTitled("On", "Off", "External Timer Clock")
@@ -87,17 +92,24 @@ public class SelectingHeatingBoost {
         assertThat(valuePresented,is(biggerValue));
     }
 
-    @Test @Ignore("Too hard, do cancel first")
+    @Test
     public void
     acceptingTheBoostAmount() {
         presentationTier.buttonPress();
         presentationTier.clockWise();
 
-        FakeOption expectedBoostTime = new FakeOption("expectedBoostTime",false);
-        assertThat(model.lastOptionConfigured(),is(expectedBoostTime));
-        // close will return to the previous screen
+        FakeConfigurationDialogView fakeConfigurationDialogView = capturingViewFramework.lastCapturedScreenFakeIfIsClass(ConfigurationDialogView.class);
+        assertThat(fakeConfigurationDialogView.highlightedViewWidget(),is(FakeConfigurationDialogView.SAVE));
+
+
+        model.lastOptionConfiguredClear();
+
+        presentationTier.buttonPress();
+
+        assertThat(model.lastOptionConfigured(), is(not(nullValue())));
         FakeConfigurationDialogView configurationDialogView = capturingViewFramework.lastCapturedScreenFakeIfIsClass(ConfigurationDialogView.class);
-        //assertThat(capturingViewFramework.lastCapturedScreenClass(), is(equalTo(ConfirmationDialogView.class)));
+        assertThat(capturingViewFramework.lastCapturedScreenClass(), is(equalTo(ConfirmationDialogView.class)));
+
     }
 
 

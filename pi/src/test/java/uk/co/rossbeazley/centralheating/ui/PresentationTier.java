@@ -1,6 +1,7 @@
 package uk.co.rossbeazley.centralheating.ui;
 
 import uk.co.rossbeazley.centralheating.core.FakeModel;
+import uk.co.rossbeazley.centralheating.core.FakeOption;
 import uk.co.rossbeazley.centralheating.core.Model;
 import uk.co.rossbeazley.centralheating.core.Option;
 
@@ -36,7 +37,7 @@ class PresentationTier {
 
     private void presentConfigurationDialog(HeatingTimeRange heatingTimeRange, SelectingHeatingMode.HeatingTime heatingTime) {
         ConfigurationDialogView view = this.viewFramework.create(ConfigurationDialogView.class);
-        topViewController = new ConfigurationDialogViewController(this, heatingTime, view);
+        topViewController = new ConfigurationDialogViewController(this,model, heatingTime, heatingTimeRange,view);
 
     }
 
@@ -149,14 +150,19 @@ class PresentationTier {
 
 
         private PresentationTier presentationTier;
+        private Model model;
         private final SelectingHeatingMode.HeatingTime heatingTime;
+        private HeatingTimeRange heatingTimeRange;
         private final ConfigurationDialogView view;
         private boolean editing = true;
         private boolean cancelSelected = false;
+        private boolean saveSelected = false;
 
-        public ConfigurationDialogViewController(PresentationTier presentationTier, SelectingHeatingMode.HeatingTime heatingTime, ConfigurationDialogView view) {
+        public ConfigurationDialogViewController(PresentationTier presentationTier, Model model, SelectingHeatingMode.HeatingTime heatingTime, HeatingTimeRange heatingTimeRange, ConfigurationDialogView view) {
             this.presentationTier = presentationTier;
+            this.model = model;
             this.heatingTime = heatingTime;
+            this.heatingTimeRange = heatingTimeRange;
             this.view = view;
             if (heatingTime != null) {
                 view.presentChoices(heatingTime.asSecondsString());
@@ -166,7 +172,22 @@ class PresentationTier {
 
         @Override
         public void buttonPress() {
-            if(cancelSelected) {
+            if(saveSelected) {
+                model.configure(heatingTimeRange.currentValue(), new Model.Callback() {
+                    @Override
+                    public void OK() {
+
+                    }
+
+                    @Override
+                    public void RANGE(HeatingTimeRange heatingTimeRange, SelectingHeatingMode.HeatingTime heatingTime) {
+
+                    }
+                });
+
+                presentationTier.presentConfirmationDialog();
+            }
+            else if(cancelSelected) {
                 presentationTier.presentMenuView();
             } else {
                 this.editing = false;
@@ -178,8 +199,15 @@ class PresentationTier {
             if(editing) {
                 view.presentChoices(heatingTime.increment().asSecondsString());
             } else {
-                cancelSelected = true;
-                view.highlightCancel();
+
+                if(saveSelected) {
+                    cancelSelected = true;
+                    saveSelected = false;
+                    view.highlightCancel();
+                } else {
+                    saveSelected = true;
+                    view.highlightSave();
+                }
             }
         }
     }
