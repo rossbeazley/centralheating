@@ -30,25 +30,6 @@ public class SelectingHeatingBoost {
     }
 
 
-    @Test
-    public void
-    displaysConfigurationDialog() throws Exception {
-
-
-        Model model = new FakeModel(HeatingBoostOption.createHeatingBoostOption("Heaating Boost"));
-        CapturingViewFramework capturingViewFramework = new CapturingViewFramework();
-
-        PresentationTier presentationTier = imInTheMenuview(capturingViewFramework, model);
-
-        presentationTier.buttonPress();
-
-        FakeMenuView fakeMenuView = capturingViewFramework.lastCapturedScreenFake();
-
-        assertThat(capturingViewFramework.lastCapturedScreenClass(),is(equalTo(ConfigurationDialogView.class)));
-    }
-
-
-
     private static PresentationTier imInTheMenuview(CapturingViewFramework capturingViewFramework, Model model) {
         PresentationTier presentationTier = new PresentationTier(capturingViewFramework, model);
         presentationTier.buttonPress();

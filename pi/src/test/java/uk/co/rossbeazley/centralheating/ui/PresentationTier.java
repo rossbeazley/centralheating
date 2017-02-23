@@ -1,5 +1,6 @@
 package uk.co.rossbeazley.centralheating.ui;
 
+import jdk.nashorn.internal.runtime.options.Options;
 import uk.co.rossbeazley.centralheating.core.FakeModel;
 import uk.co.rossbeazley.centralheating.core.Model;
 import uk.co.rossbeazley.centralheating.core.Option;
@@ -34,8 +35,11 @@ class PresentationTier {
         topViewController = new ScheduleController(this);
     }
 
-    private void presentConfigurationDialog() {
-        this.viewFramework.create(ConfigurationDialogView.class);
+    private void presentConfigurationDialog(HeatingTimeRange heatingTimeRange, SelectingHeatingMode.HeatingTime heatingTime) {
+        ConfigurationDialogView view = this.viewFramework.create(ConfigurationDialogView.class);
+        if (heatingTime != null) {
+            view.presentChoices(heatingTime.asSecondsString());
+        }
     }
 
     private void presentMenuView() {
@@ -89,9 +93,10 @@ class PresentationTier {
                     }
 
                     @Override
-                    public void NOTOK() {
-                        presentationTier.presentConfigurationDialog();
+                    public void RANGE(HeatingTimeRange heatingTimeRange, SelectingHeatingMode.HeatingTime heatingTime) {
+                        presentationTier.presentConfigurationDialog( heatingTimeRange,  heatingTime);
                     }
+
                 });
 
             }

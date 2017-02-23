@@ -5,9 +5,11 @@ import org.junit.Ignore;
 import org.junit.Test;
 import uk.co.rossbeazley.centralheating.core.FakeModel;
 import uk.co.rossbeazley.centralheating.core.FakeOption;
-import uk.co.rossbeazley.centralheating.core.Model;
+
+import java.util.concurrent.TimeUnit;
 
 import static org.hamcrest.CoreMatchers.isA;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsCollectionContaining.hasItems;
 import static org.junit.Assert.assertThat;
@@ -20,13 +22,17 @@ public class SelectingHeatingMode {
     private CapturingViewFramework capturingViewFramework;
     private FakeModel model;
     private String heatingModeTitle;
+    private HeatingTime defaultHeatingTimeValue;
 
     @Before
     public void initialiseHeatingSubSystem() throws Exception {
         heatingModeTitle = "Heating Mode";
+        defaultHeatingTimeValue = HeatingTime.createFromTimeUnit(2, TimeUnit.SECONDS);
+        HeatingTimeRange heatingTimeRange = new HeatingTimeRange(HeatingTime.createFromTimeUnit(1, TimeUnit.SECONDS), HeatingTime.createFromTimeUnit(3, TimeUnit.SECONDS));
+
         model = new TestHexagonBuilder()
-                .withHeatingSubsystemTitled("On", "Off", "External Timer Clock", "Boost")
-                .withHeatingBoostSubsystemMinutesRange(1, 60)
+                .withHeatingSubsystemSingleOptionsTitled("On", "Off", "External Timer Clock")
+                .withHeatingBoostSubsystemMinutesRange("Boost", heatingTimeRange, defaultHeatingTimeValue)
                 .build();
     }
 
@@ -42,20 +48,7 @@ public class SelectingHeatingMode {
         assertThat(fakeMenuView.optionsDisplayed, hasItems("On","Off","External Timer Clock", "Boost"));
     }
 
-    @Test
-    public void
-    selectingBoostDisplaysConfigDialog() throws Exception {
-        capturingViewFramework = new CapturingViewFramework();
-        PresentationTier presentationTier = UIContext.imInTheMenuview(capturingViewFramework, model);
 
-        presentationTier.clockWise();
-        presentationTier.clockWise();
-        presentationTier.clockWise();
-        presentationTier.buttonPress();
-
-        FakeConfigurationDialogView fakeConfigurationDialogView = capturingViewFramework.lastCapturedScreenFakeIfIsClass(ConfigurationDialogView.class);
-        assertThat(fakeConfigurationDialogView, isA(FakeConfigurationDialogView.class));
-    }
 
     @Test
     public void
@@ -71,11 +64,46 @@ public class SelectingHeatingMode {
         assertThat(fakeConfigurationDialogView, isA(FakeConfirmationDialogView.class));
     }
 
+    @Test
+    public void
+    selectingBoostDisplaysConfigDialog() throws Exception {
+        capturingViewFramework = new CapturingViewFramework();
+        PresentationTier presentationTier = UIContext.imInTheMenuview(capturingViewFramework, model);
+
+        presentationTier.clockWise();
+        presentationTier.clockWise();
+        presentationTier.clockWise();
+        presentationTier.buttonPress();
+
+        FakeConfigurationDialogView fakeConfigurationDialogView = capturingViewFramework.lastCapturedScreenFakeIfIsClass(ConfigurationDialogView.class);
+        assertThat(fakeConfigurationDialogView, isA(FakeConfigurationDialogView.class));
+        assertThat(model.lastOptionConfigured().name(),is("Boost"));
+        assertThat(model.lastOptionConfigured().defaultValue(),is(notNullValue()));
+    }
+
 
     @Test
     public void
     showsBoostOptions() throws Exception {
 
+        capturingViewFramework = new CapturingViewFramework();
+        PresentationTier presentationTier = UIContext.imInTheMenuview(capturingViewFramework, model);
+        imShowingTheBoostOptions(presentationTier);
+
+        FakeConfigurationDialogView fakeConfigurationDialogView = capturingViewFramework.lastCapturedScreenFakeIfIsClass(ConfigurationDialogView.class);
+
+        assertThat(fakeConfigurationDialogView,is(notNullValue()));
+        String valuePresented = fakeConfigurationDialogView.choices.get(0);
+        String theExpectedDefault = this.defaultHeatingTimeValue.asSecondsString();
+
+        assertThat(valuePresented,is(theExpectedDefault));
+    }
+
+    public void imShowingTheBoostOptions(PresentationTier presentationTier) {
+        presentationTier.clockWise();
+        presentationTier.clockWise();
+        presentationTier.clockWise();
+        presentationTier.buttonPress();
     }
 
 
@@ -84,7 +112,7 @@ public class SelectingHeatingMode {
     confirmationDialogCloses() throws Exception {
         capturingViewFramework = new CapturingViewFramework();
         PresentationTier presentationTier = UIContext.imInTheMenuview(capturingViewFramework, model);
-        thenImInTheConfirmationDialogu(presentationTier);
+        thenImInTheConfirmationDialog(presentationTier);
 
         presentationTier.buttonPress(); // <- is a close operation really
 
@@ -93,8 +121,29 @@ public class SelectingHeatingMode {
 
     }
 
-    public void thenImInTheConfirmationDialogu(PresentationTier presentationTier) {
+    public void thenImInTheConfirmationDialog(PresentationTier presentationTier) {
         presentationTier.clockWise();
         presentationTier.buttonPress();
+    }
+
+    public static class HeatingTime {
+        private long millis;
+
+        public HeatingTime(long millis) {
+
+            this.millis = millis;
+        }
+
+        public static HeatingTime createFromTimeUnit(int value, TimeUnit unit) {
+            return new HeatingTime(unit.toMillis(value));
+        }
+
+        public boolean equals(Object other) {
+            return ((HeatingTime)other).millis == millis;
+        }
+
+        public String asSecondsString() {
+            return String.valueOf(TimeUnit.MILLISECONDS.toSeconds(millis));
+        }
     }
 }

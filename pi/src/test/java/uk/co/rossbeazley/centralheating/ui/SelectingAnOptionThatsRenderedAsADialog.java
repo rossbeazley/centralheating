@@ -12,21 +12,19 @@ import static org.junit.Assert.assertThat;
 /**
  * Created by beazlr02 on 31/01/17.
  */
-public class SelectingAnOptionThatsRenderedAsADialogu {
+public class SelectingAnOptionThatsRenderedAsADialog {
 
     @Test
     public void
     firstOptionIsSelectedByDefault() throws Exception {
 
 
-        Model model = new TestHexagonBuilder().withGenericConfigOptions("Option1").build();
+        Model model = new TestHexagonBuilder().withGenericMultiConfigOptions("Option1").build();
         CapturingViewFramework capturingViewFramework = new CapturingViewFramework();
 
         PresentationTier presentationTier = imInTheMenuview(capturingViewFramework, model);
 
         presentationTier.buttonPress();
-
-        FakeMenuView fakeMenuView = capturingViewFramework.lastCapturedScreenFake();
 
         assertThat(capturingViewFramework.lastCapturedScreenClass(),is(equalTo(ConfigurationDialogView.class)));
     }
