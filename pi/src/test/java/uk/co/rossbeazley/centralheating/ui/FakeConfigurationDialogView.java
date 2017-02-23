@@ -7,8 +7,9 @@ public class FakeConfigurationDialogView implements ConfigurationDialogView {
 
     public static final Object NONE = "none";
     public static final Object CHOICES = "choices";
+    public static final Object CANCEL = "cancel";
     public List<String> choices;
-    private Object highlightedViewWidget;
+    private Object highlightedViewWidget = NONE;
 
     @Override
     public void presentChoices(String... choices) {
@@ -18,6 +19,11 @@ public class FakeConfigurationDialogView implements ConfigurationDialogView {
     @Override
     public void highlightOptions() {
         this.highlightedViewWidget = CHOICES;
+    }
+
+    @Override
+    public void highlightCancel() {
+        this.highlightedViewWidget = CANCEL;
     }
 
     public Object highlightedViewWidget() {

@@ -1,6 +1,5 @@
 package uk.co.rossbeazley.centralheating.ui;
 
-import jdk.nashorn.internal.runtime.options.Options;
 import uk.co.rossbeazley.centralheating.core.FakeModel;
 import uk.co.rossbeazley.centralheating.core.Model;
 import uk.co.rossbeazley.centralheating.core.Option;
@@ -37,26 +36,7 @@ class PresentationTier {
 
     private void presentConfigurationDialog(HeatingTimeRange heatingTimeRange, SelectingHeatingMode.HeatingTime heatingTime) {
         ConfigurationDialogView view = this.viewFramework.create(ConfigurationDialogView.class);
-        topViewController = new ViewController() {
-
-            {
-                if (heatingTime != null) {
-                    view.presentChoices(heatingTime.asSecondsString());
-                    view.highlightOptions();
-                }
-            }
-
-
-            @Override
-            public void buttonPress() {
-
-            }
-
-            @Override
-            public void buttonClockwise() {
-                view.presentChoices(heatingTime.increment().asSecondsString());
-            }
-        };
+        topViewController = new ConfigurationDialogViewController(this, heatingTime, view);
 
     }
 
@@ -165,4 +145,42 @@ class PresentationTier {
         }
     }
 
+    private static class ConfigurationDialogViewController implements ViewController {
+
+
+        private PresentationTier presentationTier;
+        private final SelectingHeatingMode.HeatingTime heatingTime;
+        private final ConfigurationDialogView view;
+        private boolean editing = true;
+        private boolean cancelSelected = false;
+
+        public ConfigurationDialogViewController(PresentationTier presentationTier, SelectingHeatingMode.HeatingTime heatingTime, ConfigurationDialogView view) {
+            this.presentationTier = presentationTier;
+            this.heatingTime = heatingTime;
+            this.view = view;
+            if (heatingTime != null) {
+                view.presentChoices(heatingTime.asSecondsString());
+                view.highlightOptions();
+            }
+        }
+
+        @Override
+        public void buttonPress() {
+            if(cancelSelected) {
+                presentationTier.presentMenuView();
+            } else {
+                this.editing = false;
+            }
+        }
+
+        @Override
+        public void buttonClockwise() {
+            if(editing) {
+                view.presentChoices(heatingTime.increment().asSecondsString());
+            } else {
+                cancelSelected = true;
+                view.highlightCancel();
+            }
+        }
+    }
 }

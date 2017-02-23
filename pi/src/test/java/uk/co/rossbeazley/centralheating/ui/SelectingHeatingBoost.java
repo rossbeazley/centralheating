@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import uk.co.rossbeazley.centralheating.core.FakeModel;
+import uk.co.rossbeazley.centralheating.core.FakeOption;
 
 import java.util.concurrent.TimeUnit;
 
@@ -59,6 +60,23 @@ public class SelectingHeatingBoost {
 
     @Test
     public void
+    cancellingTheBoostAmount() {
+
+        presentationTier.buttonPress();
+        presentationTier.clockWise();
+        presentationTier.clockWise();
+
+
+        FakeConfigurationDialogView configurationDialogView = capturingViewFramework.lastCapturedScreenFakeIfIsClass(ConfigurationDialogView.class);
+        assertThat(configurationDialogView.highlightedViewWidget(),is(FakeConfigurationDialogView.CANCEL));
+
+        presentationTier.buttonPress();
+        assertThat(capturingViewFramework.lastCapturedScreenClass(), is(equalTo(MenuView.class)));
+    }
+
+
+    @Test
+    public void
     increaseBoostAmount() {
 
         presentationTier.clockWise();
@@ -69,23 +87,19 @@ public class SelectingHeatingBoost {
         assertThat(valuePresented,is(biggerValue));
     }
 
-    @Test  @Ignore("WIP")
+    @Test @Ignore("Too hard, do cancel first")
     public void
     acceptingTheBoostAmount() {
-
-    }
-
-    @Test @Ignore("WIP")
-    public void
-    cancellingTheBoostAmount() {
-
         presentationTier.buttonPress();
         presentationTier.clockWise();
 
-
+        FakeOption expectedBoostTime = new FakeOption("expectedBoostTime",false);
+        assertThat(model.lastOptionConfigured(),is(expectedBoostTime));
         // close will return to the previous screen
-        assertThat(capturingViewFramework.lastCapturedScreenClass(), is(equalTo(MenuView.class)));
+        FakeConfigurationDialogView configurationDialogView = capturingViewFramework.lastCapturedScreenFakeIfIsClass(ConfigurationDialogView.class);
+        //assertThat(capturingViewFramework.lastCapturedScreenClass(), is(equalTo(ConfirmationDialogView.class)));
     }
+
 
     @Test  @Ignore("WIP")
     public void

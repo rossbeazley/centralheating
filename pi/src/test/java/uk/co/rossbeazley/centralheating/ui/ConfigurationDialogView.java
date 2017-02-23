@@ -4,4 +4,6 @@ public interface ConfigurationDialogView {
     void presentChoices(String... choices);
 
     void highlightOptions();
+
+    void highlightCancel();
 }
