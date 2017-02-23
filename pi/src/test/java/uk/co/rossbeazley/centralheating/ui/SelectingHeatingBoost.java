@@ -1,6 +1,8 @@
 package uk.co.rossbeazley.centralheating.ui;
 
+import org.hamcrest.CoreMatchers;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import uk.co.rossbeazley.centralheating.core.FakeModel;
 
@@ -40,7 +42,7 @@ public class SelectingHeatingBoost {
 
     @Test
     public void
-    showsBoostOptions() throws Exception { //TODO remove exception from junit method template
+    showsSelectedBoostOptions() throws Exception { //TODO remove exception from junit method template
 
         FakeConfigurationDialogView fakeConfigurationDialogView = capturingViewFramework.lastCapturedScreenFakeIfIsClass(ConfigurationDialogView.class);
 
@@ -48,20 +50,47 @@ public class SelectingHeatingBoost {
         String valuePresented = fakeConfigurationDialogView.choices.get(0);
         String theExpectedDefault = this.defaultHeatingTimeValue.asSecondsString();
 
+        assertThat(fakeConfigurationDialogView.highlightedViewWidget(),is(FakeConfigurationDialogView.CHOICES));
         assertThat(valuePresented,is(theExpectedDefault));
+
     }
+
 
 
     @Test
     public void
     increaseBoostAmount() {
-        FakeConfigurationDialogView fakeConfigurationDialogView = capturingViewFramework.lastCapturedScreenFakeIfIsClass(ConfigurationDialogView.class);
 
         presentationTier.clockWise();
 
+        FakeConfigurationDialogView fakeConfigurationDialogView = capturingViewFramework.lastCapturedScreenFakeIfIsClass(ConfigurationDialogView.class);
         String valuePresented = fakeConfigurationDialogView.choices.get(0);
         String biggerValue="3";
         assertThat(valuePresented,is(biggerValue));
     }
 
+    @Test  @Ignore("WIP")
+    public void
+    acceptingTheBoostAmount() {
+
+    }
+
+    @Test @Ignore("WIP")
+    public void
+    cancellingTheBoostAmount() {
+
+        presentationTier.buttonPress();
+        presentationTier.clockWise();
+
+
+        // close will return to the previous screen
+        assertThat(capturingViewFramework.lastCapturedScreenClass(), is(equalTo(MenuView.class)));
+    }
+
+    @Test  @Ignore("WIP")
+    public void
+    incrementingTheBostAmountInSteps() throws Exception {
+
+
+    }
 }

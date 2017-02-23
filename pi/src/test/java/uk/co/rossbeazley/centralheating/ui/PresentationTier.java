@@ -38,6 +38,15 @@ class PresentationTier {
     private void presentConfigurationDialog(HeatingTimeRange heatingTimeRange, SelectingHeatingMode.HeatingTime heatingTime) {
         ConfigurationDialogView view = this.viewFramework.create(ConfigurationDialogView.class);
         topViewController = new ViewController() {
+
+            {
+                if (heatingTime != null) {
+                    view.presentChoices(heatingTime.asSecondsString());
+                    view.highlightOptions();
+                }
+            }
+
+
             @Override
             public void buttonPress() {
 
@@ -48,9 +57,7 @@ class PresentationTier {
                 view.presentChoices(heatingTime.increment().asSecondsString());
             }
         };
-        if (heatingTime != null) {
-            view.presentChoices(heatingTime.asSecondsString());
-        }
+
     }
 
     private void presentMenuView() {
