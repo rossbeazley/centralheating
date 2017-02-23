@@ -82,31 +82,6 @@ public class SelectingHeatingMode {
     }
 
 
-    @Test
-    public void
-    showsBoostOptions() throws Exception {
-
-        capturingViewFramework = new CapturingViewFramework();
-        PresentationTier presentationTier = UIContext.imInTheMenuview(capturingViewFramework, model);
-        imShowingTheBoostOptions(presentationTier);
-
-        FakeConfigurationDialogView fakeConfigurationDialogView = capturingViewFramework.lastCapturedScreenFakeIfIsClass(ConfigurationDialogView.class);
-
-        assertThat(fakeConfigurationDialogView,is(notNullValue()));
-        String valuePresented = fakeConfigurationDialogView.choices.get(0);
-        String theExpectedDefault = this.defaultHeatingTimeValue.asSecondsString();
-
-        assertThat(valuePresented,is(theExpectedDefault));
-    }
-
-    public void imShowingTheBoostOptions(PresentationTier presentationTier) {
-        presentationTier.clockWise();
-        presentationTier.clockWise();
-        presentationTier.clockWise();
-        presentationTier.buttonPress();
-    }
-
-
     @Test @Ignore("Dont do yet")
     public void
     confirmationDialogCloses() throws Exception {
@@ -144,6 +119,10 @@ public class SelectingHeatingMode {
 
         public String asSecondsString() {
             return String.valueOf(TimeUnit.MILLISECONDS.toSeconds(millis));
+        }
+
+        public HeatingTime increment() {
+            return new HeatingTime(millis+1000);
         }
     }
 }
