@@ -134,6 +134,17 @@ class PresentationTier {
 
     private void presentConfirmationDialog() {
         this.viewFramework.create(ConfirmationDialogView.class);
+        this.topViewController = new ViewController() {
+            @Override
+            public void buttonPress() {
+                presentMenuView(); // wonder if this should be a pop VC off the stack, would work for the general use case... if there is a general use case
+            }
+
+            @Override
+            public void buttonClockwise() {
+
+            }
+        };
     }
 
     private static class ScheduleController implements ViewController {

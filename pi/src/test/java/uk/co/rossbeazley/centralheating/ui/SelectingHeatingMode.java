@@ -82,7 +82,7 @@ public class SelectingHeatingMode {
     }
 
 
-    @Test @Ignore("Dont do yet")
+    @Test
     public void
     confirmationDialogCloses() throws Exception {
         capturingViewFramework = new CapturingViewFramework();
