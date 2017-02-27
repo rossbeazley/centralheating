@@ -28,7 +28,7 @@ public class UIContext {
         FakeConfigurationDialogView fakeConfigurationDialogView = capturingViewFramework.lastCapturedScreenFakeIfIsClass(ConfigurationDialogView.class);
         assertPrecondition("Screen displayed", fakeConfigurationDialogView, isA(FakeConfigurationDialogView.class));
         assertPrecondition("Configured Option Name", model.lastOptionConfigured().name(), is("Boost"));
-        assertPrecondition("Default Value", model.lastOptionConfigured().defaultValue(), is(notNullValue()));
+        assertPrecondition("Default Value", model.lastOptionConfigured().heatingRang().heatingTimeValue(), is(notNullValue()));
         return uiPresentationTier;
     }
 

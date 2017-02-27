@@ -27,11 +27,11 @@ public class SelectingHeatingMode {
     public void initialiseHeatingSubSystem() throws Exception {
         heatingModeTitle = "Heating Mode";
         defaultHeatingTimeValue = HeatingTime.createFromTimeUnit(2, TimeUnit.SECONDS);
-        HeatingTimeRange heatingTimeRange = new HeatingTimeRange(HeatingTime.createFromTimeUnit(1, TimeUnit.SECONDS), HeatingTime.createFromTimeUnit(3, TimeUnit.SECONDS), null);
+        HeatingTimeRange heatingTimeRange = new HeatingTimeRange(HeatingTime.createFromTimeUnit(1, TimeUnit.SECONDS), HeatingTime.createFromTimeUnit(3, TimeUnit.SECONDS), null, defaultHeatingTimeValue);
 
         model = new TestHexagonBuilder()
                 .withHeatingSubsystemSingleOptionsTitled("On", "Off", "External Timer Clock")
-                .withHeatingBoostSubsystemMinutesRange("Boost", heatingTimeRange, defaultHeatingTimeValue)
+                .withHeatingBoostSubsystemMinutesRange("Boost", heatingTimeRange)
                 .build();
     }
 
@@ -76,8 +76,9 @@ public class SelectingHeatingMode {
 
         FakeConfigurationDialogView fakeConfigurationDialogView = capturingViewFramework.lastCapturedScreenFakeIfIsClass(ConfigurationDialogView.class);
         assertThat(fakeConfigurationDialogView, isA(FakeConfigurationDialogView.class));
-        assertThat(model.lastOptionConfigured().name(),is("Boost"));
-        assertThat(model.lastOptionConfigured().defaultValue(),is(notNullValue()));
+        FakeOption fakeOption = model.lastOptionConfigured();
+        assertThat(fakeOption.name(),is("Boost"));
+        assertThat(fakeOption.heatingRang().heatingTimeValue(),is(notNullValue()));
     }
 
 

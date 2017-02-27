@@ -9,10 +9,13 @@ import uk.co.rossbeazley.centralheating.core.FakeOption;
 
 import java.util.concurrent.TimeUnit;
 
+import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsCollectionContaining.hasItems;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
+import static uk.co.rossbeazley.centralheating.ui.SelectingHeatingMode.HeatingTime.createFromTimeUnit;
 
 /**
  * Created by beazlr02 on 31/01/17.
@@ -22,7 +25,6 @@ public class SelectingHeatingBoost {
 
     private CapturingViewFramework capturingViewFramework;
     private FakeModel model;
-    private SelectingHeatingMode.HeatingTime defaultHeatingTimeValue;
     private PresentationTier presentationTier;
     private HeatingTimeRange heatingTimeRange;
 
@@ -30,14 +32,14 @@ public class SelectingHeatingBoost {
     public void initialiseHeatingSubSystem() throws Exception {
         FakeOption expectedBoostTime = new FakeOption("expectedBoostTime",false);
 
-        defaultHeatingTimeValue = SelectingHeatingMode.HeatingTime.createFromTimeUnit(2, TimeUnit.SECONDS);
-        heatingTimeRange = new HeatingTimeRange(SelectingHeatingMode.HeatingTime.createFromTimeUnit(1, TimeUnit.SECONDS), SelectingHeatingMode.HeatingTime.createFromTimeUnit(3, TimeUnit.SECONDS), expectedBoostTime);
+        SelectingHeatingMode.HeatingTime defaultHeatingTimeValue = createFromTimeUnit(2, SECONDS);
+        heatingTimeRange = new HeatingTimeRange(createFromTimeUnit(1, SECONDS), createFromTimeUnit(3, SECONDS), expectedBoostTime, defaultHeatingTimeValue);
 
 
 
         model = new TestHexagonBuilder()
                 //.withHeatingSubsystemSingleOptionsTitled("On", "Off", "External Timer Clock")
-                .withHeatingBoostSubsystemMinutesRange("Boost", heatingTimeRange, defaultHeatingTimeValue)
+                .withHeatingBoostSubsystemMinutesRange("Boost", heatingTimeRange)
                 .build();
 
         capturingViewFramework = new CapturingViewFramework();
@@ -54,7 +56,7 @@ public class SelectingHeatingBoost {
 
         assertThat(fakeConfigurationDialogView,is(notNullValue()));
         String valuePresented = fakeConfigurationDialogView.choices.get(0);
-        String theExpectedDefault = this.defaultHeatingTimeValue.asSecondsString();
+        String theExpectedDefault = this.heatingTimeRange.heatingTimeValue().asSecondsString();
 
         assertThat(fakeConfigurationDialogView.highlightedViewWidget(),is(FakeConfigurationDialogView.CHOICES));
         assertThat(valuePresented,is(theExpectedDefault));

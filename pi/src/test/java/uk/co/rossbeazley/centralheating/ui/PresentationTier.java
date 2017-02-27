@@ -151,7 +151,6 @@ class PresentationTier {
 
         private PresentationTier presentationTier;
         private Model model;
-        private final SelectingHeatingMode.HeatingTime heatingTime;
         private HeatingTimeRange heatingTimeRange;
         private final ConfigurationDialogView view;
         private boolean editing = true;
@@ -161,11 +160,10 @@ class PresentationTier {
         public ConfigurationDialogViewController(PresentationTier presentationTier, Model model, SelectingHeatingMode.HeatingTime heatingTime, HeatingTimeRange heatingTimeRange, ConfigurationDialogView view) {
             this.presentationTier = presentationTier;
             this.model = model;
-            this.heatingTime = heatingTime;
             this.heatingTimeRange = heatingTimeRange;
             this.view = view;
-            if (heatingTime != null) {
-                view.presentChoices(heatingTime.asSecondsString());
+            if (heatingTimeRange != null) {
+                view.presentChoices(heatingTimeRange.heatingTimeValue().asSecondsString());
                 view.highlightOptions();
             }
         }
@@ -197,7 +195,7 @@ class PresentationTier {
         @Override
         public void buttonClockwise() {
             if(editing) {
-                view.presentChoices(heatingTime.increment().asSecondsString());
+                view.presentChoices(heatingTimeRange.heatingTimeValue().increment().asSecondsString());
             } else {
 
                 if(saveSelected) {

@@ -5,9 +5,12 @@ import uk.co.rossbeazley.centralheating.core.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static uk.co.rossbeazley.centralheating.ui.SelectingHeatingMode.HeatingTime.createFromTimeUnit;
 
 public class TestHexagonBuilder {
 
@@ -51,7 +54,7 @@ public class TestHexagonBuilder {
         return this;
     }
 
-    public TestHexagonBuilder withHeatingBoostSubsystemMinutesRange(String boostName, HeatingTimeRange heatingTimeRange, SelectingHeatingMode.HeatingTime defaultValue) {
+    public TestHexagonBuilder withHeatingBoostSubsystemMinutesRange(String boostName, HeatingTimeRange heatingTimeRange) {
         this.heatingTimeRange = heatingTimeRange;
         this.defaultValue = defaultValue;
         this.heatingBoostTitle = boostName;
@@ -63,7 +66,9 @@ public class TestHexagonBuilder {
     }
 
     public TestHexagonBuilder withGenericMultiConfigOptions(String option1) {
-        addOptions(new FakeOption(option1,true));
+        FakeOption fakeOption = new FakeOption(option1, true);
+        fakeOption.addHeatingTimeRange(new HeatingTimeRange(createFromTimeUnit(1, SECONDS), createFromTimeUnit(3,SECONDS),null,createFromTimeUnit(2,SECONDS)));
+        addOptions(fakeOption);
         return this;
     }
 
