@@ -5,16 +5,23 @@ import java.util.Arrays;
 import java.util.List;
 
 public class FakeModel implements Model {
+    public void whenConfiguring(ConfigureAction configureAction) {
+        this.configureAction = configureAction;
+    }
+
+    private ConfigureAction configureAction;
     private List<FakeOption> options;
-    private FakeOption lastOptionConfigured;
-    private Option lastUnknownOptionType;
+    public FakeOption lastOptionConfigured;
+    public Option lastUnknownOptionType;
 
     public FakeModel(List<FakeOption> options) {
         this.options = options;
+        configureAction = new DefaultConfigureAction();
     }
 
     public FakeModel(FakeOption... options) {
         this.options = Arrays.asList(options);
+        configureAction = new DefaultConfigureAction();
     }
 
 
@@ -27,20 +34,7 @@ public class FakeModel implements Model {
 
     @Override
     public void configure(Option option, Callback callback) {
-        if(option instanceof FakeOption) {
-            this.lastUnknownOptionType = null;
-            this.lastOptionConfigured = (FakeOption) option;
-            if (lastOptionConfigured.hasSubOptions()) {
-                callback.RANGE(lastOptionConfigured.heatingRang(), lastOptionConfigured.defaultValue());
-                return;
-            }
-        } else {
-            this.lastUnknownOptionType = option;
-            this.lastOptionConfigured = null;
-        }
-
-       callback.OK();
-
+        configureAction.configure(option, callback, this);
     }
 
 
@@ -54,5 +48,24 @@ public class FakeModel implements Model {
 
     public Option getLastUnknownOptionType() {
         return lastUnknownOptionType;
+    }
+
+    public static class DefaultConfigureAction implements ConfigureAction {
+
+        public DefaultConfigureAction() {
+        }
+
+        @Override
+        public void configure(Option option, Callback callback, FakeModel fakeModel) {
+
+            fakeModel.lastUnknownOptionType = null;
+            fakeModel.lastOptionConfigured = (FakeOption) option;
+            if (fakeModel.lastOptionConfigured.hasSubOptions()) {
+                callback.RANGE(fakeModel.lastOptionConfigured.heatingRang(), fakeModel.lastOptionConfigured.defaultValue());
+                return;
+            }
+
+            callback.OK();
+        }
     }
 }

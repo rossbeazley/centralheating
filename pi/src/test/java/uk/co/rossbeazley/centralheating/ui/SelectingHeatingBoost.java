@@ -1,13 +1,9 @@
 package uk.co.rossbeazley.centralheating.ui;
 
-import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import uk.co.rossbeazley.centralheating.core.FakeModel;
-import uk.co.rossbeazley.centralheating.core.FakeOption;
-
-import java.util.concurrent.TimeUnit;
+import uk.co.rossbeazley.centralheating.core.*;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.hamcrest.CoreMatchers.*;
@@ -130,6 +126,13 @@ public class SelectingHeatingBoost {
 
         // select ok
         model.lastOptionConfiguredClear();
+        model.whenConfiguring(new ConfigureAction() {
+            @Override
+            public void configure(Option option, Model.Callback callback, FakeModel fakeModel) {
+                fakeModel.lastUnknownOptionType = option;
+                callback.OK();
+            }
+        });
         presentationTier.buttonPress();
 
         assertThat(model.getLastUnknownOptionType(), is(not(nullValue())));
