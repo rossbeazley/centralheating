@@ -35,7 +35,7 @@ public class UIContext {
         Option expectedOption = new FakeOption("Boost",true)
                 .addHeatingTimeRange(new HeatingTimeRange(SelectingHeatingMode.HeatingTime.createFromTimeUnit(1, TimeUnit.SECONDS), SelectingHeatingMode.HeatingTime.createFromTimeUnit(3, TimeUnit.SECONDS), null, SelectingHeatingMode.HeatingTime.createFromTimeUnit(2, TimeUnit.SECONDS)));
 
-        assertPrecondition("Configured Boost Option ", model.getLastUnknownOptionType(), is(expectedOption));
+        assertPrecondition("Configured Boost Option ", model.lastConfiguredOption(), is(expectedOption));
 
         return uiPresentationTier;
     }

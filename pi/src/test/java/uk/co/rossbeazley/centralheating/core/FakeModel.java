@@ -40,7 +40,7 @@ public class FakeModel implements Model {
 
     }
 
-    public Option getLastUnknownOptionType() {
+    public Option lastConfiguredOption() {
         return lastUnknownOptionType;
     }
 

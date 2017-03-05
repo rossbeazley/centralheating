@@ -110,8 +110,7 @@ public class SelectingHeatingBoost {
         });
         presentationTier.buttonPress();
 
-        assertThat(model.getLastUnknownOptionType(), is(not(nullValue())));
-        FakeConfigurationDialogView configurationDialogView = capturingViewFramework.lastCapturedScreenFakeIfIsClass(ConfigurationDialogView.class);
+        assertThat(model.lastConfiguredOption(),is(createFromTimeUnit(2, SECONDS)));
         assertThat(capturingViewFramework.lastCapturedScreenClass(), is(equalTo(ConfirmationDialogView.class)));
 
     }
@@ -141,9 +140,8 @@ public class SelectingHeatingBoost {
         });
         presentationTier.buttonPress();
 
-        assertThat(model.getLastUnknownOptionType(), is(not(nullValue())));
         SelectingHeatingMode.HeatingTime increasedByOne = createFromTimeUnit(3,SECONDS);
-        assertThat(model.getLastUnknownOptionType(),is(increasedByOne));
+        assertThat(model.lastConfiguredOption(),is(increasedByOne));
 
     }
 
