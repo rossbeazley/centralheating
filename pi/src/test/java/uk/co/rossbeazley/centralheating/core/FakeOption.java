@@ -33,9 +33,10 @@ public class FakeOption extends Option {
         return null;
     }
 
-    public void addHeatingTimeRange(HeatingTimeRange heatingTimeRange) {
+    public FakeOption addHeatingTimeRange(HeatingTimeRange heatingTimeRange) {
 
         this.heatingTimeRange = heatingTimeRange;
+        return this;
     }
 
     public HeatingTimeRange heatingRang() {

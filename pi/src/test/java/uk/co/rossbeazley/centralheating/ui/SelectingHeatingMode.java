@@ -59,7 +59,7 @@ public class SelectingHeatingMode {
         presentationTier.clockWise();
         presentationTier.buttonPress();
 
-        assertThat(model.lastOptionConfigured(), is(new FakeOption("Off",false)));
+        assertThat(model.getLastUnknownOptionType(), is(new FakeOption("Off",false)));
         FakeConfirmationDialogView fakeConfigurationDialogView = capturingViewFramework.lastCapturedScreenFakeIfIsClass(ConfirmationDialogView.class);
         assertThat(fakeConfigurationDialogView, isA(FakeConfirmationDialogView.class));
     }
@@ -77,9 +77,11 @@ public class SelectingHeatingMode {
 
         FakeConfigurationDialogView fakeConfigurationDialogView = capturingViewFramework.lastCapturedScreenFakeIfIsClass(ConfigurationDialogView.class);
         assertThat(fakeConfigurationDialogView, isA(FakeConfigurationDialogView.class));
-        FakeOption fakeOption = model.lastOptionConfigured();
-        assertThat(fakeOption.name(),is("Boost"));
-        assertThat(fakeOption.heatingRang().heatingTimeValue(),is(notNullValue()));
+        Option fakeOption = model.getLastUnknownOptionType();
+
+        Option expectedOption = new FakeOption("Boost",true)
+                .addHeatingTimeRange(new HeatingTimeRange(HeatingTime.createFromTimeUnit(1, TimeUnit.SECONDS), HeatingTime.createFromTimeUnit(3, TimeUnit.SECONDS), null, defaultHeatingTimeValue));
+        assertThat(fakeOption, is(expectedOption));
     }
 
 

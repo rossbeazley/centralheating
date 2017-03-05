@@ -101,10 +101,16 @@ public class SelectingHeatingBoost {
 
 
         model.lastOptionConfiguredClear();
-
+        model.whenConfiguring(new ConfigureAction() {
+            @Override
+            public void configure(Option option, Model.Callback callback, FakeModel fakeModel) {
+                fakeModel.lastUnknownOptionType = option;
+                callback.OK();
+            }
+        });
         presentationTier.buttonPress();
 
-        assertThat(model.lastOptionConfigured(), is(not(nullValue())));
+        assertThat(model.getLastUnknownOptionType(), is(not(nullValue())));
         FakeConfigurationDialogView configurationDialogView = capturingViewFramework.lastCapturedScreenFakeIfIsClass(ConfigurationDialogView.class);
         assertThat(capturingViewFramework.lastCapturedScreenClass(), is(equalTo(ConfirmationDialogView.class)));
 

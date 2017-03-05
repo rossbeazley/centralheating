@@ -11,17 +11,16 @@ public class FakeModel implements Model {
 
     private ConfigureAction configureAction;
     private List<FakeOption> options;
-    public FakeOption lastOptionConfigured;
     public Option lastUnknownOptionType;
 
     public FakeModel(List<FakeOption> options) {
         this.options = options;
-        configureAction = new DefaultConfigureAction();
+        configureAction = new DefaultFakeOptionConfigureAction();
     }
 
     public FakeModel(FakeOption... options) {
         this.options = Arrays.asList(options);
-        configureAction = new DefaultConfigureAction();
+        configureAction = new DefaultFakeOptionConfigureAction();
     }
 
 
@@ -37,35 +36,29 @@ public class FakeModel implements Model {
         configureAction.configure(option, callback, this);
     }
 
-
-    public FakeOption lastOptionConfigured() {
-        return lastOptionConfigured;
-    }
-
     public void lastOptionConfiguredClear() {
-        lastOptionConfigured = null;
+
     }
 
     public Option getLastUnknownOptionType() {
         return lastUnknownOptionType;
     }
 
-    public static class DefaultConfigureAction implements ConfigureAction {
+    public static class DefaultFakeOptionConfigureAction implements ConfigureAction {
 
-        public DefaultConfigureAction() {
+        public DefaultFakeOptionConfigureAction() {
         }
 
         @Override
         public void configure(Option option, Callback callback, FakeModel fakeModel) {
 
-            fakeModel.lastUnknownOptionType = null;
-            fakeModel.lastOptionConfigured = (FakeOption) option;
-            if (fakeModel.lastOptionConfigured.hasSubOptions()) {
-                callback.RANGE(fakeModel.lastOptionConfigured.heatingRang(), fakeModel.lastOptionConfigured.defaultValue());
-                return;
+            fakeModel.lastUnknownOptionType = option;
+            FakeOption fakeOption = (FakeOption) option;
+            if (fakeOption.hasSubOptions()) {
+                callback.RANGE(fakeOption.heatingRang(), fakeOption.defaultValue());
+            } else {
+                callback.OK();
             }
-
-            callback.OK();
         }
     }
 }

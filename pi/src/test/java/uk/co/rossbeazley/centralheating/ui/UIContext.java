@@ -2,7 +2,11 @@ package uk.co.rossbeazley.centralheating.ui;
 
 import org.hamcrest.Matcher;
 import uk.co.rossbeazley.centralheating.core.FakeModel;
+import uk.co.rossbeazley.centralheating.core.FakeOption;
 import uk.co.rossbeazley.centralheating.core.Model;
+import uk.co.rossbeazley.centralheating.core.Option;
+
+import java.util.concurrent.TimeUnit;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.isA;
@@ -27,8 +31,12 @@ public class UIContext {
 
         FakeConfigurationDialogView fakeConfigurationDialogView = capturingViewFramework.lastCapturedScreenFakeIfIsClass(ConfigurationDialogView.class);
         assertPrecondition("Screen displayed", fakeConfigurationDialogView, isA(FakeConfigurationDialogView.class));
-        assertPrecondition("Configured Option Name", model.lastOptionConfigured().name(), is("Boost"));
-        assertPrecondition("Default Value", model.lastOptionConfigured().heatingRang().heatingTimeValue(), is(notNullValue()));
+
+        Option expectedOption = new FakeOption("Boost",true)
+                .addHeatingTimeRange(new HeatingTimeRange(SelectingHeatingMode.HeatingTime.createFromTimeUnit(1, TimeUnit.SECONDS), SelectingHeatingMode.HeatingTime.createFromTimeUnit(3, TimeUnit.SECONDS), null, SelectingHeatingMode.HeatingTime.createFromTimeUnit(2, TimeUnit.SECONDS)));
+
+        assertPrecondition("Configured Boost Option ", model.getLastUnknownOptionType(), is(expectedOption));
+
         return uiPresentationTier;
     }
 
