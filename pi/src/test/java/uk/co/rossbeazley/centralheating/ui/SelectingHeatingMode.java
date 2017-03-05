@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import uk.co.rossbeazley.centralheating.core.FakeModel;
 import uk.co.rossbeazley.centralheating.core.FakeOption;
+import uk.co.rossbeazley.centralheating.core.Option;
 
 import java.util.concurrent.TimeUnit;
 
@@ -101,11 +102,11 @@ public class SelectingHeatingMode {
         presentationTier.buttonPress();
     }
 
-    public static class HeatingTime {
+    public static class HeatingTime extends Option{
         private long millis;
 
         public HeatingTime(long millis) {
-
+            super("HeatingTime");
             this.millis = millis;
         }
 

@@ -96,7 +96,7 @@ public class SelectingHeatingBoost {
 
     @Test
     public void
-    acceptingTheBoostAmount() {
+    acceptingTheDefaultBoostAmount() {
         presentationTier.buttonPress();
         presentationTier.clockWise();
 
@@ -115,9 +115,35 @@ public class SelectingHeatingBoost {
     }
 
 
+    @Test
+    public void
+    acceptingIncreasedBoostAmount() {
+        FakeConfigurationDialogView fakeConfigurationDialogView = capturingViewFramework.lastCapturedScreenFakeIfIsClass(ConfigurationDialogView.class);
+
+        // increase boost by "one" and confirm
+        presentationTier.clockWise();
+        presentationTier.buttonPress();
+
+        //move to save (and check)
+        presentationTier.clockWise();
+        assertThat(fakeConfigurationDialogView.highlightedViewWidget(),is(FakeConfigurationDialogView.SAVE));
+
+        // select ok
+        model.lastOptionConfiguredClear();
+        presentationTier.buttonPress();
+
+        assertThat(model.getLastUnknownOptionType(), is(not(nullValue())));
+        SelectingHeatingMode.HeatingTime increasedByOne = createFromTimeUnit(3,SECONDS);
+        assertThat(model.getLastUnknownOptionType(),is(increasedByOne));
+
+    }
+
+
+
+
     @Test  @Ignore("WIP")
     public void
-    incrementingTheBostAmountInSteps() throws Exception {
+    incrementingTheBostAmountInStepsAsDefinedByTheModel() throws Exception {
 
 
     }

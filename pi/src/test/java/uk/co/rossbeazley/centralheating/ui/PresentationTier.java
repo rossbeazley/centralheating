@@ -171,7 +171,7 @@ class PresentationTier {
         @Override
         public void buttonPress() {
             if(saveSelected) {
-                model.configure(heatingTimeRange.currentValue(), new Model.Callback() {
+                model.configure(heatingTimeRange.heatingTimeValue(), new Model.Callback() {
                     @Override
                     public void OK() {
 
@@ -195,7 +195,8 @@ class PresentationTier {
         @Override
         public void buttonClockwise() {
             if(editing) {
-                view.presentChoices(heatingTimeRange.heatingTimeValue().increment().asSecondsString());
+                heatingTimeRange.increment();
+                view.presentChoices(heatingTimeRange.heatingTimeValue().asSecondsString());
             } else {
 
                 if(saveSelected) {

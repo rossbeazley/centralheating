@@ -32,4 +32,9 @@ public class HeatingTimeRange extends Option{
     public SelectingHeatingMode.HeatingTime heatingTimeValue() {
         return defaultHeatingTimeValue;
     }
+
+    public void increment() {
+
+        this.defaultHeatingTimeValue = this.defaultHeatingTimeValue.increment();
+    }
 }

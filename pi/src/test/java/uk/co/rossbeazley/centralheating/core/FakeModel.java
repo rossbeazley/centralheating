@@ -7,6 +7,7 @@ import java.util.List;
 public class FakeModel implements Model {
     private List<FakeOption> options;
     private FakeOption lastOptionConfigured;
+    private Option lastUnknownOptionType;
 
     public FakeModel(List<FakeOption> options) {
         this.options = options;
@@ -26,13 +27,22 @@ public class FakeModel implements Model {
 
     @Override
     public void configure(Option option, Callback callback) {
-        this.lastOptionConfigured = (FakeOption) option;
-        if(lastOptionConfigured.hasSubOptions()) {
-            callback.RANGE(lastOptionConfigured.heatingRang(),lastOptionConfigured.defaultValue());
+        if(option instanceof FakeOption) {
+            this.lastUnknownOptionType = null;
+            this.lastOptionConfigured = (FakeOption) option;
+            if (lastOptionConfigured.hasSubOptions()) {
+                callback.RANGE(lastOptionConfigured.heatingRang(), lastOptionConfigured.defaultValue());
+                return;
+            }
         } else {
-            callback.OK();
+            this.lastUnknownOptionType = option;
+            this.lastOptionConfigured = null;
         }
+
+       callback.OK();
+
     }
+
 
     public FakeOption lastOptionConfigured() {
         return lastOptionConfigured;
@@ -40,5 +50,9 @@ public class FakeModel implements Model {
 
     public void lastOptionConfiguredClear() {
         lastOptionConfigured = null;
+    }
+
+    public Option getLastUnknownOptionType() {
+        return lastUnknownOptionType;
     }
 }
