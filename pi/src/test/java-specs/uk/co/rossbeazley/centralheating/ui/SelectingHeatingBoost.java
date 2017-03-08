@@ -154,4 +154,11 @@ public class SelectingHeatingBoost {
 
 
     }
+
+    @Test @Ignore("WIP")
+    public void
+    cantSelectValueOutwithTheRange() throws Exception {
+
+
+    }
 }

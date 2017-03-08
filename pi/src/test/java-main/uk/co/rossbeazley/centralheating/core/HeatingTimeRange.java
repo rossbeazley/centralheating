@@ -17,19 +17,6 @@ public class HeatingTimeRange extends Option{
         this.defaultHeatingTimeValue = defaultHeatingTimeValue;
     }
 
-    public SelectingHeatingMode.HeatingTime getFrom() {
-        return from;
-    }
-
-    public SelectingHeatingMode.HeatingTime getTo() {
-        return to;
-    }
-
-    //TODO think i can get rid of this
-    public Option currentValue() {
-        return currentOptionValue;
-    }
-
     public SelectingHeatingMode.HeatingTime heatingTimeValue() {
         return defaultHeatingTimeValue;
     }
