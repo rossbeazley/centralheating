@@ -12,6 +12,6 @@ public interface Model {
     public static interface Callback {
         void OK();
 
-        void RANGE(HeatingTimeRange heatingTimeRange, SelectingHeatingMode.HeatingTime heatingTime);
+        void RANGE(HeatingTimeRange heatingTimeRange);
     }
 }

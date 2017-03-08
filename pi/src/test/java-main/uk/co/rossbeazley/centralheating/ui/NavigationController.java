@@ -28,11 +28,11 @@ class NavigationController {
         this.presentationTier.becomeFirstResponder(controller);
     }
 
-    void presentConfigurationDialog(HeatingTimeRange heatingTimeRange, SelectingHeatingMode.HeatingTime heatingTime) {
+    void presentConfigurationDialog(HeatingTimeRange heatingTimeRange) {
 
         ConfigurationDialogView view = viewFramework.create(ConfigurationDialogView.class);
 
-        ViewController controller = createConfigurationDialogViewController(model, heatingTime, heatingTimeRange, view, this);
+        ViewController controller = createConfigurationDialogViewController(model, heatingTimeRange, view, this);
 
         this.presentationTier.becomeFirstResponder(controller);
 

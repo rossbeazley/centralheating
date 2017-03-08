@@ -55,7 +55,7 @@ public class FakeModel implements Model {
             fakeModel.lastUnknownOptionType = option;
             FakeOption fakeOption = (FakeOption) option;
             if (fakeOption.hasSubOptions()) {
-                callback.RANGE(fakeOption.heatingRang(), fakeOption.defaultValue());
+                callback.RANGE(fakeOption.heatingRang());
             } else {
                 callback.OK();
             }

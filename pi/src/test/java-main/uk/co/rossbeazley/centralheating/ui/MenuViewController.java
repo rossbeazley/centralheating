@@ -56,8 +56,8 @@ class MenuViewController implements ViewController {
                 }
 
                 @Override
-                public void RANGE(HeatingTimeRange heatingTimeRange, SelectingHeatingMode.HeatingTime heatingTime) {
-                    navigationController.presentConfigurationDialog(heatingTimeRange, heatingTime);
+                public void RANGE(HeatingTimeRange heatingTimeRange) {
+                    navigationController.presentConfigurationDialog(heatingTimeRange);
                 }
 
             });
