@@ -14,12 +14,12 @@ class PresentationTier {
     private final ViewFramework viewFramework;
     private ViewController topViewController;
     private Model model;
-    NavigationController navigationController;
+    private NavigationController navigationController;
 
     public PresentationTier(ViewFramework viewFramework, Model model) {
         this.viewFramework = viewFramework;
         this.model = model;
-        this.navigationController = new NavigationController(this);
+        this.navigationController = new NavigationController(this, this.model, this.viewFramework);
         navigationController.presentScheduleView();
     }
 
@@ -38,17 +38,19 @@ class PresentationTier {
     static class NavigationController {
 
         private final ViewFramework viewFramework;
+        private final Model model;
         private PresentationTier presentationTier;
 
-        public NavigationController(PresentationTier presentationTier) {
+        public NavigationController(PresentationTier presentationTier, Model model, ViewFramework viewFramework) {
             this.presentationTier = presentationTier;
-            viewFramework = this.presentationTier.viewFramework;
+            this.viewFramework = viewFramework;
+            this.model = model;
         }
 
         void presentScheduleView() {
             ScheduleView view = viewFramework.create(ScheduleView.class);
 
-            ViewController controller = createScheduleViewController(this.presentationTier.navigationController);
+            ViewController controller = createScheduleViewController(this);
 
             this.presentationTier.becomeFirstResponder(controller);
         }
@@ -57,7 +59,7 @@ class PresentationTier {
 
             ConfigurationDialogView view = viewFramework.create(ConfigurationDialogView.class);
 
-            ViewController controller = createConfigurationDialogViewController(this.presentationTier.model, heatingTime, heatingTimeRange, view, this.presentationTier.navigationController);
+            ViewController controller = createConfigurationDialogViewController(model, heatingTime, heatingTimeRange, view, this);
 
             this.presentationTier.becomeFirstResponder(controller);
 
@@ -66,7 +68,7 @@ class PresentationTier {
         void presentMenuView() {
             MenuView view = viewFramework.create(MenuView.class);
 
-            ViewController controller = createMenuViewController(view, this.presentationTier.model, this.presentationTier.navigationController);
+            ViewController controller = createMenuViewController(view, model, this);
 
             this.presentationTier.becomeFirstResponder(controller);
         }
@@ -74,7 +76,7 @@ class PresentationTier {
         void presentConfirmationDialog() {
             ConfirmationDialogView view = viewFramework.create(ConfirmationDialogView.class);
 
-            ViewController controller = createConfirmationDialogViewController(this.presentationTier.navigationController);
+            ViewController controller = createConfirmationDialogViewController(this);
 
             this.presentationTier.becomeFirstResponder(controller);
         }
