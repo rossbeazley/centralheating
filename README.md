@@ -35,3 +35,5 @@ I probably dont want to pass in an option as a configuration "command" but rathe
 
 Next up, lets get some of the model actually working!!
 How about selecting ON
+
+But first, some tidyup
