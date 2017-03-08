@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 class MenuViewController implements ViewController {
-    private final PresentationTier.NavigationController navigationController;
+    private final NavigationController navigationController;
     private MenuView menuView;
     private Model model;
     private int selectedIndex;
@@ -18,7 +18,7 @@ class MenuViewController implements ViewController {
     private List<Option> options;
 
 
-    private MenuViewController(MenuView menuView, Model model, PresentationTier.NavigationController navigationController) {
+    private MenuViewController(MenuView menuView, Model model, NavigationController navigationController) {
 
         this.menuView = menuView;
         this.model = model;
@@ -31,7 +31,7 @@ class MenuViewController implements ViewController {
         this.navigationController = navigationController;
     }
 
-    public static ViewController createMenuViewController(MenuView menuView, Model model, PresentationTier.NavigationController navigationController) {
+    public static ViewController createMenuViewController(MenuView menuView, Model model, NavigationController navigationController) {
         return new MenuViewController(menuView, model, navigationController);
     }
 

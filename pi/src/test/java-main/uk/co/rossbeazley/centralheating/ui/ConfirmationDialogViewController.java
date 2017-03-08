@@ -2,13 +2,13 @@ package uk.co.rossbeazley.centralheating.ui;
 
 class ConfirmationDialogViewController implements ViewController {
 
-    private final PresentationTier.NavigationController navigationController;
+    private final NavigationController navigationController;
 
-    private ConfirmationDialogViewController(PresentationTier.NavigationController navigationController) {
+    private ConfirmationDialogViewController(NavigationController navigationController) {
         this.navigationController = navigationController;
     }
 
-    public static ViewController createConfirmationDialogViewController(PresentationTier.NavigationController navigationController) {
+    public static ViewController createConfirmationDialogViewController(NavigationController navigationController) {
         return new ConfirmationDialogViewController(navigationController);
     }
 

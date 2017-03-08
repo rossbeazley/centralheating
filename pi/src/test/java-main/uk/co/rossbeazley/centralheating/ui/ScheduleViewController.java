@@ -1,13 +1,13 @@
 package uk.co.rossbeazley.centralheating.ui;
 
 class ScheduleViewController implements ViewController {
-    private final PresentationTier.NavigationController navigationController;
+    private final NavigationController navigationController;
 
-    private ScheduleViewController(PresentationTier.NavigationController navigationController) {
+    private ScheduleViewController(NavigationController navigationController) {
         this.navigationController = navigationController;
     }
 
-    public static ScheduleViewController createScheduleViewController(PresentationTier.NavigationController navigationController) {
+    public static ScheduleViewController createScheduleViewController(NavigationController navigationController) {
         return new ScheduleViewController(navigationController);
     }
 

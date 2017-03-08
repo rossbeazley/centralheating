@@ -12,9 +12,9 @@ class ConfigurationDialogViewController implements ViewController {
     private boolean editing = true;
     private boolean cancelSelected = false;
     private boolean saveSelected = false;
-    private PresentationTier.NavigationController navigationController;
+    private NavigationController navigationController;
 
-    private ConfigurationDialogViewController(Model model, SelectingHeatingMode.HeatingTime heatingTime, HeatingTimeRange heatingTimeRange, ConfigurationDialogView view, PresentationTier.NavigationController navigationController) {
+    private ConfigurationDialogViewController(Model model, SelectingHeatingMode.HeatingTime heatingTime, HeatingTimeRange heatingTimeRange, ConfigurationDialogView view, NavigationController navigationController) {
         this.model = model;
         this.heatingTimeRange = heatingTimeRange;
         this.view = view;
@@ -25,7 +25,7 @@ class ConfigurationDialogViewController implements ViewController {
         this.navigationController = navigationController;
     }
 
-    public static ViewController createConfigurationDialogViewController(Model model, SelectingHeatingMode.HeatingTime heatingTime, HeatingTimeRange heatingTimeRange, ConfigurationDialogView view, PresentationTier.NavigationController navigationController) {
+    public static ViewController createConfigurationDialogViewController(Model model, SelectingHeatingMode.HeatingTime heatingTime, HeatingTimeRange heatingTimeRange, ConfigurationDialogView view, NavigationController navigationController) {
         return new ConfigurationDialogViewController(model, heatingTime, heatingTimeRange, view, navigationController);
     }
 
