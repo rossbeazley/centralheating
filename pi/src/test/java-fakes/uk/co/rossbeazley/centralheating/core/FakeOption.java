@@ -37,7 +37,7 @@ public class FakeOption extends Option {
         return this;
     }
 
-    public HeatingTimeRange heatingRang() {
+    public HeatingTimeRange heatingRange() {
         return heatingTimeRange;
     }
 
