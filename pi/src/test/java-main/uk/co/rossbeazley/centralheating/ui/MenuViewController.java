@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 class MenuViewController implements ViewController {
-    private final PresentationTier presentationTier;
+    private final PresentationTier.NavigationController navigationController;
     private MenuView menuView;
     private Model model;
     private int selectedIndex;
@@ -18,9 +18,8 @@ class MenuViewController implements ViewController {
     private List<Option> options;
 
 
-    public MenuViewController(PresentationTier presentationTier, MenuView menuView, Model model) {
+    public MenuViewController(MenuView menuView, Model model, PresentationTier.NavigationController navigationController) {
 
-        this.presentationTier = presentationTier;
         this.menuView = menuView;
         this.model = model;
 
@@ -29,6 +28,7 @@ class MenuViewController implements ViewController {
 
         menuView.presentOptions(optionsAsString);
         menuView.selectOption(selectedIndex);
+        this.navigationController = navigationController;
     }
 
     private String[] buildOptionsViewModel() {
@@ -43,17 +43,17 @@ class MenuViewController implements ViewController {
     @Override
     public void buttonPress() {
         if (selectedIndex == closeIndex) {
-            this.presentationTier.navigationController.presentScheduleView();
+            navigationController.presentScheduleView();
         } else {
             model.configure(options.get(selectedIndex), new FakeModel.Callback() {
                 @Override
                 public void OK() {
-                    presentationTier.navigationController.presentConfirmationDialog();
+                    navigationController.presentConfirmationDialog();
                 }
 
                 @Override
                 public void RANGE(HeatingTimeRange heatingTimeRange, SelectingHeatingMode.HeatingTime heatingTime) {
-                    presentationTier.navigationController.presentConfigurationDialog( heatingTimeRange,  heatingTime);
+                    navigationController.presentConfigurationDialog(heatingTimeRange, heatingTime);
                 }
 
             });

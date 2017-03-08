@@ -53,7 +53,7 @@ class PresentationTier {
 
         void presentMenuView() {
             MenuView menuView = viewFramework.create(MenuView.class);
-            this.presentationTier.becomeFirstResponder(new MenuViewController(this.presentationTier, menuView, this.presentationTier.model));
+            this.presentationTier.becomeFirstResponder(new MenuViewController(menuView, this.presentationTier.model, this.presentationTier.navigationController));
         }
 
         void presentConfirmationDialog() {
