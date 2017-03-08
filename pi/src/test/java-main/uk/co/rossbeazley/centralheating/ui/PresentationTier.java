@@ -58,7 +58,7 @@ class PresentationTier {
 
         void presentConfirmationDialog() {
             viewFramework.create(ConfirmationDialogView.class);
-            this.presentationTier.becomeFirstResponder(new ConfirmationDialogViewController(this.presentationTier));
+            this.presentationTier.becomeFirstResponder(new ConfirmationDialogViewController(this.presentationTier.navigationController));
         }
     }
 }
