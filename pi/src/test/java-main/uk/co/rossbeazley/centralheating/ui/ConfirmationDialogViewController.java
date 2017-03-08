@@ -10,7 +10,7 @@ class ConfirmationDialogViewController implements ViewController {
 
     @Override
     public void buttonPress() {
-        presentationTier.presentMenuView(); // wonder if this should be a pop VC off the stack, would work for the general use case... if there is a general use case
+        presentationTier.navigationController.presentMenuView(); // wonder if this should be a pop VC off the stack, would work for the general use case... if there is a general use case
     }
 
     @Override

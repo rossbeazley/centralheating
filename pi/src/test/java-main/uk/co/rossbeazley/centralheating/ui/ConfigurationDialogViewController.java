@@ -40,10 +40,10 @@ class ConfigurationDialogViewController implements ViewController {
                 }
             });
 
-            presentationTier.presentConfirmationDialog();
+            presentationTier.navigationController.presentConfirmationDialog();
         }
         else if(cancelSelected) {
-            presentationTier.presentMenuView();
+            presentationTier.navigationController.presentMenuView();
         } else {
             this.editing = false;
         }

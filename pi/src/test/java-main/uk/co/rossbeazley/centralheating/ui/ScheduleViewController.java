@@ -9,7 +9,7 @@ class ScheduleViewController implements ViewController {
 
     @Override
     public void buttonPress() {
-        this.presentationTier.presentMenuView();
+        this.presentationTier.navigationController.presentMenuView();
     }
 
     @Override

@@ -43,17 +43,17 @@ class MenuViewController implements ViewController {
     @Override
     public void buttonPress() {
         if (selectedIndex == closeIndex) {
-            this.presentationTier.presentScheduleView();
+            this.presentationTier.navigationController.presentScheduleView();
         } else {
             model.configure(options.get(selectedIndex), new FakeModel.Callback() {
                 @Override
                 public void OK() {
-                    presentationTier.presentConfirmationDialog();
+                    presentationTier.navigationController.presentConfirmationDialog();
                 }
 
                 @Override
                 public void RANGE(HeatingTimeRange heatingTimeRange, SelectingHeatingMode.HeatingTime heatingTime) {
-                    presentationTier.presentConfigurationDialog( heatingTimeRange,  heatingTime);
+                    presentationTier.navigationController.presentConfigurationDialog( heatingTimeRange,  heatingTime);
                 }
 
             });

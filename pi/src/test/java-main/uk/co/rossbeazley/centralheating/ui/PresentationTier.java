@@ -9,11 +9,13 @@ class PresentationTier {
     private final ViewFramework viewFramework;
     private ViewController topViewController;
     private Model model;
+    NavigationController navigationController;
 
     public PresentationTier(ViewFramework viewFramework, Model model) {
         this.viewFramework = viewFramework;
         this.model = model;
-        presentScheduleView();
+        this.navigationController = new NavigationController(this);
+        navigationController.presentScheduleView();
     }
 
     public void buttonPress() {
@@ -21,29 +23,42 @@ class PresentationTier {
     }
 
     public void clockWise() {
-            topViewController.buttonClockwise();
+        topViewController.buttonClockwise();
     }
 
-    void presentScheduleView() {
-        this.viewFramework.create(ScheduleView.class);
-        topViewController = new ScheduleViewController(this);
+    void becomeFirstResponder(ViewController topViewController) {
+        this.topViewController = topViewController;
     }
 
-    void presentConfigurationDialog(HeatingTimeRange heatingTimeRange, SelectingHeatingMode.HeatingTime heatingTime) {
-        ConfigurationDialogView view = this.viewFramework.create(ConfigurationDialogView.class);
-        topViewController = new ConfigurationDialogViewController(this,model, heatingTime, heatingTimeRange,view);
+    static class NavigationController {
 
+        private final ViewFramework viewFramework;
+        private PresentationTier presentationTier;
+
+        public NavigationController(PresentationTier presentationTier) {
+            this.presentationTier = presentationTier;
+            viewFramework = this.presentationTier.viewFramework;
+        }
+
+        void presentScheduleView() {
+            viewFramework.create(ScheduleView.class);
+            this.presentationTier.becomeFirstResponder(new ScheduleViewController(this.presentationTier));
+        }
+
+        void presentConfigurationDialog(HeatingTimeRange heatingTimeRange, SelectingHeatingMode.HeatingTime heatingTime) {
+            ConfigurationDialogView view = viewFramework.create(ConfigurationDialogView.class);
+            this.presentationTier.becomeFirstResponder(new ConfigurationDialogViewController(this.presentationTier, this.presentationTier.model, heatingTime, heatingTimeRange, view));
+
+        }
+
+        void presentMenuView() {
+            MenuView menuView = viewFramework.create(MenuView.class);
+            this.presentationTier.becomeFirstResponder(new MenuViewController(this.presentationTier, menuView, this.presentationTier.model));
+        }
+
+        void presentConfirmationDialog() {
+            viewFramework.create(ConfirmationDialogView.class);
+            this.presentationTier.becomeFirstResponder(new ConfirmationDialogViewController(this.presentationTier));
+        }
     }
-
-    void presentMenuView() {
-        MenuView menuView = this.viewFramework.create(MenuView.class);
-        topViewController = new MenuViewController(this,menuView,model);
-    }
-
-
-    void presentConfirmationDialog() {
-        this.viewFramework.create(ConfirmationDialogView.class);
-        this.topViewController = new ConfirmationDialogViewController(PresentationTier.this);
-    }
-
 }
