@@ -6,16 +6,15 @@ import uk.co.rossbeazley.centralheating.core.Model;
 class ConfigurationDialogViewController implements ViewController {
 
 
-    private PresentationTier presentationTier;
     private Model model;
     private HeatingTimeRange heatingTimeRange;
     private final ConfigurationDialogView view;
     private boolean editing = true;
     private boolean cancelSelected = false;
     private boolean saveSelected = false;
+    private PresentationTier.NavigationController navigationController;
 
-    public ConfigurationDialogViewController(PresentationTier presentationTier, Model model, SelectingHeatingMode.HeatingTime heatingTime, HeatingTimeRange heatingTimeRange, ConfigurationDialogView view) {
-        this.presentationTier = presentationTier;
+    public ConfigurationDialogViewController(Model model, SelectingHeatingMode.HeatingTime heatingTime, HeatingTimeRange heatingTimeRange, ConfigurationDialogView view, PresentationTier.NavigationController navigationController) {
         this.model = model;
         this.heatingTimeRange = heatingTimeRange;
         this.view = view;
@@ -23,6 +22,7 @@ class ConfigurationDialogViewController implements ViewController {
             view.presentChoices(heatingTimeRange.heatingTimeValue().asSecondsString());
             view.highlightOptions();
         }
+        this.navigationController = navigationController;
     }
 
     @Override
@@ -40,10 +40,10 @@ class ConfigurationDialogViewController implements ViewController {
                 }
             });
 
-            presentationTier.navigationController.presentConfirmationDialog();
+            navigationController.presentConfirmationDialog();
         }
         else if(cancelSelected) {
-            presentationTier.navigationController.presentMenuView();
+            navigationController.presentMenuView();
         } else {
             this.editing = false;
         }

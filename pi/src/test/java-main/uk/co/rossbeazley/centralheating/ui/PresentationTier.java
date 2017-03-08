@@ -47,7 +47,7 @@ class PresentationTier {
 
         void presentConfigurationDialog(HeatingTimeRange heatingTimeRange, SelectingHeatingMode.HeatingTime heatingTime) {
             ConfigurationDialogView view = viewFramework.create(ConfigurationDialogView.class);
-            this.presentationTier.becomeFirstResponder(new ConfigurationDialogViewController(this.presentationTier, this.presentationTier.model, heatingTime, heatingTimeRange, view));
+            this.presentationTier.becomeFirstResponder(new ConfigurationDialogViewController(this.presentationTier.model, heatingTime, heatingTimeRange, view, this.presentationTier.navigationController));
 
         }
 
