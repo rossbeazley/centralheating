@@ -42,7 +42,7 @@ class PresentationTier {
 
         void presentScheduleView() {
             viewFramework.create(ScheduleView.class);
-            this.presentationTier.becomeFirstResponder(new ScheduleViewController(this.presentationTier));
+            this.presentationTier.becomeFirstResponder(new ScheduleViewController(this.presentationTier.navigationController));
         }
 
         void presentConfigurationDialog(HeatingTimeRange heatingTimeRange, SelectingHeatingMode.HeatingTime heatingTime) {

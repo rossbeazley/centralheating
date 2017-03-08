@@ -1,15 +1,15 @@
 package uk.co.rossbeazley.centralheating.ui;
 
 class ScheduleViewController implements ViewController {
-    private final PresentationTier presentationTier;
+    private final PresentationTier.NavigationController navigationController;
 
-    public ScheduleViewController(PresentationTier presentationTier) {
-        this.presentationTier = presentationTier;
+    public ScheduleViewController(PresentationTier.NavigationController navigationController) {
+        this.navigationController = navigationController;
     }
 
     @Override
     public void buttonPress() {
-        this.presentationTier.navigationController.presentMenuView();
+        navigationController.presentMenuView();
     }
 
     @Override
