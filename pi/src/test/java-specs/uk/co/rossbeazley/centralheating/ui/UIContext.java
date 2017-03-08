@@ -1,10 +1,7 @@
 package uk.co.rossbeazley.centralheating.ui;
 
 import org.hamcrest.Matcher;
-import uk.co.rossbeazley.centralheating.core.FakeModel;
-import uk.co.rossbeazley.centralheating.core.FakeOption;
-import uk.co.rossbeazley.centralheating.core.Model;
-import uk.co.rossbeazley.centralheating.core.Option;
+import uk.co.rossbeazley.centralheating.core.*;
 
 import java.util.concurrent.TimeUnit;
 

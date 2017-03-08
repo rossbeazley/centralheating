@@ -1,7 +1,5 @@
 package uk.co.rossbeazley.centralheating.core;
 
-import jdk.nashorn.internal.runtime.options.Options;
-import uk.co.rossbeazley.centralheating.ui.HeatingTimeRange;
 import uk.co.rossbeazley.centralheating.ui.SelectingHeatingMode;
 
 import java.util.List;

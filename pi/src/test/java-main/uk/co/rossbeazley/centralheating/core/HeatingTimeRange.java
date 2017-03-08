@@ -1,6 +1,7 @@
-package uk.co.rossbeazley.centralheating.ui;
+package uk.co.rossbeazley.centralheating.core;
 
 import uk.co.rossbeazley.centralheating.core.Option;
+import uk.co.rossbeazley.centralheating.ui.SelectingHeatingMode;
 
 public class HeatingTimeRange extends Option{
     private final SelectingHeatingMode.HeatingTime from;

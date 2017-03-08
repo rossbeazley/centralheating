@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import uk.co.rossbeazley.centralheating.core.FakeModel;
 import uk.co.rossbeazley.centralheating.core.FakeOption;
+import uk.co.rossbeazley.centralheating.core.HeatingTimeRange;
 import uk.co.rossbeazley.centralheating.core.Option;
 
 import java.util.concurrent.TimeUnit;
