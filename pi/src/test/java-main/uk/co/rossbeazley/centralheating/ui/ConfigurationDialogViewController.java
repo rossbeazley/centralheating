@@ -14,7 +14,7 @@ class ConfigurationDialogViewController implements ViewController {
     private boolean saveSelected = false;
     private PresentationTier.NavigationController navigationController;
 
-    public ConfigurationDialogViewController(Model model, SelectingHeatingMode.HeatingTime heatingTime, HeatingTimeRange heatingTimeRange, ConfigurationDialogView view, PresentationTier.NavigationController navigationController) {
+    private ConfigurationDialogViewController(Model model, SelectingHeatingMode.HeatingTime heatingTime, HeatingTimeRange heatingTimeRange, ConfigurationDialogView view, PresentationTier.NavigationController navigationController) {
         this.model = model;
         this.heatingTimeRange = heatingTimeRange;
         this.view = view;
@@ -23,6 +23,10 @@ class ConfigurationDialogViewController implements ViewController {
             view.highlightOptions();
         }
         this.navigationController = navigationController;
+    }
+
+    public static ViewController createConfigurationDialogViewController(Model model, SelectingHeatingMode.HeatingTime heatingTime, HeatingTimeRange heatingTimeRange, ConfigurationDialogView view, PresentationTier.NavigationController navigationController) {
+        return new ConfigurationDialogViewController(model, heatingTime, heatingTimeRange, view, navigationController);
     }
 
     @Override

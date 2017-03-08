@@ -18,7 +18,7 @@ class MenuViewController implements ViewController {
     private List<Option> options;
 
 
-    public MenuViewController(MenuView menuView, Model model, PresentationTier.NavigationController navigationController) {
+    private MenuViewController(MenuView menuView, Model model, PresentationTier.NavigationController navigationController) {
 
         this.menuView = menuView;
         this.model = model;
@@ -29,6 +29,10 @@ class MenuViewController implements ViewController {
         menuView.presentOptions(optionsAsString);
         menuView.selectOption(selectedIndex);
         this.navigationController = navigationController;
+    }
+
+    public static ViewController createMenuViewController(MenuView menuView, Model model, PresentationTier.NavigationController navigationController) {
+        return new MenuViewController(menuView, model, navigationController);
     }
 
     private String[] buildOptionsViewModel() {

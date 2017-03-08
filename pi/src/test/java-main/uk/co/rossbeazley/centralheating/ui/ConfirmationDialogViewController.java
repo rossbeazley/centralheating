@@ -4,8 +4,12 @@ class ConfirmationDialogViewController implements ViewController {
 
     private final PresentationTier.NavigationController navigationController;
 
-    public ConfirmationDialogViewController(PresentationTier.NavigationController navigationController) {
+    private ConfirmationDialogViewController(PresentationTier.NavigationController navigationController) {
         this.navigationController = navigationController;
+    }
+
+    public static ViewController createConfirmationDialogViewController(PresentationTier.NavigationController navigationController) {
+        return new ConfirmationDialogViewController(navigationController);
     }
 
     @Override

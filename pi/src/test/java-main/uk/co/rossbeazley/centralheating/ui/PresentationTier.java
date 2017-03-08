@@ -2,6 +2,11 @@ package uk.co.rossbeazley.centralheating.ui;
 
 import uk.co.rossbeazley.centralheating.core.*;
 
+import static uk.co.rossbeazley.centralheating.ui.ConfigurationDialogViewController.createConfigurationDialogViewController;
+import static uk.co.rossbeazley.centralheating.ui.ConfirmationDialogViewController.createConfirmationDialogViewController;
+import static uk.co.rossbeazley.centralheating.ui.MenuViewController.createMenuViewController;
+import static uk.co.rossbeazley.centralheating.ui.ScheduleViewController.createScheduleViewController;
+
 /**
  * Created by beazlr02 on 23/01/17.
  */
@@ -41,24 +46,37 @@ class PresentationTier {
         }
 
         void presentScheduleView() {
-            viewFramework.create(ScheduleView.class);
-            this.presentationTier.becomeFirstResponder(new ScheduleViewController(this.presentationTier.navigationController));
+            ScheduleView view = viewFramework.create(ScheduleView.class);
+
+            ViewController controller = createScheduleViewController(this.presentationTier.navigationController);
+
+            this.presentationTier.becomeFirstResponder(controller);
         }
 
         void presentConfigurationDialog(HeatingTimeRange heatingTimeRange, SelectingHeatingMode.HeatingTime heatingTime) {
+
             ConfigurationDialogView view = viewFramework.create(ConfigurationDialogView.class);
-            this.presentationTier.becomeFirstResponder(new ConfigurationDialogViewController(this.presentationTier.model, heatingTime, heatingTimeRange, view, this.presentationTier.navigationController));
+
+            ViewController controller = createConfigurationDialogViewController(this.presentationTier.model, heatingTime, heatingTimeRange, view, this.presentationTier.navigationController);
+
+            this.presentationTier.becomeFirstResponder(controller);
 
         }
 
         void presentMenuView() {
-            MenuView menuView = viewFramework.create(MenuView.class);
-            this.presentationTier.becomeFirstResponder(new MenuViewController(menuView, this.presentationTier.model, this.presentationTier.navigationController));
+            MenuView view = viewFramework.create(MenuView.class);
+
+            ViewController controller = createMenuViewController(view, this.presentationTier.model, this.presentationTier.navigationController);
+
+            this.presentationTier.becomeFirstResponder(controller);
         }
 
         void presentConfirmationDialog() {
-            viewFramework.create(ConfirmationDialogView.class);
-            this.presentationTier.becomeFirstResponder(new ConfirmationDialogViewController(this.presentationTier.navigationController));
+            ConfirmationDialogView view = viewFramework.create(ConfirmationDialogView.class);
+
+            ViewController controller = createConfirmationDialogViewController(this.presentationTier.navigationController);
+
+            this.presentationTier.becomeFirstResponder(controller);
         }
     }
 }
