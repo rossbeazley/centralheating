@@ -61,8 +61,8 @@ public class SelectingHeatingMode {
         presentationTier.buttonPress();
 
         assertThat(model.lastConfiguredOption(), is(new FakeOption("Off",false)));
-        FakeConfirmationDialogView fakeConfigurationDialogView = capturingViewFramework.lastCapturedScreenFakeIfIsClass(ConfirmationDialogView.class);
-        assertThat(fakeConfigurationDialogView, isA(FakeConfirmationDialogView.class));
+        FakeSavedDialogView fakeConfigurationDialogView = capturingViewFramework.lastCapturedScreenFakeIfIsClass(SavedDialogView.class);
+        assertThat(fakeConfigurationDialogView, isA(FakeSavedDialogView.class));
     }
 
     @Test

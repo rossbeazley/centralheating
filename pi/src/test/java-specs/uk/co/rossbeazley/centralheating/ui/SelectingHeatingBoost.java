@@ -111,7 +111,7 @@ public class SelectingHeatingBoost {
         presentationTier.buttonPress();
 
         assertThat(model.lastConfiguredOption(),is(createFromTimeUnit(2, SECONDS)));
-        assertThat(capturingViewFramework.lastCapturedScreenClass(), is(equalTo(ConfirmationDialogView.class)));
+        assertThat(capturingViewFramework.lastCapturedScreenClass(), is(equalTo(SavedDialogView.class)));
 
     }
 

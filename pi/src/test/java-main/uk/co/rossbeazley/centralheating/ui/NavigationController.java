@@ -47,7 +47,7 @@ class NavigationController {
     }
 
     void presentConfirmationDialog() {
-        ConfirmationDialogView view = viewFramework.create(ConfirmationDialogView.class);
+        SavedDialogView view = viewFramework.create(SavedDialogView.class);
 
         ViewController controller = createConfirmationDialogViewController(this);
 
