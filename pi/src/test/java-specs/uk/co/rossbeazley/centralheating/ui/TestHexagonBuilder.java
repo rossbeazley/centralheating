@@ -15,14 +15,10 @@ public class TestHexagonBuilder {
 
     private FakeModel model;
     private List<FakeOption> options = new ArrayList<>(10);
-    private HeatingTimeRange heatingTimeRange;
     private SelectingHeatingMode.HeatingTime defaultValue;
-    private String heatingBoostTitle;
 
-    public TestHexagonBuilder withHeatingSubsystemTitled(String on, String off, String s, String boost) {
-        this.heatingBoostTitle = boost;
-        addOptions(HeatingModeOption.createHeatingModeOptions(on, off, s, boost));
-        return this;
+    public static FakeOption[] createHeatingModeFakeOptions(String onName, String offName, String externalTimerName) {
+        return new FakeOption[]{new FakeOption(onName,false),new FakeOption(offName,false),new FakeOption(externalTimerName,false)};
     }
 
     public TestHexagonBuilder withGenericConfigOptions(String... option1) {
@@ -54,11 +50,7 @@ public class TestHexagonBuilder {
     }
 
     public TestHexagonBuilder withHeatingBoostSubsystemMinutesRange(String boostName, HeatingTimeRange heatingTimeRange) {
-        this.heatingTimeRange = heatingTimeRange;
-        this.defaultValue = defaultValue;
-        this.heatingBoostTitle = boostName;
         FakeOption fakeOption = new FakeOption(boostName, true);
-        fakeOption.addDefaultOption(defaultValue);
         fakeOption.addHeatingTimeRange(heatingTimeRange);
         addOptions(fakeOption);
         return this;
@@ -72,7 +64,7 @@ public class TestHexagonBuilder {
     }
 
     public TestHexagonBuilder withHeatingSubsystemSingleOptionsTitled(String on, String off, String s) {
-        addOptions(HeatingModeOption.createHeatingModeOptions(on, off, s));
+        addOptions(createHeatingModeFakeOptions(on, off, s));
         return this;
     }
 }

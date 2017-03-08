@@ -8,7 +8,6 @@ import java.util.List;
 public class FakeOption extends Option {
     private final boolean hasSubOptions;
     private HeatingTimeRange heatingTimeRange;
-    private SelectingHeatingMode.HeatingTime defaultValue;
 
     public FakeOption(String on, boolean b) {
         super(on);
@@ -27,10 +26,6 @@ public class FakeOption extends Option {
         return "FakeOption " + option1 + " with sub options " + hasSubOptions;
     }
 
-    public List<Options> subOptions() {
-        return null;
-    }
-
     public FakeOption addHeatingTimeRange(HeatingTimeRange heatingTimeRange) {
 
         this.heatingTimeRange = heatingTimeRange;
@@ -41,12 +36,4 @@ public class FakeOption extends Option {
         return heatingTimeRange;
     }
 
-    public void addDefaultOption(SelectingHeatingMode.HeatingTime defaultValue) {
-
-        this.defaultValue = defaultValue;
-    }
-
-    public SelectingHeatingMode.HeatingTime defaultValue() {
-        return defaultValue;
-    }
 }
