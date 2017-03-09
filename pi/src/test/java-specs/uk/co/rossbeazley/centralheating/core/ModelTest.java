@@ -4,6 +4,7 @@ import org.fluttercode.datafactory.impl.DataFactory;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.Objects;
 
 import static java.util.Collections.singletonList;
 import static org.hamcrest.CoreMatchers.hasItem;
@@ -25,7 +26,7 @@ public class ModelTest {
     }
 
     public CentralHeatingSystem buildCentralHeatingSystemWithONOption(String onOptionTitle, GasBurner gasBurner) {
-        return new CentralHeatingSystem(onOptionTitle,gasBurner);
+        return new CentralHeatingSystem(onOptionTitle, gasBurner);
     }
 
     @Test
@@ -33,21 +34,13 @@ public class ModelTest {
     turnsTheHeatingOn() throws Exception {
 
         GasBurner gasBurner = new GasBurner();
-        Model model = buildCentralHeatingSystemWithONOption("on",gasBurner);
+        Model model = buildCentralHeatingSystemWithONOption("on", gasBurner);
         List<Option> options = model.options();
-        model.configure(options.get(0), new Model.Callback() {
-            @Override
-            public void OK() {
-
-            }
-
-            @Override
-            public void RANGE(HeatingTimeRange heatingTimeRange) {
-
-            }
-        });
+        CollectingCallback callback = new CollectingCallback();
+        model.configure(options.get(0), callback);
         Object heating = gasBurner.state();
         assertThat(heating, is(GasBurner.ON));
+        assertThat(callback.ok, is(CollectingCallback.SET));
     }
 
     private static class CentralHeatingSystem implements Model {
@@ -68,13 +61,14 @@ public class ModelTest {
         @Override
         public void configure(Option option, Callback callback) {
             gasBurner.turnOn();
+            callback.OK();
         }
     }
 
     private static class GasBurner {
 
-        private static final Object OFF = "GAS OFF",
-                                    ON = "GAS ON";
+        public static final Object OFF = "GAS OFF",
+                ON = "GAS ON";
 
         private static Object state = OFF;
 
@@ -87,4 +81,21 @@ public class ModelTest {
         }
     }
 
+    private static class CollectingCallback implements Model.Callback {
+
+        public static final Object SET = "set",
+                UNSET = "unset";
+
+        public Object ok = UNSET;
+
+        @Override
+        public void OK() {
+            ok = SET;
+        }
+
+        @Override
+        public void RANGE(HeatingTimeRange heatingTimeRange) {
+
+        }
+    }
 }
