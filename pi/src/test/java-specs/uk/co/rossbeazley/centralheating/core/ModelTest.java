@@ -43,6 +43,22 @@ public class ModelTest {
         assertThat(callback.ok, is(CollectingCallback.SET));
     }
 
+    @Test
+    public void
+    turnsTheHeatingBackOff() throws Exception {
+
+        fail("IMPLEMENT THIS TEST NEXT");
+
+        GasBurner gasBurner = new GasBurner();
+        Model model = buildCentralHeatingSystemWithONOption("on", gasBurner); /* <---- need to build system with OFF */
+        List<Option> options = model.options();
+        CollectingCallback callback = new CollectingCallback();
+        model.configure(options.get(0), callback);
+        Object heating = gasBurner.state();
+
+
+    }
+
     private static class CentralHeatingSystem implements Model {
 
         private final Option onOption;
