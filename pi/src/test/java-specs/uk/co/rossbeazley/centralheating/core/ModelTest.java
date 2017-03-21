@@ -78,6 +78,35 @@ public class ModelTest {
         assertThat(heating, is(GasBurner.OFF));
     }
 
+
+    @Test
+    public void
+    enablesTheExternalTimerAndItsOff() {
+        fail("Spec this next");
+    }
+
+
+    @Test
+    public void
+    enablesTheExternalTimerAndItTurnsOn() {
+        fail("Spec this next +1");
+    }
+
+    @Test
+    public void
+    enablesTheExternalTimerAndItsOn() {
+        fail("Spec this next +2");
+    }
+
+
+    @Test
+    public void
+    enablesTheExternalTimerAndItTurnsOff() {
+        fail("Spec this next +3");
+    }
+
+
+
     private Model buildCentralHeatingSystemWithONANDOffOption(String on, String off, GasBurner gasBurner) {
         return new CentralHeatingSystem(on,off, gasBurner);
     }
