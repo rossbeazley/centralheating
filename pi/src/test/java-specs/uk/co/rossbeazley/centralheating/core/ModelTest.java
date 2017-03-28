@@ -100,13 +100,22 @@ public class ModelTest {
 
 
 
-    @Test @Ignore
+    @Test
     public void
     enablesTheExternalTimerAndItTurnsOn() {
-        fail("Spec this next +1");
+
         //given i set heating to external timer mode
         //when the external timer indicates on
-        //then the heating turns on
+        //then the gas burner turns on
+        GasBurner gasBurner = new GasBurner();
+        ExternalTimer externalTimer = new ExternalTimer(ExternalTimer.OFF);
+        Model model = buildCentralHeatingSystemWithONANDOffOptionAndExternalTimerSupport("on", "off", "External", gasBurner, externalTimer); /* <---- need to build system with OFF */
+        Option externalTimerOption = model.options().get(2);
+        model.configure(externalTimerOption, new CollectingCallback());
+
+        externalTimer.turnOn();
+
+        assertThat(gasBurner.state(), is(GasBurner.ON));
     }
 
     @Test @Ignore
@@ -202,8 +211,21 @@ public class ModelTest {
 
         public static final Object OFF = new Object(),
                                     ON = new Object();
+        private ExternalTimer.Observer externalTimerObserver;
 
         public ExternalTimer(Object p0) {
+        }
+
+        public void addObserver(Observer observer) {
+            this.externalTimerObserver = observer;
+        }
+
+        public void turnOn() {
+            this.externalTimerObserver.on();
+        }
+
+        public interface Observer {
+            void on();
         }
     }
 }
