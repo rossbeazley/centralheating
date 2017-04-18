@@ -42,7 +42,7 @@ public class ModelTest {
     }
 
     public CentralHeatingSystem buildCentralHeatingSystemWithONOption(String onOptionTitle, GasBurner gasBurner) {
-        return new CentralHeatingSystem(onOptionTitle, null, null, gasBurner);
+        return new CentralHeatingSystem(onOptionTitle, null, new ExternalTimerSystem(""),gasBurner);
     }
 
     @Test
@@ -134,31 +134,35 @@ public class ModelTest {
 
 
     private Model buildCentralHeatingSystemWithONANDOffOption(String on, String off, GasBurner gasBurner) {
-        return new CentralHeatingSystem(on,off, "", gasBurner);
+        return new CentralHeatingSystem(on,off, new ExternalTimerSystem(""), gasBurner);
     }
 
 
     private Model buildCentralHeatingSystemWithONANDOffOptionAndExternalTimerSupport(String on, String off, String external, GasBurner gasBurner, ExternalTimer externalTimer) {
-        return new CentralHeatingSystem(on,off,external, gasBurner);
+        ExternalTimerSystem externalTimerSystem = new ExternalTimerSystem(external);
+        return new CentralHeatingSystem(on,off,externalTimerSystem, gasBurner);
     }
 
     private static class CentralHeatingSystem implements Model {
 
         private final Option onOption;
         private final Option offOption;
-        private final Option externalTimerOption;
-        private GasBurner gasBurner;
 
-        public CentralHeatingSystem(String onOptionTitle, String off, String external, GasBurner gasBurner) {
+        private ExternalTimerSystem external;
+        private GasBurner gasBurner;
+        private List<Option> options;
+
+        public CentralHeatingSystem(String onOptionTitle, String off, ExternalTimerSystem external, GasBurner gasBurner) {
+            this.external = external;
             this.gasBurner = gasBurner;
             onOption = new Option(onOptionTitle);
             offOption = new Option(off);
-            externalTimerOption = new Option(external);
+            options = Arrays.asList(onOption,offOption,external.option());
         }
 
         @Override
         public List<Option> options() {
-            return Arrays.asList(onOption,offOption,externalTimerOption);
+            return options;
         }
 
         @Override
@@ -221,11 +225,23 @@ public class ModelTest {
         }
 
         public void turnOn() {
-            this.externalTimerObserver.on();
+            this.externalTimerObserver.externalTimerOn();
         }
 
         public interface Observer {
-            void on();
+            void externalTimerOn();
+        }
+    }
+
+    private class ExternalTimerSystem {
+        private final Option option;
+
+        public ExternalTimerSystem(String external) {
+            this.option = new Option(external);
+        }
+
+        public Option option() {
+            return option;
         }
     }
 }
