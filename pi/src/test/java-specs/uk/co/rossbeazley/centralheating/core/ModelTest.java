@@ -34,7 +34,7 @@ public class ModelTest {
         String offOptionTitle = dataFactory.getRandomWord();
         String externalOptionTitle = dataFactory.getRandomWord();
 
-        Model model = buildCentralHeatingSystemWithONANDOffOptionAndExternalTimerSupport(onOptionTitle, offOptionTitle, externalOptionTitle, new GasBurner(), null); /* <---- need to build system with OFF */
+        Model model = buildCentralHeatingSystemWithONANDOffOptionAndExternalTimerSupport(onOptionTitle, offOptionTitle, externalOptionTitle, new GasBurner(), new ExternalTimer(null)); /* <---- need to build system with OFF */
         List<Option> options = model.options();
         assertThat(options, hasItem(OptionMatcher.withTitle(onOptionTitle)));
         assertThat(options, hasItem(OptionMatcher.withTitle(offOptionTitle)));
@@ -42,7 +42,7 @@ public class ModelTest {
     }
 
     public CentralHeatingSystem buildCentralHeatingSystemWithONOption(String onOptionTitle, GasBurner gasBurner) {
-        return new CentralHeatingSystem(onOptionTitle, null, new ExternalTimerSystem(""),gasBurner);
+        return new CentralHeatingSystem(onOptionTitle, null, new ExternalTimerSystem("", new ExternalTimer(null), gasBurner),gasBurner);
     }
 
     @Test
@@ -134,12 +134,12 @@ public class ModelTest {
 
 
     private Model buildCentralHeatingSystemWithONANDOffOption(String on, String off, GasBurner gasBurner) {
-        return new CentralHeatingSystem(on,off, new ExternalTimerSystem(""), gasBurner);
+        return new CentralHeatingSystem(on,off, new ExternalTimerSystem("", new ExternalTimer(null), gasBurner), gasBurner);
     }
 
 
     private Model buildCentralHeatingSystemWithONANDOffOptionAndExternalTimerSupport(String on, String off, String external, GasBurner gasBurner, ExternalTimer externalTimer) {
-        ExternalTimerSystem externalTimerSystem = new ExternalTimerSystem(external);
+        ExternalTimerSystem externalTimerSystem = new ExternalTimerSystem(external,externalTimer, gasBurner);
         return new CentralHeatingSystem(on,off,externalTimerSystem, gasBurner);
     }
 
@@ -236,8 +236,14 @@ public class ModelTest {
     private class ExternalTimerSystem {
         private final Option option;
 
-        public ExternalTimerSystem(String external) {
+        public ExternalTimerSystem(String external, ExternalTimer externalTimer, GasBurner gasBurner) {
             this.option = new Option(external);
+            externalTimer.addObserver(new ExternalTimer.Observer() {
+                @Override
+                public void externalTimerOn() {
+                    gasBurner.turnOn();
+                }
+            });
         }
 
         public Option option() {
