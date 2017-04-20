@@ -13,6 +13,8 @@ import static org.junit.Assert.*;
 
 public class ModelTest {
 
+    ModelTestBuilder modelTestBuilder = new ModelTestBuilder();
+
     @Test
     public void
     haveTheOptionToTurnTheHeatingOn() throws Exception {
@@ -20,7 +22,7 @@ public class ModelTest {
         DataFactory dataFactory = new DataFactory();
         String onOptionTitle = dataFactory.getRandomWord();
 
-        Model model = buildCentralHeatingSystemWithONOption(onOptionTitle, null);
+        Model model = modelTestBuilder.buildCentralHeatingSystemWithONOption(onOptionTitle, null, this);
         List<Option> options = model.options();
         assertThat(options, hasItem(OptionMatcher.withTitle(onOptionTitle)));
     }
@@ -34,15 +36,11 @@ public class ModelTest {
         String offOptionTitle = dataFactory.getRandomWord();
         String externalOptionTitle = dataFactory.getRandomWord();
 
-        Model model = buildCentralHeatingSystemWithONANDOffOptionAndExternalTimerSupport(onOptionTitle, offOptionTitle, externalOptionTitle, new GasBurner(), new ExternalTimer(null)); /* <---- need to build system with OFF */
+        Model model = modelTestBuilder.buildCentralHeatingSystemWithONANDOffOptionAndExternalTimerSupport(onOptionTitle, offOptionTitle, externalOptionTitle, new GasBurner(), new ExternalTimer(null), this); /* <---- need to build system with OFF */
         List<Option> options = model.options();
         assertThat(options, hasItem(OptionMatcher.withTitle(onOptionTitle)));
         assertThat(options, hasItem(OptionMatcher.withTitle(offOptionTitle)));
         assertThat(options, hasItem(OptionMatcher.withTitle(externalOptionTitle)));
-    }
-
-    public CentralHeatingSystem buildCentralHeatingSystemWithONOption(String onOptionTitle, GasBurner gasBurner) {
-        return new CentralHeatingSystem(onOptionTitle, null, new ExternalTimerSystem("", new ExternalTimer(null), gasBurner),gasBurner);
     }
 
     @Test
@@ -50,7 +48,7 @@ public class ModelTest {
     turnsTheHeatingOn() throws Exception {
 
         GasBurner gasBurner = new GasBurner();
-        Model model = buildCentralHeatingSystemWithONOption("on", gasBurner);
+        Model model = modelTestBuilder.buildCentralHeatingSystemWithONOption("on", gasBurner, this);
         List<Option> options = model.options();
         CollectingCallback callback = new CollectingCallback();
         model.configure(options.get(0), callback);
@@ -66,7 +64,7 @@ public class ModelTest {
 
         //Given a system thats on
         GasBurner gasBurner = new GasBurner();
-        Model model = buildCentralHeatingSystemWithONANDOffOption("on", "off", gasBurner); /* <---- need to build system with OFF */
+        Model model = modelTestBuilder.buildCentralHeatingSystemWithONANDOffOption("on", "off", gasBurner, this); /* <---- need to build system with OFF */
         List<Option> options = model.options();
         CollectingCallback callback = new CollectingCallback();
         model.configure(options.get(0), callback); //TODO make this clearer, get(0) wtf?
@@ -87,7 +85,7 @@ public class ModelTest {
         ExternalTimer externalTimer = new ExternalTimer(ExternalTimer.OFF);
         GasBurner gasBurner = new GasBurner();
 
-        Model model = buildCentralHeatingSystemWithONANDOffOptionAndExternalTimerSupport("on", "off", "External", gasBurner, externalTimer); /* <---- need to build system with OFF */
+        Model model = modelTestBuilder.buildCentralHeatingSystemWithONANDOffOptionAndExternalTimerSupport("on", "off", "External", gasBurner, externalTimer, this); /* <---- need to build system with OFF */
 
         //when i set heating to external timer mode
         Option externalTimerOption = model.options().get(2);
@@ -109,7 +107,7 @@ public class ModelTest {
         //then the gas burner turns on
         GasBurner gasBurner = new GasBurner();
         ExternalTimer externalTimer = new ExternalTimer(ExternalTimer.OFF);
-        Model model = buildCentralHeatingSystemWithONANDOffOptionAndExternalTimerSupport("on", "off", "External", gasBurner, externalTimer); /* <---- need to build system with OFF */
+        Model model = modelTestBuilder.buildCentralHeatingSystemWithONANDOffOptionAndExternalTimerSupport("on", "off", "External", gasBurner, externalTimer, this); /* <---- need to build system with OFF */
         Option externalTimerOption = model.options().get(2);
         model.configure(externalTimerOption, new CollectingCallback());
 
@@ -132,18 +130,7 @@ public class ModelTest {
     }
 
 
-
-    private Model buildCentralHeatingSystemWithONANDOffOption(String on, String off, GasBurner gasBurner) {
-        return new CentralHeatingSystem(on,off, new ExternalTimerSystem("", new ExternalTimer(null), gasBurner), gasBurner);
-    }
-
-
-    private Model buildCentralHeatingSystemWithONANDOffOptionAndExternalTimerSupport(String on, String off, String external, GasBurner gasBurner, ExternalTimer externalTimer) {
-        ExternalTimerSystem externalTimerSystem = new ExternalTimerSystem(external,externalTimer, gasBurner);
-        return new CentralHeatingSystem(on,off,externalTimerSystem, gasBurner);
-    }
-
-    private static class CentralHeatingSystem implements Model {
+     static class CentralHeatingSystem implements Model {
 
         private final Option onOption;
         private final Option offOption;
@@ -173,7 +160,7 @@ public class ModelTest {
         }
     }
 
-    private static class GasBurner {
+     static class GasBurner {
 
         public static final Object OFF = "GAS OFF",
                 ON = "GAS ON";
@@ -211,7 +198,7 @@ public class ModelTest {
         }
     }
 
-    private static class ExternalTimer {
+     static class ExternalTimer {
 
         public static final Object OFF = new Object(),
                                     ON = new Object();
@@ -233,7 +220,7 @@ public class ModelTest {
         }
     }
 
-    private class ExternalTimerSystem {
+     class ExternalTimerSystem {
         private final Option option;
 
         public ExternalTimerSystem(String external, ExternalTimer externalTimer, GasBurner gasBurner) {
