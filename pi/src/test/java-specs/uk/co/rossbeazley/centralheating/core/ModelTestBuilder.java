@@ -2,16 +2,57 @@ package uk.co.rossbeazley.centralheating.core;
 
 class ModelTestBuilder {
 
-     Model buildCentralHeatingSystemWithONANDOffOption(String on, String off, ModelTest.GasBurner gasBurner, ModelTest modelTest) {
-        return new ModelTest.CentralHeatingSystem(on,off, modelTest.new ExternalTimerSystem("", new ModelTest.ExternalTimer(null), gasBurner), gasBurner);
+    private ModelTest.GasBurner gasBurner;
+
+    private String onOptionTitle;
+
+    private String offOptionTitle;
+
+    private ModelTest.ExternalTimer externalTimer;
+    private String externalTimerTitle;
+
+    public ModelTestBuilder() {
+        onOptionTitle = "on";
+        offOptionTitle = "off";
+        externalTimerTitle = "external";
+        gasBurner = new ModelTest.GasBurner();
+        externalTimer = new ModelTest.ExternalTimer(null);
     }
 
-     Model buildCentralHeatingSystemWithONANDOffOptionAndExternalTimerSupport(String on, String off, String external, ModelTest.GasBurner gasBurner, ModelTest.ExternalTimer externalTimer, ModelTest modelTest) {
-        ModelTest.ExternalTimerSystem externalTimerSystem = modelTest.new ExternalTimerSystem(external, externalTimer, gasBurner);
-        return new ModelTest.CentralHeatingSystem(on,off,externalTimerSystem, gasBurner);
+    public ModelTestBuilder withOnTitle(String on) {
+        this.onOptionTitle = on;
+        return this;
     }
 
-     Model buildCentralHeatingSystemWithONOption(String onOptionTitle, ModelTest.GasBurner gasBurner, ModelTest modelTest) {
-        return new ModelTest.CentralHeatingSystem(onOptionTitle, null, modelTest.new ExternalTimerSystem("", new ModelTest.ExternalTimer(null), gasBurner),gasBurner);
+
+    public ModelTestBuilder withOffTitle(String off) {
+        this.offOptionTitle = off;
+        return this;
     }
+
+    public ModelTestBuilder withGasBurner(ModelTest.GasBurner gasBurner) {
+        this.gasBurner = gasBurner;
+        return this;
+    }
+
+
+    public ModelTestBuilder withExternalTimerTitle(String externalTimerTitle) {
+        this.externalTimerTitle = externalTimerTitle;
+        return this;
+    }
+
+    public ModelTestBuilder withExternalTimer(ModelTest.ExternalTimer externalTimer) {
+        this.externalTimer = externalTimer;
+        return this;
+    }
+
+
+
+
+
+    public Model build() {
+        ModelTest.ExternalTimerSystem externalTimerSystem = new ModelTest.ExternalTimerSystem(externalTimerTitle, externalTimer, gasBurner);
+        return new ModelTest.CentralHeatingSystem(onOptionTitle, offOptionTitle, externalTimerSystem, gasBurner);
+    }
+
 }

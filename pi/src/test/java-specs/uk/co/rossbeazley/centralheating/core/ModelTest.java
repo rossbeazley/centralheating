@@ -22,7 +22,7 @@ public class ModelTest {
         DataFactory dataFactory = new DataFactory();
         String onOptionTitle = dataFactory.getRandomWord();
 
-        Model model = modelTestBuilder.buildCentralHeatingSystemWithONOption(onOptionTitle, null, this);
+        Model model = modelTestBuilder.withOnTitle(onOptionTitle).build();
         List<Option> options = model.options();
         assertThat(options, hasItem(OptionMatcher.withTitle(onOptionTitle)));
     }
@@ -36,7 +36,10 @@ public class ModelTest {
         String offOptionTitle = dataFactory.getRandomWord();
         String externalOptionTitle = dataFactory.getRandomWord();
 
-        Model model = modelTestBuilder.buildCentralHeatingSystemWithONANDOffOptionAndExternalTimerSupport(onOptionTitle, offOptionTitle, externalOptionTitle, new GasBurner(), new ExternalTimer(null), this); /* <---- need to build system with OFF */
+        Model model = modelTestBuilder.withOnTitle(onOptionTitle)
+                .withOffTitle(offOptionTitle)
+                .withExternalTimerTitle(externalOptionTitle)
+                .build(); /* <---- need to build system with OFF */
         List<Option> options = model.options();
         assertThat(options, hasItem(OptionMatcher.withTitle(onOptionTitle)));
         assertThat(options, hasItem(OptionMatcher.withTitle(offOptionTitle)));
@@ -48,7 +51,7 @@ public class ModelTest {
     turnsTheHeatingOn() throws Exception {
 
         GasBurner gasBurner = new GasBurner();
-        Model model = modelTestBuilder.buildCentralHeatingSystemWithONOption("on", gasBurner, this);
+        Model model = modelTestBuilder.withOnTitle("on").withGasBurner(gasBurner).build();
         List<Option> options = model.options();
         CollectingCallback callback = new CollectingCallback();
         model.configure(options.get(0), callback);
@@ -64,7 +67,7 @@ public class ModelTest {
 
         //Given a system thats on
         GasBurner gasBurner = new GasBurner();
-        Model model = modelTestBuilder.buildCentralHeatingSystemWithONANDOffOption("on", "off", gasBurner, this); /* <---- need to build system with OFF */
+        Model model = modelTestBuilder.withGasBurner(gasBurner).build(); /* <---- need to build system with OFF */
         List<Option> options = model.options();
         CollectingCallback callback = new CollectingCallback();
         model.configure(options.get(0), callback); //TODO make this clearer, get(0) wtf?
@@ -85,7 +88,10 @@ public class ModelTest {
         ExternalTimer externalTimer = new ExternalTimer(ExternalTimer.OFF);
         GasBurner gasBurner = new GasBurner();
 
-        Model model = modelTestBuilder.buildCentralHeatingSystemWithONANDOffOptionAndExternalTimerSupport("on", "off", "External", gasBurner, externalTimer, this); /* <---- need to build system with OFF */
+        Model model = modelTestBuilder
+                .withGasBurner(gasBurner)
+                .withExternalTimer(externalTimer)
+                .build(); /* <---- need to build system with OFF */
 
         //when i set heating to external timer mode
         Option externalTimerOption = model.options().get(2);
@@ -107,7 +113,10 @@ public class ModelTest {
         //then the gas burner turns on
         GasBurner gasBurner = new GasBurner();
         ExternalTimer externalTimer = new ExternalTimer(ExternalTimer.OFF);
-        Model model = modelTestBuilder.buildCentralHeatingSystemWithONANDOffOptionAndExternalTimerSupport("on", "off", "External", gasBurner, externalTimer, this); /* <---- need to build system with OFF */
+        Model model = modelTestBuilder
+                .withGasBurner(gasBurner)
+                .withExternalTimer(externalTimer)
+                .build(); /* <---- need to build system with OFF */
         Option externalTimerOption = model.options().get(2);
         model.configure(externalTimerOption, new CollectingCallback());
 
@@ -220,7 +229,7 @@ public class ModelTest {
         }
     }
 
-     class ExternalTimerSystem {
+     static class ExternalTimerSystem {
         private final Option option;
 
         public ExternalTimerSystem(String external, ExternalTimer externalTimer, GasBurner gasBurner) {
