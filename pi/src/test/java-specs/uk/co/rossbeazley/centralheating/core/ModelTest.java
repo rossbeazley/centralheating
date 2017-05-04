@@ -146,10 +146,21 @@ public class ModelTest {
 
 
     @Test
-    @Ignore
     public void
     enablesTheExternalTimerAndItTurnsOff() {
-        fail("Spec this next +3");
+        GasBurner gasBurner = new GasBurner();
+        ExternalTimer externalTimer = new ExternalTimer(ExternalTimer.ON);
+
+        Model model = new ModelTestBuilder()
+                .withGasBurner(gasBurner)
+                .withExternalTimer(externalTimer)
+                .build(); /* <---- need to build system with OFF */
+        Option externalTimerOption = model.options().get(2);
+        model.configure(externalTimerOption, new CollectingCallback());
+
+        externalTimer.turnOff();
+
+        assertThat(gasBurner.state(), is(GasBurner.OFF));
     }
 
 
@@ -263,8 +274,14 @@ public class ModelTest {
             this.externalTimerObserver.externalTimerOn();
         }
 
+        public void turnOff() {
+            this.externalTimerObserver.externalTimerOff();
+        }
+
         public interface Observer {
             void externalTimerOn();
+
+            void externalTimerOff();
         }
     }
 
@@ -289,6 +306,11 @@ public class ModelTest {
                 @Override
                 public void externalTimerOn() {
                     gasBurner.turnOn();
+                }
+
+                @Override
+                public void externalTimerOff() {
+                    gasBurner.turnOff();
                 }
             });
         }
