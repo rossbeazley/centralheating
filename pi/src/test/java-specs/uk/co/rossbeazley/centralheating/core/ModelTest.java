@@ -1,7 +1,6 @@
 package uk.co.rossbeazley.centralheating.core;
 
 import org.fluttercode.datafactory.impl.DataFactory;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -136,8 +135,10 @@ public class ModelTest {
         Model model = new ModelTestBuilder()
                 .withGasBurner(gasBurner)
                 .withExternalTimer(externalTimer)
+                .withExternalTimerTitle("External")
                 .build(); /* <---- need to build system with OFF */
         Option externalTimerOption = model.options().get(2);
+        assertThat("precondition", externalTimerOption.name(),is("External"));
         model.configure(externalTimerOption, new CollectingCallback());
 
 
@@ -165,12 +166,8 @@ public class ModelTest {
 
 
     @Test
-    @Ignore
     public void
-    externalTimerIsOnButOptionDisabled() {
-        fail("Spec this next +3");
-
-
+    externalTimerIsOnButOptionNotEnabled() {
         GasBurner gasBurner = new GasBurner();
         ExternalTimer externalTimer = new ExternalTimer(ExternalTimer.ON);
 
@@ -179,6 +176,89 @@ public class ModelTest {
                 .withExternalTimer(externalTimer)
                 .build(); /* <---- need to build system with OFF */
 
+
+        assertThat(gasBurner.state(), is(GasBurner.OFF));
+    }
+
+    @Test
+    public void
+    externalTimerIsOnButOffOptionEnabled() {
+        GasBurner gasBurner = new GasBurner();
+        ExternalTimer externalTimer = new ExternalTimer(ExternalTimer.ON);
+
+        Model model = new ModelTestBuilder()
+                .withOffTitle("OFF")
+                .withGasBurner(gasBurner)
+                .withExternalTimer(externalTimer)
+                .build(); /* <---- need to build system with OFF */
+
+
+        List<Option> options = model.options();
+
+
+        Option offOption = options.get(1);
+
+        assertThat("Precondition", offOption.name(), is("OFF"));
+
+        model.configure(offOption, new CollectingCallback());
+
+        assertThat(gasBurner.state(), is(GasBurner.OFF));
+    }
+
+
+    @Test
+    public void
+    externalTimerTurnsOnButOptionDisabled() {
+        GasBurner gasBurner = new GasBurner();
+        ExternalTimer externalTimer = new ExternalTimer(ExternalTimer.OFF);
+
+        Model model = new ModelTestBuilder()
+                .withOffTitle("OFF")
+                .withGasBurner(gasBurner)
+                .withExternalTimer(externalTimer)
+                .build(); /* <---- need to build system with OFF */
+
+
+        List<Option> options = model.options();
+
+
+        Option offOption = options.get(1);
+
+        assertThat("Precondition", offOption.name(), is("OFF"));
+
+        model.configure(offOption, new CollectingCallback());
+
+        assertThat(gasBurner.state(), is(GasBurner.OFF));
+    }
+
+
+    @Test
+    public void
+    externalTimerTurnsOnAfterOptionIsDisabledInFavourOfOff() {
+        GasBurner gasBurner = new GasBurner();
+        ExternalTimer externalTimer = new ExternalTimer(ExternalTimer.OFF);
+
+        Model model = new ModelTestBuilder()
+                .withOffTitle("OFF")
+                .withExternalTimerTitle("External")
+                .withGasBurner(gasBurner)
+                .withExternalTimer(externalTimer)
+                .build(); /* <---- need to build system with OFF */
+
+
+        List<Option> options = model.options();
+
+
+        Option externalTimerOption = model.options().get(2);
+        assertThat("Precondition", externalTimerOption.name(), is("External"));
+        model.configure(externalTimerOption, new CollectingCallback());
+
+        Option offOption = options.get(1);
+
+        assertThat("Precondition", offOption.name(), is("OFF"));
+        model.configure(offOption, new CollectingCallback());
+
+        externalTimer.turnOn();
 
         assertThat(gasBurner.state(), is(GasBurner.OFF));
     }
@@ -208,10 +288,14 @@ public class ModelTest {
 
         @Override
         public void configure(Option option, Callback callback) {
-            if (option.equals(onOption)) gasBurner.turnOn();
-            else if (option.equals(external.option())) {
+            external.disable();
+            if (option.equals(onOption)) {
+                gasBurner.turnOn();
+            } else if (option.equals(external.option())) {
                 external.enable(option);
-            } else gasBurner.turnOff();
+            } else {
+                gasBurner.turnOff();
+            }
             callback.OK();
         }
     }
@@ -266,7 +350,11 @@ public class ModelTest {
         }
 
         public void addObserver(Observer observer) {
-            if (STATE == ON) observer.externalTimerOn();
+            if (STATE == ON) {
+                observer.externalTimerOn();
+            } else {
+                observer.externalTimerOff();
+            }
             this.externalTimerObserver = observer;
         }
 
@@ -285,16 +373,19 @@ public class ModelTest {
         }
     }
 
-    static class ExternalTimerSystem {
+    static class ExternalTimerSystem implements ExternalTimer.Observer {
         private final Option option;
+        private State state;
         private ExternalTimer externalTimer;
         private GasBurner gasBurner;
+        private ExternalTimer.Observer observer;
 
         public ExternalTimerSystem(String external, ExternalTimer externalTimer, GasBurner gasBurner) {
             this.externalTimer = externalTimer;
             this.gasBurner = gasBurner;
             this.option = new Option(external);
-
+            this.state = new DisabledOff();
+            this.externalTimer.addObserver(this);
         }
 
         public Option option() {
@@ -302,17 +393,124 @@ public class ModelTest {
         }
 
         public void enable(Option option) {
-            externalTimer.addObserver(new ExternalTimer.Observer() {
-                @Override
-                public void externalTimerOn() {
-                    gasBurner.turnOn();
-                }
+            this.state.enabled();
+        }
 
-                @Override
-                public void externalTimerOff() {
-                    gasBurner.turnOff();
-                }
-            });
+        public void disable() {
+            this.state.disabled();
+        }
+
+        @Override
+        public void externalTimerOn() {
+            this.state.on();
+        }
+
+        @Override
+        public void externalTimerOff() {
+            this.state.off();
+        }
+
+        private interface State {
+            void enabled();
+
+            void disabled();
+
+            void on();
+
+            void off();
+        }
+
+        private class DisabledOff implements State {
+
+            @Override
+            public void enabled() {
+                state = new EnabledOff();
+            }
+
+            @Override
+            public void disabled() {
+                //no op
+            }
+
+            @Override
+            public void on() {
+                state = new DissabledOn();
+            }
+
+            @Override
+            public void off() {
+                //no op
+            }
+        }
+
+        private class DissabledOn implements State {
+            @Override
+            public void enabled() {
+                gasBurner.turnOn();
+                state = new EnabledOn();
+            }
+
+            @Override
+            public void disabled() {
+                //no op
+            }
+
+            @Override
+            public void on() {
+                //no op
+            }
+
+            @Override
+            public void off() {
+                state = new DisabledOff();
+            }
+        }
+
+        private class EnabledOff implements State {
+            @Override
+            public void enabled() {
+                //no op
+            }
+
+            @Override
+            public void disabled() {
+                state = new DisabledOff();
+            }
+
+            @Override
+            public void on() {
+                gasBurner.turnOn();
+                state = new EnabledOn();
+            }
+
+            @Override
+            public void off() {
+                //no op
+            }
+        }
+
+        private class EnabledOn implements State {
+            @Override
+            public void enabled() {
+                //no op
+            }
+
+            @Override
+            public void disabled() {
+                // dont change the gas state
+                state = new DissabledOn();
+            }
+
+            @Override
+            public void on() {
+                //no op
+            }
+
+            @Override
+            public void off() {
+                gasBurner.turnOff();
+                state = new EnabledOff();
+            }
         }
     }
 }
