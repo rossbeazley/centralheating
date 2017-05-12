@@ -2,13 +2,13 @@ package uk.co.rossbeazley.centralheating.core;
 
 class ModelTestBuilder {
 
-    private TheExternalTimer.GasBurner gasBurner;
+    private GasBurner gasBurner;
 
     private String onOptionTitle;
 
     private String offOptionTitle;
 
-    private TheExternalTimer.ExternalTimer externalTimer;
+    private ExternalTimer externalTimer;
     private String externalTimerTitle;
     private Adapters adapters;
 
@@ -16,8 +16,8 @@ class ModelTestBuilder {
         onOptionTitle = "on";
         offOptionTitle = "off";
         externalTimerTitle = "external";
-        gasBurner = new TheExternalTimer.GasBurner();
-        externalTimer = new TheExternalTimer.ExternalTimer(null);
+        gasBurner = new GasBurner();
+        externalTimer = new ExternalTimer(null);
     }
 
     public ModelTestBuilder withOnTitle(String on) {
@@ -31,7 +31,7 @@ class ModelTestBuilder {
         return this;
     }
 
-    public ModelTestBuilder withGasBurner(TheExternalTimer.GasBurner gasBurner) {
+    public ModelTestBuilder withGasBurner(GasBurner gasBurner) {
         this.gasBurner = gasBurner;
         return this;
     }
@@ -42,7 +42,7 @@ class ModelTestBuilder {
         return this;
     }
 
-    public ModelTestBuilder withExternalTimer(TheExternalTimer.ExternalTimer externalTimer) {
+    public ModelTestBuilder withExternalTimer(ExternalTimer externalTimer) {
         this.externalTimer = externalTimer;
         return this;
     }
@@ -55,19 +55,23 @@ class ModelTestBuilder {
 
 
     public Model build() {
-        TheExternalTimer.ExternalTimerSystem externalTimerSystem = new TheExternalTimer.ExternalTimerSystem(externalTimerTitle, externalTimer, gasBurner);
+        ExternalTimerSystem externalTimerSystem = new ExternalTimerSystem(externalTimerTitle, externalTimer, gasBurner);
         this.adapters = new Adapters(externalTimerTitle, externalTimer, gasBurner, onOptionTitle, offOptionTitle);
-        return new TheExternalTimer.CentralHeatingSystem(onOptionTitle, offOptionTitle, externalTimerSystem, gasBurner);
+        return new CentralHeatingSystem(onOptionTitle, offOptionTitle, externalTimerSystem, gasBurner);
+    }
+
+    public ModelTestBuilder withBoostTitle(String boost) {
+        return this;
     }
 
     public class Adapters {
         public final String externalTimerTitle;
-        public final TheExternalTimer.ExternalTimer externalTimer;
-        public final TheExternalTimer.GasBurner gasBurner;
+        public final ExternalTimer externalTimer;
+        public final GasBurner gasBurner;
         public final String onOptionTitle;
         public final String offOptionTitle;
 
-        public Adapters(String externalTimerTitle, TheExternalTimer.ExternalTimer externalTimer, TheExternalTimer.GasBurner gasBurner, String onOptionTitle, String offOptionTitle) {
+        public Adapters(String externalTimerTitle, ExternalTimer externalTimer, GasBurner gasBurner, String onOptionTitle, String offOptionTitle) {
 
             this.externalTimerTitle = externalTimerTitle;
             this.externalTimer = externalTimer;
