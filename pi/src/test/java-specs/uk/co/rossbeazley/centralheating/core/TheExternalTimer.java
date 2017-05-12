@@ -10,7 +10,17 @@ import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 
-public class ModelTest {
+public class TheExternalTimer {
+
+    @Test
+    public void
+    gasIsOffWhenTheSystemStarts() {
+        ModelTestBuilder modelTestBuilder = new ModelTestBuilder();
+        modelTestBuilder.build();
+
+        GasBurner gasBurner = modelTestBuilder.adapters().gasBurner;
+        assertThat(gasBurner.state(),is(GasBurner.OFF));
+    }
 
     @Test
     public void
@@ -243,7 +253,7 @@ public class ModelTest {
                 .withExternalTimerTitle("External")
                 .withGasBurner(gasBurner)
                 .withExternalTimer(externalTimer)
-                .build(); /* <---- need to build system with OFF */
+                .build();
 
 
         List<Option> options = model.options();
@@ -261,6 +271,70 @@ public class ModelTest {
         externalTimer.turnOn();
 
         assertThat(gasBurner.state(), is(GasBurner.OFF));
+    }
+
+
+
+    @Test
+    public void
+    externalTimerTurnsOnAfterOptionIsDisabledInFavourOfOn() {
+        GasBurner gasBurner = new GasBurner();
+        ExternalTimer externalTimer = new ExternalTimer(ExternalTimer.OFF);
+
+        Model model = new ModelTestBuilder()
+                .withOnTitle("ON")
+                .withExternalTimerTitle("External")
+                .withGasBurner(gasBurner)
+                .withExternalTimer(externalTimer)
+                .build();
+
+
+        List<Option> options = model.options();
+
+
+        Option externalTimerOption = model.options().get(2);
+        assertThat("Precondition", externalTimerOption.name(), is("External"));
+        model.configure(externalTimerOption, new CollectingCallback());
+
+        Option offOption = options.get(0);
+
+        assertThat("Precondition", offOption.name(), is("ON"));
+        model.configure(offOption, new CollectingCallback());
+
+        externalTimer.turnOn();
+
+        assertThat(gasBurner.state(), is(GasBurner.ON));
+    }
+
+    @Test
+    public void
+    externalTimerTurnsOffAfterOptionIsDisabledInFavourOfOn() {
+        GasBurner gasBurner = new GasBurner();
+        ExternalTimer externalTimer = new ExternalTimer(ExternalTimer.ON);
+
+        Model model = new ModelTestBuilder()
+                .withOnTitle("ON")
+                .withExternalTimerTitle("External")
+                .withGasBurner(gasBurner)
+                .withExternalTimer(externalTimer)
+                .build();
+
+
+        List<Option> options = model.options();
+
+
+        Option externalTimerOption = model.options().get(2);
+        assertThat("Precondition", externalTimerOption.name(), is("External"));
+        model.configure(externalTimerOption, new CollectingCallback());
+
+        Option offOption = options.get(0);
+
+        assertThat("Precondition", offOption.name(), is("ON"));
+        model.configure(offOption, new CollectingCallback());
+
+        externalTimer.turnOff();
+
+        assertThat(gasBurner.state(), is(GasBurner.ON));
     }
 
 
