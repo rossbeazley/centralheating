@@ -17,8 +17,9 @@ class ModelTestBuilder {
         onOptionTitle = "on";
         offOptionTitle = "off";
         externalTimerTitle = "external";
+        boostTitle = "boost";
         gasBurner = new GasBurner();
-        externalTimer = new ExternalTimer(null);
+        externalTimer = new ExternalTimer(ExternalTimer.OFF);
     }
 
     public ModelTestBuilder withOnTitle(String on) {
