@@ -14,12 +14,9 @@ public class Boost {
     hasABoostOption() throws Exception {
         Model model = new ModelTestBuilder().withBoostTitle("BOOST").build();
         List<Option> options = model.options();
-        CollectingCallback callback = new CollectingCallback();
         Option option = options.get(3);
 
         assertThat(option.name(),is("BOOST"));
-
-
     }
 
     @Test

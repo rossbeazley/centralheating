@@ -12,12 +12,12 @@ class CentralHeatingSystem implements Model {
     private GasBurner gasBurner;
     private List<Option> options;
 
-    public CentralHeatingSystem(String onOptionTitle, String off, ExternalTimerSystem external, GasBurner gasBurner) {
+    public CentralHeatingSystem(String onOptionTitle, String off, ExternalTimerSystem external, GasBurner gasBurner, BoostSystem boostSystem) {
         this.external = external;
         this.gasBurner = gasBurner;
         onOption = new Option(onOptionTitle);
         offOption = new Option(off);
-        options = Arrays.asList(onOption, offOption, external.option());
+        options = Arrays.asList(onOption, offOption, external.option(), boostSystem.option());
     }
 
     @Override

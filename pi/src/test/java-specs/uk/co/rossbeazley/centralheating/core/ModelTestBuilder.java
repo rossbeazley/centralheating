@@ -11,6 +11,7 @@ class ModelTestBuilder {
     private ExternalTimer externalTimer;
     private String externalTimerTitle;
     private Adapters adapters;
+    private String boostTitle;
 
     public ModelTestBuilder() {
         onOptionTitle = "on";
@@ -56,11 +57,13 @@ class ModelTestBuilder {
 
     public Model build() {
         ExternalTimerSystem externalTimerSystem = new ExternalTimerSystem(externalTimerTitle, externalTimer, gasBurner);
-        this.adapters = new Adapters(externalTimerTitle, externalTimer, gasBurner, onOptionTitle, offOptionTitle);
-        return new CentralHeatingSystem(onOptionTitle, offOptionTitle, externalTimerSystem, gasBurner);
+        this.adapters = new Adapters(externalTimerTitle, externalTimer, gasBurner, onOptionTitle, offOptionTitle, boostTitle);
+        BoostSystem boostSystem = new BoostSystem(boostTitle);
+        return new CentralHeatingSystem(onOptionTitle, offOptionTitle, externalTimerSystem, gasBurner, boostSystem);
     }
 
     public ModelTestBuilder withBoostTitle(String boost) {
+        this.boostTitle = boost;
         return this;
     }
 
@@ -70,14 +73,17 @@ class ModelTestBuilder {
         public final GasBurner gasBurner;
         public final String onOptionTitle;
         public final String offOptionTitle;
+        public final String boostTitle;
 
-        public Adapters(String externalTimerTitle, ExternalTimer externalTimer, GasBurner gasBurner, String onOptionTitle, String offOptionTitle) {
+        public Adapters(String externalTimerTitle, ExternalTimer externalTimer, GasBurner gasBurner, String onOptionTitle, String offOptionTitle, String boostTitle) {
 
             this.externalTimerTitle = externalTimerTitle;
             this.externalTimer = externalTimer;
             this.gasBurner = gasBurner;
             this.onOptionTitle = onOptionTitle;
             this.offOptionTitle = offOptionTitle;
+            this.boostTitle = boostTitle;
         }
     }
+
 }
