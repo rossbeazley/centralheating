@@ -10,11 +10,13 @@ class CentralHeatingSystem implements Model {
 
     private ExternalTimerSystem external;
     private GasBurner gasBurner;
+    private BoostSystem boostSystem;
     private List<Option> options;
 
     public CentralHeatingSystem(String onOptionTitle, String off, ExternalTimerSystem external, GasBurner gasBurner, BoostSystem boostSystem) {
         this.external = external;
         this.gasBurner = gasBurner;
+        this.boostSystem = boostSystem;
         onOption = new Option(onOptionTitle);
         offOption = new Option(off);
         options = Arrays.asList(onOption, offOption, external.option(), boostSystem.option());
@@ -32,7 +34,11 @@ class CentralHeatingSystem implements Model {
             gasBurner.turnOn();
         } else if (option.equals(external.option())) {
             external.enable(option);
-        } else {
+        } else if (option.equals(boostSystem.option())) {
+            boostSystem.enable(option);
+        }
+
+        else {
             gasBurner.turnOff();
         }
         callback.OK();

@@ -58,8 +58,9 @@ class ModelTestBuilder {
 
     public Model build() {
         ExternalTimerSystem externalTimerSystem = new ExternalTimerSystem(externalTimerTitle, externalTimer, gasBurner);
+        BoostSystem boostSystem = new BoostSystem(boostTitle, gasBurner);
+
         this.adapters = new Adapters(externalTimerTitle, externalTimer, gasBurner, onOptionTitle, offOptionTitle, boostTitle);
-        BoostSystem boostSystem = new BoostSystem(boostTitle);
         return new CentralHeatingSystem(onOptionTitle, offOptionTitle, externalTimerSystem, gasBurner, boostSystem);
     }
 
