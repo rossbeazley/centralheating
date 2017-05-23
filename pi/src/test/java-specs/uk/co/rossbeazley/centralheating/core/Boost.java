@@ -46,10 +46,7 @@ public class Boost {
     @Test
     public void
     theOneWhereTimeElapsesAndTheHeatingTurnsOff() throws Exception {
-
-
         ClockFake clock = new ClockFake();
-
         GasBurner gasBurner = new GasBurner();
         Model model = new ModelTestBuilder().withBoostTitle("BOOST").withGasBurner(gasBurner).withClock(clock).build();
 
