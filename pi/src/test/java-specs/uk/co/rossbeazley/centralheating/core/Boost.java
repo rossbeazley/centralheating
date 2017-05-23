@@ -6,6 +6,7 @@ import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 public class Boost {
 
@@ -33,4 +34,23 @@ public class Boost {
         assertThat(heating, is(GasBurner.ON));
         assertThat(callback.ok, is(CollectingCallback.SET));
     }
+
+    @Test
+    public void
+    theOneWhereTimeElapsesAndTheHeatingTurnsOff() throws Exception {
+
+        fail("TO BE SPECED");
+
+    }
+
+
+    @Test
+    public void
+    theOneWhereTimeElapsesAfterForcingHeatingToOn() throws Exception {
+
+        fail("TO BE SPECED");
+
+    }
+
+
 }
