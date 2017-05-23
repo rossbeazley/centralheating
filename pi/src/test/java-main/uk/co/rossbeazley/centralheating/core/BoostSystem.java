@@ -1,6 +1,6 @@
 package uk.co.rossbeazley.centralheating.core;
 
-public class BoostSystem {
+public class BoostSystem implements Clock.CanBeTicked {
     private Option option;
     private GasBurner gasBurner;
 
@@ -15,5 +15,10 @@ public class BoostSystem {
 
     public void enable(Option option) {
             gasBurner.turnOn();
+    }
+
+    @Override
+    public void timeIsAt(long threeOClock) {
+
     }
 }

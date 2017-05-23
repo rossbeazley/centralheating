@@ -12,6 +12,7 @@ class ModelTestBuilder {
     private String externalTimerTitle;
     private Adapters adapters;
     private String boostTitle;
+    private Clock clock;
 
     public ModelTestBuilder() {
         onOptionTitle = "on";
@@ -19,6 +20,7 @@ class ModelTestBuilder {
         externalTimerTitle = "external";
         boostTitle = "boost";
         gasBurner = new GasBurner();
+        clock = new ClockFake();
         externalTimer = new ExternalTimer(ExternalTimer.OFF);
     }
 
@@ -61,11 +63,19 @@ class ModelTestBuilder {
         BoostSystem boostSystem = new BoostSystem(boostTitle, gasBurner);
 
         this.adapters = new Adapters(externalTimerTitle, externalTimer, gasBurner, onOptionTitle, offOptionTitle, boostTitle);
-        return new CentralHeatingSystem(onOptionTitle, offOptionTitle, externalTimerSystem, gasBurner, boostSystem);
+        CentralHeatingSystem centralHeatingSystem = new CentralHeatingSystem(onOptionTitle, offOptionTitle, externalTimerSystem, gasBurner, boostSystem);
+
+        clock.addTickReceiver(boostSystem);
+        return centralHeatingSystem;
     }
 
     public ModelTestBuilder withBoostTitle(String boost) {
         this.boostTitle = boost;
+        return this;
+    }
+
+    public ModelTestBuilder withClock(Clock clock) {
+        this.clock = clock;
         return this;
     }
 

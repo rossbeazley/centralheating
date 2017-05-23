@@ -1,9 +1,11 @@
 package uk.co.rossbeazley.centralheating.core;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.List;
 
+import static java.util.concurrent.TimeUnit.HOURS;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
@@ -17,7 +19,7 @@ public class Boost {
         List<Option> options = model.options();
         Option option = options.get(3);
 
-        assertThat(option.name(),is("BOOST"));
+        assertThat(option.name(), is("BOOST"));
     }
 
     @Test
@@ -25,26 +27,48 @@ public class Boost {
     selectingBoostTurnsTheGasOn() {
         GasBurner gasBurner = new GasBurner();
         Model model = new ModelTestBuilder().withBoostTitle("BOOST").withGasBurner(gasBurner).build();
-        List<Option> options = model.options();
-        CollectingCallback callback = new CollectingCallback();
-        Option option = options.get(3);
-        model.configure(option, callback);
+        CollectingCallback callback = enableBoost(model);
 
         Object heating = gasBurner.state();
         assertThat(heating, is(GasBurner.ON));
         assertThat(callback.ok, is(CollectingCallback.SET));
     }
 
+    public CollectingCallback enableBoost(Model model) {
+        List<Option> options = model.options();
+        CollectingCallback callback = new CollectingCallback();
+        Option option = options.get(3);
+        model.configure(option, callback);
+        return callback;
+    }
+
+
     @Test
     public void
     theOneWhereTimeElapsesAndTheHeatingTurnsOff() throws Exception {
 
-        fail("TO BE SPECED");
+
+        ClockFake clock = new ClockFake();
+
+        GasBurner gasBurner = new GasBurner();
+        Model model = new ModelTestBuilder().withBoostTitle("BOOST").withGasBurner(gasBurner).withClock(clock).build();
+
+        long threeOClock = HOURS.toMillis(3);
+        clock.timeIsAt(threeOClock);
+
+        enableBoost(model);
+
+        long fourOClock = HOURS.toMillis(4);
+        clock.timeIsAt(fourOClock);
+
+        Object heating = gasBurner.state();
+        assertThat(heating, is(GasBurner.OFF));
 
     }
 
 
     @Test
+    @Ignore("to be speced")
     public void
     theOneWhereTimeElapsesAfterForcingHeatingToOn() throws Exception {
 
