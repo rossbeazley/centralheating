@@ -65,12 +65,33 @@ public class Boost {
 
 
     @Test
-    @Ignore("to be speced")
     public void
     theOneWhereTimeElapsesAfterForcingHeatingToOn() throws Exception {
 
-        fail("TO BE SPECED");
+        ClockFake clock = new ClockFake();
+        GasBurner gasBurner = new GasBurner();
+        Model model = new ModelTestBuilder().withOnTitle("ON").withBoostTitle("BOOST").withGasBurner(gasBurner).withClock(clock).build();
 
+        long threeOClock = HOURS.toMillis(3);
+        clock.timeIsAt(threeOClock);
+
+        enableBoost(model);
+
+        justTurnOn(model);
+
+
+        long fourOClock = HOURS.toMillis(4);
+        clock.timeIsAt(fourOClock);
+
+        Object heating = gasBurner.state();
+        assertThat(heating, is(GasBurner.ON));
+    }
+
+    public void justTurnOn(Model model) {
+        List<Option> options = model.options();
+        Option option = options.get(0);
+        assertThat(option, OptionMatcher.withTitle("ON"));
+        model.configure(option, new CollectingCallback());
     }
 
 
