@@ -35,6 +35,7 @@ class CentralHeatingSystem implements Model {
             boostSystem.disable();
         } else if (option.equals(external.option())) {
             external.enable(option);
+            boostSystem.disable();
         } else if (option.equals(boostSystem.option())) {
             boostSystem.enable(option);
         }
