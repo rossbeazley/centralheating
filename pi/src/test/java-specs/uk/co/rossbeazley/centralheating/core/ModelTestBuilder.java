@@ -21,7 +21,7 @@ class ModelTestBuilder {
         boostTitle = "boost";
         gasBurner = new GasBurnerFake();
         clock = new ClockFake();
-        externalTimer = new ExternalTimer(ExternalTimer.OFF);
+        externalTimer = new ExternalTimerFake(ExternalTimerFake.OFF);
     }
 
     public ModelTestBuilder withOnTitle(String on) {

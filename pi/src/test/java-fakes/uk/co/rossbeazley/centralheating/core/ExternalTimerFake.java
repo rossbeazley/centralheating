@@ -1,16 +1,17 @@
 package uk.co.rossbeazley.centralheating.core;
 
-class ExternalTimer {
+class ExternalTimerFake implements ExternalTimer {
 
     public static final Object OFF = new Object(),
             ON = new Object();
     private Observer externalTimerObserver;
     private Object STATE;
 
-    public ExternalTimer(Object p0) {
+    public ExternalTimerFake(Object p0) {
         STATE = p0;
     }
 
+    @Override
     public void addObserver(Observer observer) {
         if (STATE == ON) {
             observer.externalTimerOn();
@@ -28,9 +29,4 @@ class ExternalTimer {
         this.externalTimerObserver.externalTimerOff();
     }
 
-    public interface Observer {
-        void externalTimerOn();
-
-        void externalTimerOff();
-    }
 }

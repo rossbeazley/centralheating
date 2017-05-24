@@ -94,7 +94,7 @@ public class Boost {
     weAreBoostingAndSwitchToExternalTimerThatsOn() throws Exception {
         ClockFake clock = new ClockFake();
         GasBurnerFake gasBurner = new GasBurnerFake();
-        ExternalTimer externalTimer = new ExternalTimer(ExternalTimer.ON);
+        ExternalTimer externalTimer = new ExternalTimerFake(ExternalTimerFake.ON);
 
         Model model = new ModelTestBuilder()
                 .withOnTitle("ON")

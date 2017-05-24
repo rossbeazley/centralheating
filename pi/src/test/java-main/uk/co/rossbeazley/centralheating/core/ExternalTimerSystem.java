@@ -1,11 +1,11 @@
 package uk.co.rossbeazley.centralheating.core;
 
-class ExternalTimerSystem implements ExternalTimer.Observer {
+class ExternalTimerSystem implements ExternalTimerFake.Observer {
     private final Option option;
     private State state;
     private ExternalTimer externalTimer;
     private GasBurner gasBurner;
-    private ExternalTimer.Observer observer;
+    private ExternalTimerFake.Observer observer;
 
     public ExternalTimerSystem(String external, ExternalTimer externalTimer, GasBurner gasBurner) {
         this.externalTimer = externalTimer;

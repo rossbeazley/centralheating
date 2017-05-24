@@ -91,7 +91,7 @@ public class TheExternalTimer {
     public void
     enablesTheExternalTimerAndItsOff() {
         //given the external timer is off
-        ExternalTimer externalTimer = new ExternalTimer(ExternalTimer.OFF);
+        ExternalTimer externalTimer = new ExternalTimerFake(ExternalTimerFake.OFF);
         GasBurnerFake gasBurner = new GasBurnerFake();
         assertThat("Precondition failed, gasburner", gasBurner.state(), is(GasBurnerFake.OFF));
 
@@ -122,7 +122,7 @@ public class TheExternalTimer {
         //when the external timer indicates on
         //then the gas burner turns on
         GasBurnerFake gasBurner = new GasBurnerFake();
-        ExternalTimer externalTimer = new ExternalTimer(ExternalTimer.OFF);
+        ExternalTimerFake externalTimer = new ExternalTimerFake(ExternalTimerFake.OFF);
         Model model = new ModelTestBuilder()
                 .withGasBurner(gasBurner)
                 .withExternalTimer(externalTimer)
@@ -139,7 +139,7 @@ public class TheExternalTimer {
     public void
     enablesTheExternalTimerAndItsOn() {
         GasBurnerFake gasBurner = new GasBurnerFake();
-        ExternalTimer externalTimer = new ExternalTimer(ExternalTimer.ON);
+        ExternalTimer externalTimer = new ExternalTimerFake(ExternalTimerFake.ON);
 
         Model model = new ModelTestBuilder()
                 .withGasBurner(gasBurner)
@@ -159,7 +159,7 @@ public class TheExternalTimer {
     public void
     enablesTheExternalTimerAndItTurnsOff() {
         GasBurnerFake gasBurner = new GasBurnerFake();
-        ExternalTimer externalTimer = new ExternalTimer(ExternalTimer.ON);
+        ExternalTimerFake externalTimer = new ExternalTimerFake(ExternalTimerFake.ON);
 
         Model model = new ModelTestBuilder()
                 .withGasBurner(gasBurner)
@@ -178,7 +178,7 @@ public class TheExternalTimer {
     public void
     externalTimerIsOnButOptionNotEnabled() {
         GasBurnerFake gasBurner = new GasBurnerFake();
-        ExternalTimer externalTimer = new ExternalTimer(ExternalTimer.ON);
+        ExternalTimer externalTimer = new ExternalTimerFake(ExternalTimerFake.ON);
 
         Model model = new ModelTestBuilder()
                 .withGasBurner(gasBurner)
@@ -193,7 +193,7 @@ public class TheExternalTimer {
     public void
     externalTimerIsOnButOffOptionEnabled() {
         GasBurnerFake gasBurner = new GasBurnerFake();
-        ExternalTimer externalTimer = new ExternalTimer(ExternalTimer.ON);
+        ExternalTimer externalTimer = new ExternalTimerFake(ExternalTimerFake.ON);
 
         Model model = new ModelTestBuilder()
                 .withOffTitle("OFF")
@@ -219,7 +219,7 @@ public class TheExternalTimer {
     public void
     externalTimerTurnsOnButOptionDisabled() {
         GasBurnerFake gasBurner = new GasBurnerFake();
-        ExternalTimer externalTimer = new ExternalTimer(ExternalTimer.OFF);
+        ExternalTimer externalTimer = new ExternalTimerFake(ExternalTimerFake.OFF);
 
         Model model = new ModelTestBuilder()
                 .withOffTitle("OFF")
@@ -245,7 +245,7 @@ public class TheExternalTimer {
     public void
     externalTimerTurnsOnAfterOptionIsDisabledInFavourOfOff() {
         GasBurnerFake gasBurner = new GasBurnerFake();
-        ExternalTimer externalTimer = new ExternalTimer(ExternalTimer.OFF);
+        ExternalTimerFake externalTimer = new ExternalTimerFake(ExternalTimerFake.OFF);
 
         Model model = new ModelTestBuilder()
                 .withOffTitle("OFF")
@@ -278,7 +278,7 @@ public class TheExternalTimer {
     public void
     externalTimerTurnsOnAfterOptionIsDisabledInFavourOfOn() {
         GasBurnerFake gasBurner = new GasBurnerFake();
-        ExternalTimer externalTimer = new ExternalTimer(ExternalTimer.OFF);
+        ExternalTimerFake externalTimer = new ExternalTimerFake(ExternalTimerFake.OFF);
 
         Model model = new ModelTestBuilder()
                 .withOnTitle("ON")
@@ -309,7 +309,7 @@ public class TheExternalTimer {
     public void
     externalTimerTurnsOffAfterOptionIsDisabledInFavourOfOn() {
         GasBurnerFake gasBurner = new GasBurnerFake();
-        ExternalTimer externalTimer = new ExternalTimer(ExternalTimer.ON);
+        ExternalTimerFake externalTimer = new ExternalTimerFake(ExternalTimerFake.ON);
 
         Model model = new ModelTestBuilder()
                 .withOnTitle("ON")
