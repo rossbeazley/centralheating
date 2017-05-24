@@ -2,7 +2,7 @@ package uk.co.rossbeazley.centralheating.core;
 
 class ModelTestBuilder {
 
-    private GasBurner gasBurner;
+    private GasBurnerFake gasBurner;
 
     private String onOptionTitle;
 
@@ -19,7 +19,7 @@ class ModelTestBuilder {
         offOptionTitle = "off";
         externalTimerTitle = "external";
         boostTitle = "boost";
-        gasBurner = new GasBurner();
+        gasBurner = new GasBurnerFake();
         clock = new ClockFake();
         externalTimer = new ExternalTimer(ExternalTimer.OFF);
     }
@@ -35,7 +35,7 @@ class ModelTestBuilder {
         return this;
     }
 
-    public ModelTestBuilder withGasBurner(GasBurner gasBurner) {
+    public ModelTestBuilder withGasBurner(GasBurnerFake gasBurner) {
         this.gasBurner = gasBurner;
         return this;
     }
@@ -82,12 +82,12 @@ class ModelTestBuilder {
     public class Adapters {
         public final String externalTimerTitle;
         public final ExternalTimer externalTimer;
-        public final GasBurner gasBurner;
+        public final GasBurnerFake gasBurner;
         public final String onOptionTitle;
         public final String offOptionTitle;
         public final String boostTitle;
 
-        public Adapters(String externalTimerTitle, ExternalTimer externalTimer, GasBurner gasBurner, String onOptionTitle, String offOptionTitle, String boostTitle) {
+        public Adapters(String externalTimerTitle, ExternalTimer externalTimer, GasBurnerFake gasBurner, String onOptionTitle, String offOptionTitle, String boostTitle) {
 
             this.externalTimerTitle = externalTimerTitle;
             this.externalTimer = externalTimer;

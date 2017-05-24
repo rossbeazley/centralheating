@@ -3,7 +3,6 @@ package uk.co.rossbeazley.centralheating.core;
 import org.fluttercode.datafactory.impl.DataFactory;
 import org.junit.Test;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.hasItem;
@@ -18,8 +17,8 @@ public class TheExternalTimer {
         ModelTestBuilder modelTestBuilder = new ModelTestBuilder();
         modelTestBuilder.build();
 
-        GasBurner gasBurner = modelTestBuilder.adapters().gasBurner;
-        assertThat(gasBurner.state(),is(GasBurner.OFF));
+        GasBurnerFake gasBurner = modelTestBuilder.adapters().gasBurner;
+        assertThat(gasBurner.state(),is(GasBurnerFake.OFF));
     }
 
     @Test
@@ -57,13 +56,13 @@ public class TheExternalTimer {
     public void
     turnsTheHeatingOn() throws Exception {
 
-        GasBurner gasBurner = new GasBurner();
+        GasBurnerFake gasBurner = new GasBurnerFake();
         Model model = new ModelTestBuilder().withOnTitle("on").withGasBurner(gasBurner).build();
         List<Option> options = model.options();
         CollectingCallback callback = new CollectingCallback();
         model.configure(options.get(0), callback);
         Object heating = gasBurner.state();
-        assertThat(heating, is(GasBurner.ON));
+        assertThat(heating, is(GasBurnerFake.ON));
         assertThat(callback.ok, is(CollectingCallback.SET));
     }
 
@@ -73,7 +72,7 @@ public class TheExternalTimer {
 
 
         //Given a system thats on
-        GasBurner gasBurner = new GasBurner();
+        GasBurnerFake gasBurner = new GasBurnerFake();
         Model model = new ModelTestBuilder().withGasBurner(gasBurner).build(); /* <---- need to build system with OFF */
         List<Option> options = model.options();
         CollectingCallback callback = new CollectingCallback();
@@ -84,7 +83,7 @@ public class TheExternalTimer {
 
         //its off
         Object heating = gasBurner.state();
-        assertThat(heating, is(GasBurner.OFF));
+        assertThat(heating, is(GasBurnerFake.OFF));
     }
 
 
@@ -93,8 +92,8 @@ public class TheExternalTimer {
     enablesTheExternalTimerAndItsOff() {
         //given the external timer is off
         ExternalTimer externalTimer = new ExternalTimer(ExternalTimer.OFF);
-        GasBurner gasBurner = new GasBurner();
-        assertThat("Precondition failed, gasburner", gasBurner.state(), is(GasBurner.OFF));
+        GasBurnerFake gasBurner = new GasBurnerFake();
+        assertThat("Precondition failed, gasburner", gasBurner.state(), is(GasBurnerFake.OFF));
 
         String externalTimerTitle = "EXTERNAL";
         Model model = new ModelTestBuilder()
@@ -111,7 +110,7 @@ public class TheExternalTimer {
 
         //then the heating is off
         Object heating = gasBurner.state();
-        assertThat(heating, is(GasBurner.OFF));
+        assertThat(heating, is(GasBurnerFake.OFF));
     }
 
 
@@ -122,7 +121,7 @@ public class TheExternalTimer {
         //given i set heating to external timer mode
         //when the external timer indicates on
         //then the gas burner turns on
-        GasBurner gasBurner = new GasBurner();
+        GasBurnerFake gasBurner = new GasBurnerFake();
         ExternalTimer externalTimer = new ExternalTimer(ExternalTimer.OFF);
         Model model = new ModelTestBuilder()
                 .withGasBurner(gasBurner)
@@ -133,13 +132,13 @@ public class TheExternalTimer {
 
         externalTimer.turnOn();
 
-        assertThat(gasBurner.state(), is(GasBurner.ON));
+        assertThat(gasBurner.state(), is(GasBurnerFake.ON));
     }
 
     @Test
     public void
     enablesTheExternalTimerAndItsOn() {
-        GasBurner gasBurner = new GasBurner();
+        GasBurnerFake gasBurner = new GasBurnerFake();
         ExternalTimer externalTimer = new ExternalTimer(ExternalTimer.ON);
 
         Model model = new ModelTestBuilder()
@@ -152,14 +151,14 @@ public class TheExternalTimer {
         model.configure(externalTimerOption, new CollectingCallback());
 
 
-        assertThat(gasBurner.state(), is(GasBurner.ON));
+        assertThat(gasBurner.state(), is(GasBurnerFake.ON));
     }
 
 
     @Test
     public void
     enablesTheExternalTimerAndItTurnsOff() {
-        GasBurner gasBurner = new GasBurner();
+        GasBurnerFake gasBurner = new GasBurnerFake();
         ExternalTimer externalTimer = new ExternalTimer(ExternalTimer.ON);
 
         Model model = new ModelTestBuilder()
@@ -171,14 +170,14 @@ public class TheExternalTimer {
 
         externalTimer.turnOff();
 
-        assertThat(gasBurner.state(), is(GasBurner.OFF));
+        assertThat(gasBurner.state(), is(GasBurnerFake.OFF));
     }
 
 
     @Test
     public void
     externalTimerIsOnButOptionNotEnabled() {
-        GasBurner gasBurner = new GasBurner();
+        GasBurnerFake gasBurner = new GasBurnerFake();
         ExternalTimer externalTimer = new ExternalTimer(ExternalTimer.ON);
 
         Model model = new ModelTestBuilder()
@@ -187,13 +186,13 @@ public class TheExternalTimer {
                 .build(); /* <---- need to build system with OFF */
 
 
-        assertThat(gasBurner.state(), is(GasBurner.OFF));
+        assertThat(gasBurner.state(), is(GasBurnerFake.OFF));
     }
 
     @Test
     public void
     externalTimerIsOnButOffOptionEnabled() {
-        GasBurner gasBurner = new GasBurner();
+        GasBurnerFake gasBurner = new GasBurnerFake();
         ExternalTimer externalTimer = new ExternalTimer(ExternalTimer.ON);
 
         Model model = new ModelTestBuilder()
@@ -212,14 +211,14 @@ public class TheExternalTimer {
 
         model.configure(offOption, new CollectingCallback());
 
-        assertThat(gasBurner.state(), is(GasBurner.OFF));
+        assertThat(gasBurner.state(), is(GasBurnerFake.OFF));
     }
 
 
     @Test
     public void
     externalTimerTurnsOnButOptionDisabled() {
-        GasBurner gasBurner = new GasBurner();
+        GasBurnerFake gasBurner = new GasBurnerFake();
         ExternalTimer externalTimer = new ExternalTimer(ExternalTimer.OFF);
 
         Model model = new ModelTestBuilder()
@@ -238,14 +237,14 @@ public class TheExternalTimer {
 
         model.configure(offOption, new CollectingCallback());
 
-        assertThat(gasBurner.state(), is(GasBurner.OFF));
+        assertThat(gasBurner.state(), is(GasBurnerFake.OFF));
     }
 
 
     @Test
     public void
     externalTimerTurnsOnAfterOptionIsDisabledInFavourOfOff() {
-        GasBurner gasBurner = new GasBurner();
+        GasBurnerFake gasBurner = new GasBurnerFake();
         ExternalTimer externalTimer = new ExternalTimer(ExternalTimer.OFF);
 
         Model model = new ModelTestBuilder()
@@ -270,7 +269,7 @@ public class TheExternalTimer {
 
         externalTimer.turnOn();
 
-        assertThat(gasBurner.state(), is(GasBurner.OFF));
+        assertThat(gasBurner.state(), is(GasBurnerFake.OFF));
     }
 
 
@@ -278,7 +277,7 @@ public class TheExternalTimer {
     @Test
     public void
     externalTimerTurnsOnAfterOptionIsDisabledInFavourOfOn() {
-        GasBurner gasBurner = new GasBurner();
+        GasBurnerFake gasBurner = new GasBurnerFake();
         ExternalTimer externalTimer = new ExternalTimer(ExternalTimer.OFF);
 
         Model model = new ModelTestBuilder()
@@ -303,13 +302,13 @@ public class TheExternalTimer {
 
         externalTimer.turnOn();
 
-        assertThat(gasBurner.state(), is(GasBurner.ON));
+        assertThat(gasBurner.state(), is(GasBurnerFake.ON));
     }
 
     @Test
     public void
     externalTimerTurnsOffAfterOptionIsDisabledInFavourOfOn() {
-        GasBurner gasBurner = new GasBurner();
+        GasBurnerFake gasBurner = new GasBurnerFake();
         ExternalTimer externalTimer = new ExternalTimer(ExternalTimer.ON);
 
         Model model = new ModelTestBuilder()
@@ -334,7 +333,7 @@ public class TheExternalTimer {
 
         externalTimer.turnOff();
 
-        assertThat(gasBurner.state(), is(GasBurner.ON));
+        assertThat(gasBurner.state(), is(GasBurnerFake.ON));
     }
 
 

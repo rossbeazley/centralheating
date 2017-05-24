@@ -1,6 +1,5 @@
 package uk.co.rossbeazley.centralheating.core;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.List;
@@ -25,12 +24,12 @@ public class Boost {
     @Test
     public void
     selectingBoostTurnsTheGasOn() {
-        GasBurner gasBurner = new GasBurner();
+        GasBurnerFake gasBurner = new GasBurnerFake();
         Model model = new ModelTestBuilder().withBoostTitle("BOOST").withGasBurner(gasBurner).build();
         CollectingCallback callback = enableBoost(model);
 
         Object heating = gasBurner.state();
-        assertThat(heating, is(GasBurner.ON));
+        assertThat(heating, is(GasBurnerFake.ON));
         assertThat(callback.ok, is(CollectingCallback.SET));
     }
 
@@ -47,7 +46,7 @@ public class Boost {
     public void
     theOneWhereTimeElapsesAndTheHeatingTurnsOff() throws Exception {
         ClockFake clock = new ClockFake();
-        GasBurner gasBurner = new GasBurner();
+        GasBurnerFake gasBurner = new GasBurnerFake();
         Model model = new ModelTestBuilder().withBoostTitle("BOOST").withGasBurner(gasBurner).withClock(clock).build();
 
         long threeOClock = HOURS.toMillis(3);
@@ -59,7 +58,7 @@ public class Boost {
         clock.timeIsAt(fourOClock);
 
         Object heating = gasBurner.state();
-        assertThat(heating, is(GasBurner.OFF));
+        assertThat(heating, is(GasBurnerFake.OFF));
 
     }
 
@@ -69,7 +68,7 @@ public class Boost {
     theOneWhereTimeElapsesAfterForcingHeatingToOn() throws Exception {
 
         ClockFake clock = new ClockFake();
-        GasBurner gasBurner = new GasBurner();
+        GasBurnerFake gasBurner = new GasBurnerFake();
         Model model = new ModelTestBuilder().withOnTitle("ON")
                 .withBoostTitle("BOOST")
                 .withGasBurner(gasBurner)
@@ -87,14 +86,14 @@ public class Boost {
         clock.timeIsAt(fourOClock);
 
         Object heating = gasBurner.state();
-        assertThat(heating, is(GasBurner.ON));
+        assertThat(heating, is(GasBurnerFake.ON));
     }
 
     @Test
     public void
     weAreBoostingAndSwitchToExternalTimerThatsOn() throws Exception {
         ClockFake clock = new ClockFake();
-        GasBurner gasBurner = new GasBurner();
+        GasBurnerFake gasBurner = new GasBurnerFake();
         ExternalTimer externalTimer = new ExternalTimer(ExternalTimer.ON);
 
         Model model = new ModelTestBuilder()
@@ -118,7 +117,7 @@ public class Boost {
         clock.timeIsAt(fourOClock);
 
         Object heating = gasBurner.state();
-        assertThat(heating, is(GasBurner.ON));
+        assertThat(heating, is(GasBurnerFake.ON));
     }
 
     private void enableExternalModeThatsOn(Model model) {
