@@ -32,12 +32,12 @@ class CentralHeatingSystem implements Model {
         external.disable();
         if (option.equals(onOption)) {
             gasBurner.turnOn();
+            boostSystem.disable();
         } else if (option.equals(external.option())) {
             external.enable(option);
         } else if (option.equals(boostSystem.option())) {
             boostSystem.enable(option);
         }
-
         else {
             gasBurner.turnOff();
         }

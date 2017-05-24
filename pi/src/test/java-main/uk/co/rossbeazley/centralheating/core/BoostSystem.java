@@ -10,6 +10,7 @@ public class BoostSystem implements Clock.CanBeTicked {
 
     public BoostSystem(String boostTitle, GasBurner gasBurner) {
         this.gasBurner = gasBurner;
+        turnOffAt = Long.MAX_VALUE;
         option = new Option(boostTitle);
     }
 
@@ -18,16 +19,20 @@ public class BoostSystem implements Clock.CanBeTicked {
     }
 
     public void enable(Option option) {
-            gasBurner.turnOn();
+        gasBurner.turnOn();
         this.turnOffAt = lastTimeSeen + TimeUnit.HOURS.toMillis(1);
     }
 
     @Override
     public void timeIsAt(long threeOClock) {
         lastTimeSeen = threeOClock;
-        if(turnOffAt<=threeOClock) {
+        if (turnOffAt <= threeOClock) {
             turnOffAt = Long.MAX_VALUE;
             gasBurner.turnOff();
         }
+    }
+
+    public void disable() {
+        turnOffAt = Long.MAX_VALUE;
     }
 }
