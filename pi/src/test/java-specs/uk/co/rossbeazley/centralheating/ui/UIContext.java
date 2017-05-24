@@ -30,7 +30,7 @@ public class UIContext {
         assertPrecondition("Screen displayed", fakeConfigurationDialogView, isA(FakeConfigurationDialogView.class));
 
         Option expectedOption = new FakeOption("Boost",true)
-                .addHeatingTimeRange(new HeatingTimeRange(SelectingHeatingMode.HeatingTime.createFromTimeUnit(1, TimeUnit.SECONDS), SelectingHeatingMode.HeatingTime.createFromTimeUnit(3, TimeUnit.SECONDS), null, SelectingHeatingMode.HeatingTime.createFromTimeUnit(2, TimeUnit.SECONDS)));
+                .addHeatingTimeRange(new HeatingTimeRange(HeatingTime.createFromTimeUnit(1, TimeUnit.SECONDS), HeatingTime.createFromTimeUnit(3, TimeUnit.SECONDS), null, HeatingTime.createFromTimeUnit(2, TimeUnit.SECONDS)));
 
         assertPrecondition("Configured Boost Option ", model.lastConfiguredOption(), is(expectedOption));
 

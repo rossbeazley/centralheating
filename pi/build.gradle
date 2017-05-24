@@ -7,7 +7,6 @@ sourceSets {
     test {
         java {
             srcDirs = ['src/test/java-fakes']
-            srcDirs += ['src/test/java-main']
             srcDirs += ['src/test/java-specs']
         }
 
@@ -16,6 +15,7 @@ sourceSets {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.googlecode.lanterna:lanterna:3.0.0-rc1'
     //testCompile 'org.fluttercode.datafactory:datafactory:0.8'
     //testCompile fileTree(include: ['*.jar'], dir: 'src/test/libs')
     testCompile 'junit:junit:4.12'

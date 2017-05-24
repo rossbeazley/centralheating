@@ -9,13 +9,13 @@ import java.util.List;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
-import static uk.co.rossbeazley.centralheating.ui.SelectingHeatingMode.HeatingTime.createFromTimeUnit;
+import static uk.co.rossbeazley.centralheating.ui.HeatingTime.createFromTimeUnit;
 
 public class TestHexagonBuilder {
 
     private FakeModel model;
     private List<FakeOption> options = new ArrayList<>(10);
-    private SelectingHeatingMode.HeatingTime defaultValue;
+    private HeatingTime defaultValue;
 
     public static FakeOption[] createHeatingModeFakeOptions(String onName, String offName, String externalTimerName) {
         return new FakeOption[]{new FakeOption(onName,false),new FakeOption(offName,false),new FakeOption(externalTimerName,false)};

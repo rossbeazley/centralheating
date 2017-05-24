@@ -1,14 +1,14 @@
 package uk.co.rossbeazley.centralheating.core;
 
-import uk.co.rossbeazley.centralheating.ui.SelectingHeatingMode;
+import uk.co.rossbeazley.centralheating.ui.HeatingTime;
 
 public class HeatingTimeRange extends Option{
-    private final SelectingHeatingMode.HeatingTime from;
-    private final SelectingHeatingMode.HeatingTime to;
+    private final HeatingTime from;
+    private final HeatingTime to;
     private Option currentOptionValue;
-    private SelectingHeatingMode.HeatingTime defaultHeatingTimeValue;
+    private HeatingTime defaultHeatingTimeValue;
 
-    public HeatingTimeRange(SelectingHeatingMode.HeatingTime from, SelectingHeatingMode.HeatingTime to, Option currentOptionValue, SelectingHeatingMode.HeatingTime defaultHeatingTimeValue) {
+    public HeatingTimeRange(HeatingTime from, HeatingTime to, Option currentOptionValue, HeatingTime defaultHeatingTimeValue) {
         super("Heating Time Range");
         this.from = from;
         this.to = to;
@@ -16,7 +16,7 @@ public class HeatingTimeRange extends Option{
         this.defaultHeatingTimeValue = defaultHeatingTimeValue;
     }
 
-    public SelectingHeatingMode.HeatingTime heatingTimeValue() {
+    public HeatingTime heatingTimeValue() {
         return defaultHeatingTimeValue;
     }
 

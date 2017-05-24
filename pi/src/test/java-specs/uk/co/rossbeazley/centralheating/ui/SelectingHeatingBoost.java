@@ -11,7 +11,7 @@ import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsCollectionContaining.hasItems;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
-import static uk.co.rossbeazley.centralheating.ui.SelectingHeatingMode.HeatingTime.createFromTimeUnit;
+import static uk.co.rossbeazley.centralheating.ui.HeatingTime.createFromTimeUnit;
 
 /**
  * Created by beazlr02 on 31/01/17.
@@ -28,7 +28,7 @@ public class SelectingHeatingBoost {
     public void initialiseHeatingSubSystem() throws Exception {
         FakeOption expectedBoostTime = new FakeOption("expectedBoostTime",false);
 
-        SelectingHeatingMode.HeatingTime defaultHeatingTimeValue = createFromTimeUnit(2, SECONDS);
+        HeatingTime defaultHeatingTimeValue = createFromTimeUnit(2, SECONDS);
         heatingTimeRange = new HeatingTimeRange(createFromTimeUnit(1, SECONDS), createFromTimeUnit(3, SECONDS), expectedBoostTime, defaultHeatingTimeValue);
 
 
@@ -140,7 +140,7 @@ public class SelectingHeatingBoost {
         });
         presentationTier.buttonPress();
 
-        SelectingHeatingMode.HeatingTime increasedByOne = createFromTimeUnit(3,SECONDS);
+        HeatingTime increasedByOne = createFromTimeUnit(3,SECONDS);
         assertThat(model.lastConfiguredOption(),is(increasedByOne));
 
     }

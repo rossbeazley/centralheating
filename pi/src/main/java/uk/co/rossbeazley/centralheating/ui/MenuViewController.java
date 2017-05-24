@@ -1,6 +1,5 @@
 package uk.co.rossbeazley.centralheating.ui;
 
-import uk.co.rossbeazley.centralheating.core.FakeModel;
 import uk.co.rossbeazley.centralheating.core.HeatingTimeRange;
 import uk.co.rossbeazley.centralheating.core.Model;
 import uk.co.rossbeazley.centralheating.core.Option;
@@ -49,7 +48,7 @@ class MenuViewController implements ViewController {
         if (selectedIndex == closeIndex) {
             navigationController.presentScheduleView();
         } else {
-            model.configure(options.get(selectedIndex), new FakeModel.Callback() {
+            model.configure(options.get(selectedIndex), new Model.Callback() {
                 @Override
                 public void OK() {
                     navigationController.presentConfirmationDialog();
