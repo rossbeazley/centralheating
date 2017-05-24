@@ -29,18 +29,20 @@ class CentralHeatingSystem implements Model {
 
     @Override
     public void configure(Option option, Callback callback) {
-        external.disable();
+
         if (option.equals(onOption)) {
             gasBurner.turnOn();
             boostSystem.disable();
+            external.disable();
         } else if (option.equals(external.option())) {
             external.enable(option);
             boostSystem.disable();
         } else if (option.equals(boostSystem.option())) {
             boostSystem.enable(option);
-        }
-        else {
+            external.disable();
+        } else {
             gasBurner.turnOff();
+            external.disable();
         }
         callback.OK();
     }
