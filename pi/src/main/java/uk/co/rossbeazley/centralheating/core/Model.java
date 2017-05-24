@@ -1,7 +1,5 @@
 package uk.co.rossbeazley.centralheating.core;
 
-import uk.co.rossbeazley.centralheating.ui.SelectingHeatingMode;
-
 import java.util.List;
 
 public interface Model {
