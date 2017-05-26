@@ -1,7 +1,7 @@
 apply plugin: 'java'
 apply plugin: 'application'
 
-mainClassName = "uk.co.rossbeazley.centralheating.lanternaSpike.Main"
+mainClassName = "uk.co.rossbeazley.centralheating.lanternaSpike.Menu"
 
 
 repositories {
