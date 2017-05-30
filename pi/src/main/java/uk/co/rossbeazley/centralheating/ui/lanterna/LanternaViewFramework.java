@@ -1,5 +1,6 @@
 package uk.co.rossbeazley.centralheating.ui.lanterna;
 
+import com.googlecode.lanterna.gui2.Composite;
 import com.googlecode.lanterna.gui2.WindowBasedTextGUI;
 import uk.co.rossbeazley.centralheating.ui.ConfigurationDialogView;
 import uk.co.rossbeazley.centralheating.ui.MenuView;
@@ -9,9 +10,9 @@ import uk.co.rossbeazley.centralheating.ui.ViewFramework;
 public class LanternaViewFramework implements ViewFramework {
 
 
-    private final WindowBasedTextGUI gui;
+    private final Composite gui;
 
-    public LanternaViewFramework(WindowBasedTextGUI gui) {
+    public LanternaViewFramework(Composite gui) {
         this.gui = gui;
 
     }
@@ -24,7 +25,7 @@ public class LanternaViewFramework implements ViewFramework {
         } else if (view == SavedDialogView.class) {
 
         } else if (view == MenuView.class) {
-
+            result = (V) new LanternaMenuView(gui);
         } else {
             //error view
         }

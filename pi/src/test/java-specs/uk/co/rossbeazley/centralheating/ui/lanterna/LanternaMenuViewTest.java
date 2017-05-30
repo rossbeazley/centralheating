@@ -4,6 +4,7 @@ import com.googlecode.lanterna.gui2.ActionListBox;
 import com.googlecode.lanterna.gui2.Composite;
 import org.junit.Test;
 import uk.co.rossbeazley.centralheating.lanternaSpike.MenuFirmingTest;
+import uk.co.rossbeazley.centralheating.ui.MenuView;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,7 +22,7 @@ public class LanternaMenuViewTest {
 
         Composite window = new MenuFirmingTest.CapturingLanternaComposite();
 
-        new LanternaMenuView(window).presentOptions("one","two","three","four");
+        new LanternaViewFramework(window).create(MenuView.class).presentOptions("one", "two", "three", "four");
 
         ActionListBox actual = (ActionListBox) findComponentInCompositeByHashCode(window, LanternaMenuView.MAIN_LIST_ID);
 
