@@ -1,7 +1,5 @@
 package uk.co.rossbeazley.centralheating.lanternaSpike;
 
-import com.googlecode.lanterna.SGR;
-import com.googlecode.lanterna.TerminalPosition;
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.gui2.*;
@@ -16,41 +14,84 @@ import static com.googlecode.lanterna.gui2.Direction.VERTICAL;
 public class Menu {
 
 
-    public static void main(String... args) {
+    public static void main(String... args) throws InterruptedException {
         System.out.println("HELLO WORLD");
 
-        DefaultTerminalFactory defaultTerminalFactory = new DefaultTerminalFactory();
-        defaultTerminalFactory.setForceTextTerminal(true);
-        Terminal terminal = null;
         try {
+            DefaultTerminalFactory defaultTerminalFactory = new DefaultTerminalFactory();
+            defaultTerminalFactory.setForceTextTerminal(true);
+            Terminal terminal = null;
             terminal = defaultTerminalFactory.createTerminal();
 
             TerminalScreen terminalScreen = new TerminalScreen(terminal);
             terminalScreen.startScreen();
-            MultiWindowTextGUI gui = new MultiWindowTextGUI(terminalScreen, new DefaultWindowManager(), new EmptySpace(TextColor.ANSI.BLUE));
-            BasicWindow window = new BasicWindow();
+            WindowBasedTextGUI gui = new MultiWindowTextGUI(terminalScreen, new DefaultWindowManager(), new EmptySpace(TextColor.ANSI.BLUE));
+            Window window = new BasicWindow();
+
             gui.addWindow(window);
+            gui.getGUIThread().invokeLater(() -> {
 
+                    gotoViewFramework(gui);
 
-            createView(window);
+            });
+
 
             gui.waitForWindowToClose(window);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
-    public static void createView(BasePane window) {
+    /**
+     * Contract requires the active window to have a component set on it then the gui told to update screen
+     *
+     * @param gui
+     * @throws IOException
+     * @throws InterruptedException
+     */
+    private static void gotoViewFramework(WindowBasedTextGUI gui) {
+
+        Composite window = gui.getActiveWindow();
+        createView(window, "Menu 1");
+        try {
+            gui.updateScreen();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        createView(window, "Menu 2");
+
+    }
+
+    public static void createView(Composite rootView, String labelText) {
 
         Panel panel = new Panel();
         panel.setLayoutManager(new LinearLayout(VERTICAL));
-        TerminalSize size = new TerminalSize(14, 4);
-        ActionListBox actionListBox = new ActionListBox(size);
-        actionListBox.addItem("On", () -> {});
-        actionListBox.addItem("Off", () -> {});
-        actionListBox.addItem("External", () -> {});
-        actionListBox.addItem("Boost", () -> {});
+        Label label = new Label(labelText);
+
+        panel.addComponent(label);
+        TerminalSize size = new TerminalSize(14, 3);
+        ActionListBox actionListBox = new ActionListBox(size){
+            @Override
+            public int hashCode() {
+                return 0x26;
+            }
+        };
+
+        actionListBox.addItem("On", () -> {
+        });
+        actionListBox.addItem("Off", () -> {
+        });
+        actionListBox.addItem("External", () -> {
+        });
+        actionListBox.addItem("Boost", () -> {
+        });
         panel.addComponent(actionListBox);
 
 
@@ -72,7 +113,7 @@ public class Menu {
 //            }
 //        }).start();
 
-        window.setComponent(panel);
+        rootView.setComponent(panel);
 
     }
 }
