@@ -10,6 +10,8 @@ import static com.googlecode.lanterna.gui2.Direction.VERTICAL;
 
 public class LanternaMenuView implements MenuView {
 
+    static final int MAIN_LIST_ID = 0x26;
+
     public static final Runnable NO_ACTION = () -> {
     };
     private final ActionListBox actionListBox;
@@ -22,7 +24,7 @@ public class LanternaMenuView implements MenuView {
         actionListBox = new ActionListBox(size){
             @Override
             public int hashCode() {
-                return 0x26;
+                return MAIN_LIST_ID;
             }
         };
 
