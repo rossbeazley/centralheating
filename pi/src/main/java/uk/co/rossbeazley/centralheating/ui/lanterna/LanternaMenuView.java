@@ -8,7 +8,7 @@ import java.util.Arrays;
 
 import static com.googlecode.lanterna.gui2.Direction.VERTICAL;
 
-public class LanternaMenuView implements MenuView {
+class LanternaMenuView implements MenuView {
 
     static final int MAIN_LIST_ID = 0x26;
 

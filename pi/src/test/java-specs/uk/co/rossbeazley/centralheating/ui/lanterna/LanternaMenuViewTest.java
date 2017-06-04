@@ -40,7 +40,7 @@ public class LanternaMenuViewTest {
     highlightsTheRow() throws Exception {
         Composite window = new MenuFirmingTest.CapturingLanternaComposite();
 
-        LanternaMenuView lanternaMenuView = new LanternaMenuView(window);
+        MenuView lanternaMenuView = new LanternaViewFramework(window).create(MenuView.class);
         lanternaMenuView.presentOptions("one", "two", "three", "four");
         lanternaMenuView.selectOption(2);
 

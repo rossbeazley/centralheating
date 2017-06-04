@@ -7,10 +7,14 @@ import uk.co.rossbeazley.centralheating.ui.MenuView;
 import uk.co.rossbeazley.centralheating.ui.SavedDialogView;
 import uk.co.rossbeazley.centralheating.ui.ViewFramework;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class LanternaViewFramework implements ViewFramework {
 
 
     private final Composite gui;
+
 
     public LanternaViewFramework(Composite gui) {
         this.gui = gui;
@@ -18,18 +22,32 @@ public class LanternaViewFramework implements ViewFramework {
     }
 
     @Override
-    public <V> V create(Class<V> view) {
-        V result = null;
-        if (view == ConfigurationDialogView.class) {
-//            result = new LanternaConfigurationDialogView();
-        } else if (view == SavedDialogView.class) {
+    public <V,T extends V> T create(Class<V> view) {
 
-        } else if (view == MenuView.class) {
-            result = (V) new LanternaMenuView(gui);
-        } else {
-            //error view
+        T result = null;
+
+
+        put(MenuView.class,LanternaMenuView.class);
+
+        Class<T> t = get(view);
+        try {
+            result = t.newInstance();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
         }
 
         return result;
+    }
+
+    private Map<Class,Class> stuff = new HashMap<>();
+
+    public <T extends V, V>void put(Class<V> ifType, Class<T> conType) {
+        stuff.put(ifType,conType);
+    }
+
+    public <T extends V, V> Class<T> get(Class<V> ifType) {
+        return stuff.get(ifType);
     }
 }

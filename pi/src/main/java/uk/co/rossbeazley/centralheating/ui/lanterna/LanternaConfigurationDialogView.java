@@ -2,7 +2,7 @@ package uk.co.rossbeazley.centralheating.ui.lanterna;
 
 import uk.co.rossbeazley.centralheating.ui.ConfigurationDialogView;
 
-public class LanternaConfigurationDialogView implements ConfigurationDialogView {
+class LanternaConfigurationDialogView implements ConfigurationDialogView {
     @Override
     public void presentChoices(String... choices) {
 
