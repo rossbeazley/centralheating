@@ -21,7 +21,7 @@ public class SelectingHeatingBoost {
 
     private CapturingViewFramework capturingViewFramework;
     private FakeModel model;
-    private PresentationTier presentationTier;
+    private CanReceiveKeyInput canReceiveKeyInput;
     private HeatingTimeRange heatingTimeRange;
 
     @Before
@@ -39,7 +39,7 @@ public class SelectingHeatingBoost {
                 .build();
 
         capturingViewFramework = new CapturingViewFramework();
-        presentationTier = UIContext.imShowingTheBoostOptions(capturingViewFramework, model);
+        canReceiveKeyInput = UIContext.imShowingTheBoostOptions(capturingViewFramework, model);
 
     }
 
@@ -65,15 +65,15 @@ public class SelectingHeatingBoost {
     public void
     cancellingTheBoostAmount() {
 
-        presentationTier.buttonPress();
-        presentationTier.clockWise();
-        presentationTier.clockWise();
+        canReceiveKeyInput.buttonPress();
+        canReceiveKeyInput.clockWise();
+        canReceiveKeyInput.clockWise();
 
 
         FakeConfigurationDialogView configurationDialogView = capturingViewFramework.lastCapturedScreenFakeIfIsClass(ConfigurationDialogView.class);
         assertThat(configurationDialogView.highlightedViewWidget(),is(FakeConfigurationDialogView.CANCEL));
 
-        presentationTier.buttonPress();
+        canReceiveKeyInput.buttonPress();
         assertThat(capturingViewFramework.lastCapturedScreenClass(), is(equalTo(MenuView.class)));
     }
 
@@ -82,7 +82,7 @@ public class SelectingHeatingBoost {
     public void
     increaseBoostAmount() {
 
-        presentationTier.clockWise();
+        canReceiveKeyInput.clockWise();
 
         FakeConfigurationDialogView fakeConfigurationDialogView = capturingViewFramework.lastCapturedScreenFakeIfIsClass(ConfigurationDialogView.class);
         String valuePresented = fakeConfigurationDialogView.choices.get(0);
@@ -93,8 +93,8 @@ public class SelectingHeatingBoost {
     @Test
     public void
     acceptingTheDefaultBoostAmount() {
-        presentationTier.buttonPress();
-        presentationTier.clockWise();
+        canReceiveKeyInput.buttonPress();
+        canReceiveKeyInput.clockWise();
 
         FakeConfigurationDialogView fakeConfigurationDialogView = capturingViewFramework.lastCapturedScreenFakeIfIsClass(ConfigurationDialogView.class);
         assertThat(fakeConfigurationDialogView.highlightedViewWidget(),is(FakeConfigurationDialogView.SAVE));
@@ -108,7 +108,7 @@ public class SelectingHeatingBoost {
                 callback.OK();
             }
         });
-        presentationTier.buttonPress();
+        canReceiveKeyInput.buttonPress();
 
         assertThat(model.lastConfiguredOption(),is(createFromTimeUnit(2, SECONDS)));
         assertThat(capturingViewFramework.lastCapturedScreenClass(), is(equalTo(SavedDialogView.class)));
@@ -122,11 +122,11 @@ public class SelectingHeatingBoost {
         FakeConfigurationDialogView fakeConfigurationDialogView = capturingViewFramework.lastCapturedScreenFakeIfIsClass(ConfigurationDialogView.class);
 
         // increase boost by "one" and confirm
-        presentationTier.clockWise();
-        presentationTier.buttonPress();
+        canReceiveKeyInput.clockWise();
+        canReceiveKeyInput.buttonPress();
 
         //move to save (and check)
-        presentationTier.clockWise();
+        canReceiveKeyInput.clockWise();
         assertThat(fakeConfigurationDialogView.highlightedViewWidget(),is(FakeConfigurationDialogView.SAVE));
 
         // select ok
@@ -138,7 +138,7 @@ public class SelectingHeatingBoost {
                 callback.OK();
             }
         });
-        presentationTier.buttonPress();
+        canReceiveKeyInput.buttonPress();
 
         HeatingTime increasedByOne = createFromTimeUnit(3,SECONDS);
         assertThat(model.lastConfiguredOption(),is(increasedByOne));

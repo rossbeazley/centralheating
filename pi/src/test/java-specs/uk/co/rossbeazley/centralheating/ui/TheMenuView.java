@@ -19,7 +19,7 @@ public class TheMenuView {
     @Test
     public void displaysCloseOption() throws Exception {
         CapturingViewFramework capturingViewFramework = new CapturingViewFramework();
-        PresentationTier presentationTier = imInTheMenuview(capturingViewFramework, new TestHexagonBuilder().withGenericConfigOptions("Option1").build());
+        CanReceiveKeyInput canReceiveKeyInput = imInTheMenuview(capturingViewFramework, new TestHexagonBuilder().withGenericConfigOptions("Option1").build());
         FakeMenuView fakeMenuView = capturingViewFramework.lastCapturedScreenFake();
         assertThat(fakeMenuView.optionsDisplayed, hasItem("Close"));
     }
@@ -33,10 +33,10 @@ public class TheMenuView {
         Model model = new TestHexagonBuilder().withGenericConfigOptions("Option1").build();
         CapturingViewFramework capturingViewFramework = new CapturingViewFramework();
 
-        PresentationTier presentationTier = imInTheMenuview(capturingViewFramework, model);
+        CanReceiveKeyInput canReceiveKeyInput = imInTheMenuview(capturingViewFramework, model);
 
 
-        presentationTier.clockWise();
+        canReceiveKeyInput.clockWise();
 
         FakeMenuView fakeMenuView = capturingViewFramework.lastCapturedScreenFake();
         assertThat(fakeMenuView.optionSelected, is("Close"));
@@ -51,11 +51,11 @@ public class TheMenuView {
         Model model = new TestHexagonBuilder().withGenericConfigOptions("Option1").build();
         CapturingViewFramework capturingViewFramework = new CapturingViewFramework();
 
-        PresentationTier presentationTier = imInTheMenuview(capturingViewFramework, model);
+        CanReceiveKeyInput canReceiveKeyInput = imInTheMenuview(capturingViewFramework, model);
 
 
-        presentationTier.clockWise();
-        presentationTier.clockWise();
+        canReceiveKeyInput.clockWise();
+        canReceiveKeyInput.clockWise();
 
         FakeMenuView fakeMenuView = capturingViewFramework.lastCapturedScreenFake();
         assertThat(fakeMenuView.optionSelected, is("Option1"));
@@ -68,7 +68,7 @@ public class TheMenuView {
         Model model = new TestHexagonBuilder().withGenericConfigOptions("Option1").build();
         CapturingViewFramework capturingViewFramework = new CapturingViewFramework();
 
-        PresentationTier presentationTier = imInTheMenuview(capturingViewFramework, model);
+        CanReceiveKeyInput canReceiveKeyInput = imInTheMenuview(capturingViewFramework, model);
 
         FakeMenuView fakeMenuView = capturingViewFramework.lastCapturedScreenFake();
         assertThat(fakeMenuView.optionsDisplayed, hasItems("Option1", "Close"));
@@ -82,7 +82,7 @@ public class TheMenuView {
         Model model = new TestHexagonBuilder().withGenericConfigOptions("Option1").build();
         CapturingViewFramework capturingViewFramework = new CapturingViewFramework();
 
-        PresentationTier presentationTier = imInTheMenuview(capturingViewFramework, model);
+        CanReceiveKeyInput canReceiveKeyInput = imInTheMenuview(capturingViewFramework, model);
 
         FakeMenuView fakeMenuView = capturingViewFramework.lastCapturedScreenFake();
         assertThat(fakeMenuView.optionSelected, is("Option1"));
@@ -93,21 +93,21 @@ public class TheMenuView {
     public void closeIsTheReturnsToScheduleView() {
 
         CapturingViewFramework capturingViewFramework = new CapturingViewFramework();
-        PresentationTier presentationTier = imInTheMenuview(capturingViewFramework, new TestHexagonBuilder().withNoConfigOptions().build());
-        presentationTier.buttonPress();
+        CanReceiveKeyInput canReceiveKeyInput = imInTheMenuview(capturingViewFramework, new TestHexagonBuilder().withNoConfigOptions().build());
+        canReceiveKeyInput.buttonPress();
 
         Class screenDisplayed = capturingViewFramework.lastCapturedScreenClass();
         assertThat(screenDisplayed,is(equalTo(ScheduleView.class)));
     }
 
-    private PresentationTier imInTheMenuview(CapturingViewFramework capturingViewFramework, Model model) {
-        PresentationTier presentationTier = new PresentationTier(capturingViewFramework, model);
-        presentationTier.buttonPress();
+    private CanReceiveKeyInput imInTheMenuview(CapturingViewFramework capturingViewFramework, Model model) {
+        CanReceiveKeyInput canReceiveKeyInput = new PresentationTier(capturingViewFramework, model);
+        canReceiveKeyInput.buttonPress();
 
         Class screenDisplayed = capturingViewFramework.lastCapturedScreenClass();
         assertThat("Precondition failed, screen displayed",screenDisplayed,is(equalTo(MenuView.class)));
 
-        return presentationTier;
+        return canReceiveKeyInput;
     }
 
 }

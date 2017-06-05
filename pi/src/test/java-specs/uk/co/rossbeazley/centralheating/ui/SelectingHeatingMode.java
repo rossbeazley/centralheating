@@ -43,7 +43,7 @@ public class SelectingHeatingMode {
     showMenuOptionsForHeatingMode() throws Exception {
         capturingViewFramework = new CapturingViewFramework();
 
-        PresentationTier presentationTier = UIContext.imInTheMenuview(capturingViewFramework, model);
+        CanReceiveKeyInput canReceiveKeyInput = UIContext.imInTheMenuview(capturingViewFramework, model);
 
         FakeMenuView fakeMenuView = capturingViewFramework.lastCapturedScreenFake();
         assertThat(fakeMenuView.optionsDisplayed, hasItems("On","Off","External Timer Clock", "Boost"));
@@ -55,10 +55,10 @@ public class SelectingHeatingMode {
     public void
     selectingONDisplaysConfirmationDialog() throws Exception {
         capturingViewFramework = new CapturingViewFramework();
-        PresentationTier presentationTier = UIContext.imInTheMenuview(capturingViewFramework, model);
+        CanReceiveKeyInput canReceiveKeyInput = UIContext.imInTheMenuview(capturingViewFramework, model);
 
-        presentationTier.clockWise();
-        presentationTier.buttonPress();
+        canReceiveKeyInput.clockWise();
+        canReceiveKeyInput.buttonPress();
 
         assertThat(model.lastConfiguredOption(), is(new FakeOption("Off",false)));
         FakeSavedDialogView fakeConfigurationDialogView = capturingViewFramework.lastCapturedScreenFakeIfIsClass(SavedDialogView.class);
@@ -69,12 +69,12 @@ public class SelectingHeatingMode {
     public void
     selectingBoostDisplaysConfigDialog() throws Exception {
         capturingViewFramework = new CapturingViewFramework();
-        PresentationTier presentationTier = UIContext.imInTheMenuview(capturingViewFramework, model);
+        CanReceiveKeyInput canReceiveKeyInput = UIContext.imInTheMenuview(capturingViewFramework, model);
 
-        presentationTier.clockWise();
-        presentationTier.clockWise();
-        presentationTier.clockWise();
-        presentationTier.buttonPress();
+        canReceiveKeyInput.clockWise();
+        canReceiveKeyInput.clockWise();
+        canReceiveKeyInput.clockWise();
+        canReceiveKeyInput.buttonPress();
 
         //check we configured the option we expect
         Option fakeOption = model.lastConfiguredOption();
@@ -93,19 +93,19 @@ public class SelectingHeatingMode {
     public void
     confirmationDialogCloses() throws Exception {
         capturingViewFramework = new CapturingViewFramework();
-        PresentationTier presentationTier = UIContext.imInTheMenuview(capturingViewFramework, model);
-        thenImInTheConfirmationDialog(presentationTier);
+        CanReceiveKeyInput canReceiveKeyInput = UIContext.imInTheMenuview(capturingViewFramework, model);
+        thenImInTheConfirmationDialog(canReceiveKeyInput);
 
-        presentationTier.buttonPress(); // <- is a close operation really
+        canReceiveKeyInput.buttonPress(); // <- is a close operation really
 
         FakeMenuView fakeConfigurationDialogView = capturingViewFramework.lastCapturedScreenFakeIfIsClass(MenuView.class);
         assertThat(fakeConfigurationDialogView, isA(FakeMenuView.class));
 
     }
 
-    public void thenImInTheConfirmationDialog(PresentationTier presentationTier) {
-        presentationTier.clockWise();
-        presentationTier.buttonPress();
+    public void thenImInTheConfirmationDialog(CanReceiveKeyInput canReceiveKeyInput) {
+        canReceiveKeyInput.clockWise();
+        canReceiveKeyInput.buttonPress();
     }
 
 }

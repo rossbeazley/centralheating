@@ -14,8 +14,8 @@ public class OpeningTheMenu {
 
         CapturingViewFramework capturingViewFramework = new CapturingViewFramework();
 
-        PresentationTier presentationTier = new PresentationTier(capturingViewFramework, new TestHexagonBuilder().withAnyOptions().build());
-        presentationTier.buttonPress();
+        CanReceiveKeyInput canReceiveKeyInput = new PresentationTier(capturingViewFramework, new TestHexagonBuilder().withAnyOptions().build());
+        canReceiveKeyInput.buttonPress();
 
         Class screenDisplayed = capturingViewFramework.lastCapturedScreenClass();
         assertThat(screenDisplayed,is(equalTo(MenuView.class)));
