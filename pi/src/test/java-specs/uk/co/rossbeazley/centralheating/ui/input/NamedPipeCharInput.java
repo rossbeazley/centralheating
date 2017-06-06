@@ -1,11 +1,8 @@
 package uk.co.rossbeazley.centralheating.ui.input;
 
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
 import uk.co.rossbeazley.centralheating.ui.CanReceiveKeyInput;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.util.UUID;
 
@@ -13,7 +10,7 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 public class NamedPipeCharInput {
-    private CollectingCanReceiveKeyInput canReceiveKeyInput = new CollectingCanReceiveKeyInput()
+    private CollectingCanReceiveKeyInput canReceiveKeyInput = new CollectingCanReceiveKeyInput();
 
 
 
