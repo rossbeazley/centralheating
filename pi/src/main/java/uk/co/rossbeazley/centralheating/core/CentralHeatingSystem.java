@@ -3,7 +3,7 @@ package uk.co.rossbeazley.centralheating.core;
 import java.util.Arrays;
 import java.util.List;
 
-class CentralHeatingSystem implements Model {
+public class CentralHeatingSystem implements Model {
 
     private final Option onOption;
     private final Option offOption;

@@ -1,6 +1,6 @@
 package uk.co.rossbeazley.centralheating.core;
 
-class ExternalTimerSystem implements ExternalTimer.Observer {
+public class ExternalTimerSystem implements ExternalTimer.Observer {
     private final Option option;
     private State state;
     private ExternalTimer externalTimer;

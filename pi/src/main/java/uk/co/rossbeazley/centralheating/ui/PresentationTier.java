@@ -5,7 +5,7 @@ import uk.co.rossbeazley.centralheating.core.*;
 /**
  * Created by beazlr02 on 23/01/17.
  */
-class PresentationTier {
+public class PresentationTier {
     private final ViewFramework viewFramework;
     private ViewController topViewController;
     private Model model;
