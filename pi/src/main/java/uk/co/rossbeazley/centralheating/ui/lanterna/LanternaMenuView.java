@@ -1,6 +1,7 @@
 package uk.co.rossbeazley.centralheating.ui.lanterna;
 
 import com.googlecode.lanterna.TerminalSize;
+import com.googlecode.lanterna.graphics.Theme;
 import com.googlecode.lanterna.gui2.*;
 import uk.co.rossbeazley.centralheating.ui.MenuView;
 
@@ -20,14 +21,13 @@ class LanternaMenuView implements MenuView {
         Panel panel = new Panel();
         panel.setLayoutManager(new LinearLayout(VERTICAL));
 
-        TerminalSize size = new TerminalSize(14, 3);
+        TerminalSize size = new TerminalSize(30, 10);
         actionListBox = new ActionListBox(size){
             @Override
             public int hashCode() {
                 return MAIN_LIST_ID;
             }
         };
-
 
         panel.addComponent(actionListBox);
 

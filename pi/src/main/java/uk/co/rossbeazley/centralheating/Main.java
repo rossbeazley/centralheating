@@ -7,9 +7,12 @@ import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
 import uk.co.rossbeazley.centralheating.core.*;
 import uk.co.rossbeazley.centralheating.ui.PresentationTier;
+import uk.co.rossbeazley.centralheating.ui.input.NamedPipeKeyInputSpike;
 import uk.co.rossbeazley.centralheating.ui.lanterna.LanternaViewFramework;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
@@ -78,12 +81,10 @@ public class Main {
      */
     private static void gotoViewFramework(Composite gui) {
 
-        ExternalTimer externalTimer = new ExternalTimer() {
-            @Override
-            public void addObserver(Observer observer) {
-                observer.externalTimerOff();
-            }
-        };
+        List<ExternalTimer.Observer> observers = new ArrayList<>();
+
+        ExternalTimer externalTimer = observers::add;
+
 
         GasBurner gasBurner = new GasBurner() {
             @Override
@@ -105,7 +106,19 @@ public class Main {
         CentralHeatingSystem centralHeatingSystem = new CentralHeatingSystem("On", "Off", externalTimerSystem, gasBurner, boostSystem);
 
         PresentationTier presentationTier = new PresentationTier(new LanternaViewFramework(gui), centralHeatingSystem);
-        presentationTier.buttonPress();
+
+        NamedPipeKeyInputSpike namedPipeKeyInputSpike = new NamedPipeKeyInputSpike("/tmp/keys", presentationTier);
+        namedPipeKeyInputSpike.addObserver(new ExternalTimer.Observer() {
+            @Override
+            public void externalTimerOn() {
+                observers.forEach(ExternalTimer.Observer::externalTimerOn);
+            }
+
+            @Override
+            public void externalTimerOff() {
+                observers.forEach(ExternalTimer.Observer::externalTimerOff);
+            }
+        });
 
     }
 }

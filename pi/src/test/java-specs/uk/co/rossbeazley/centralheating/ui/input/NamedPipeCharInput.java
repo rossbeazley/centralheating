@@ -19,7 +19,7 @@ public class NamedPipeCharInput {
 
         String pathToPipe = generateNameOfPipeForWriting();
         createPipe(pathToPipe);
-        new NamedPipeKeyInput(pathToPipe, canReceiveKeyInput);
+        new NamedPipeKeyInputSpike(pathToPipe, canReceiveKeyInput);
         FileWriter pipe = openPipe(pathToPipe);
 
         System.out.println("writing");
@@ -81,38 +81,4 @@ public class NamedPipeCharInput {
         }
     }
 
-    private class NamedPipeKeyInput {
-        public NamedPipeKeyInput(String pathToPipe, CollectingCanReceiveKeyInput canReceiveKeyInput) {
-
-            final FileReader[] fileReader = {null};
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    System.out.println("Making filereader");
-                    try {
-                        fileReader[0] = new FileReader(pathToPipe);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                    System.out.println("Got filereader");
-                    final FileReader finalFileReader = fileReader[0];
-
-                    char c='a';
-                    do {
-                        try {
-                            c = (char) finalFileReader.read();
-                            if (c == 'c') {
-                                canReceiveKeyInput.clockWise();
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-
-                    } while (c != 'q');
-
-                }
-            }).start();
-
-        }
-    }
 }
