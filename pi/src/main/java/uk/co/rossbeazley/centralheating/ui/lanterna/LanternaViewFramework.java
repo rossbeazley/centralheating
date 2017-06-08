@@ -21,7 +21,12 @@ public class LanternaViewFramework implements ViewFramework {
 //            result = new LanternaConfigurationDialogView();
 
         } else if (view == SavedDialogView.class) {
-
+            result = (V) new SavedDialogView(){
+                {
+                    LanternaMenuView v = new LanternaMenuView(gui);
+                    v.presentOptions("SAVED");
+                }
+            };
         } else if (view == MenuView.class) {
 
             result = (V) new LanternaMenuView(gui);
