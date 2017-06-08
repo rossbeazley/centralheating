@@ -47,6 +47,7 @@ public class LanternaMenuViewTest {
         ActionListBox actual = (ActionListBox) findComponentInCompositeByHashCode(window, LanternaMenuView.MAIN_LIST_ID);
 
         assertThat(actual.getSelectedItem().toString(),is("three"));
+        assertThat(actual.isFocused(),is(true));
 
     }
 }

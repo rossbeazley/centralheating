@@ -63,7 +63,7 @@ public class Main {
 
     public static WindowBasedTextGUI buildTerminalGui() throws IOException {
         DefaultTerminalFactory defaultTerminalFactory = new DefaultTerminalFactory();
-        defaultTerminalFactory.setForceTextTerminal(true);
+//        defaultTerminalFactory.setForceTextTerminal(true);
         Terminal terminal = null;
         terminal = defaultTerminalFactory.createTerminal();
 

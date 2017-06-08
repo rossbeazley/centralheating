@@ -13,12 +13,15 @@ class LanternaMenuView implements MenuView {
 
     static final int MAIN_LIST_ID = 0x26;
 
-    public static final Runnable NO_ACTION = () -> {
-    };
+    public static final Runnable NO_ACTION = () -> {};
+
     private final ActionListBox actionListBox;
+    private final Panel panel;
+    private final Composite rootView;
 
     public LanternaMenuView(Composite rootView) {
-        Panel panel = new Panel();
+        this.rootView = rootView;
+        panel = new Panel();
         panel.setLayoutManager(new LinearLayout(VERTICAL));
 
         TerminalSize size = new TerminalSize(30, 10);
@@ -37,6 +40,7 @@ class LanternaMenuView implements MenuView {
     @Override
     public void presentOptions(String... optionStrings) {
         Arrays.asList(optionStrings).forEach(s -> actionListBox.addItem(s,NO_ACTION));
+        actionListBox.takeFocus();
     }
 
     @Override

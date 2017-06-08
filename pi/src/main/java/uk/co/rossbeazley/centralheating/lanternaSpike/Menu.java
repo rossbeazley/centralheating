@@ -97,21 +97,21 @@ public class Menu {
 
         // Create gui and start gui
 
-//
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//
-//                try {
-//                    for (int i = 0; i < actionListBox.getItemCount(); i++) {
-//                        Thread.sleep(1500);
-//                        actionListBox.setSelectedIndex(i);
-//                    }
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }).start();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                try {
+                    for (int i = 0; i < actionListBox.getItemCount(); i++) {
+                        Thread.sleep(1500);
+                        actionListBox.setSelectedIndex(i);
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
 
         rootView.setComponent(panel);
 
