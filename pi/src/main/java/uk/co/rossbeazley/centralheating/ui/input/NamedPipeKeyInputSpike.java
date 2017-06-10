@@ -57,7 +57,7 @@ public class NamedPipeKeyInputSpike implements ExternalTimer {
                 do {
                     try {
                         c = (char) finalFileReader.read();
-//                        System.err.println(c);
+                        System.err.println("read:"+c);
                         switch (c) {
                             case 'c':
                                 canReceiveKeyInput.clockWise();
