@@ -21,25 +21,70 @@ public class Main {
 
     public static void main(String... args) throws InterruptedException {
 
-        try {
-            WindowBasedTextGUI gui = buildTerminalGui();
-            Window window = new BasicWindow();
+        Runnable textGUI = build(gui -> {
+            List<ExternalTimer.Observer> observers = new ArrayList<>();
 
-            gui.addWindow(window);
-            gui.getGUIThread().invokeLater(() -> {
+            ExternalTimer externalTimer = observers::add;
 
-                Composite c = wrapWindowInDirtyUpdater(window);
-                gotoViewFramework(c);
 
+            GasBurner gasBurner = new GasBurner() {
+                @Override
+                public void turnOn() {
+                    System.err.println("GASS BURNER ON");
+                }
+
+                @Override
+                public void turnOff() {
+                    System.err.println("GASS BURNER OFF");
+
+                }
+            };
+            ExternalTimerSystem externalTimerSystem = new ExternalTimerSystem("External Timer", externalTimer, gasBurner);
+            BoostSystem boostSystem = new BoostSystem("Boost 1 hour", gasBurner);
+
+            Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> boostSystem.timeIsAt(System.currentTimeMillis()), 0, 1, TimeUnit.SECONDS);
+
+            CentralHeatingSystem centralHeatingSystem = new CentralHeatingSystem("On", "Off", externalTimerSystem, gasBurner, boostSystem);
+
+            PresentationTier presentationTier = new PresentationTier(new LanternaViewFramework(gui), centralHeatingSystem);
+
+            NamedPipeKeyInputSpike namedPipeKeyInputSpike = new NamedPipeKeyInputSpike("/tmp/keys", presentationTier);
+            namedPipeKeyInputSpike.addObserver(new ExternalTimer.Observer() {
+                @Override
+                public void externalTimerOn() {
+                    observers.forEach(ExternalTimer.Observer::externalTimerOn);
+                }
+
+                @Override
+                public void externalTimerOff() {
+                    observers.forEach(ExternalTimer.Observer::externalTimerOff);
+                }
             });
 
+        });
 
-            gui.waitForWindowToClose(window);
+        textGUI.run();
+
+    }
+
+    public static Runnable build(AppCompositeBuilder app) {
+        try {
+            final WindowBasedTextGUI gui = buildTerminalGui();
+
+            final Window window = new BasicWindow();
+            gui.addWindow(window);
+
+            Composite c = wrapWindowInDirtyUpdater(window);
+
+            gui.getGUIThread().invokeLater(() -> app.gotoViewFramework(c));
+
+
+            return () -> gui.waitForWindowToClose(window);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        return ()->{};
     }
 
     public static Composite wrapWindowInDirtyUpdater(Window window) {
@@ -72,6 +117,10 @@ public class Main {
         return new MultiWindowTextGUI(terminalScreen, new DefaultWindowManager(), new EmptySpace(TextColor.ANSI.BLUE));
     }
 
+    public interface AppCompositeBuilder {
+        void gotoViewFramework(Composite gui);
+    }
+
     /**
      * Contract requires the active window to have a component set on it then the gui told to update screen
      *
@@ -81,44 +130,6 @@ public class Main {
      */
     private static void gotoViewFramework(Composite gui) {
 
-        List<ExternalTimer.Observer> observers = new ArrayList<>();
-
-        ExternalTimer externalTimer = observers::add;
-
-
-        GasBurner gasBurner = new GasBurner() {
-            @Override
-            public void turnOn() {
-                System.err.println("GASS BURNER ON");
-            }
-
-            @Override
-            public void turnOff() {
-                System.err.println("GASS BURNER OFF");
-
-            }
-        };
-        ExternalTimerSystem externalTimerSystem = new ExternalTimerSystem("External Timer", externalTimer, gasBurner);
-        BoostSystem boostSystem = new BoostSystem("Boost 1 hour", gasBurner);
-
-        Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> boostSystem.timeIsAt(System.currentTimeMillis()),0,1, TimeUnit.SECONDS);
-
-        CentralHeatingSystem centralHeatingSystem = new CentralHeatingSystem("On", "Off", externalTimerSystem, gasBurner, boostSystem);
-
-        PresentationTier presentationTier = new PresentationTier(new LanternaViewFramework(gui), centralHeatingSystem);
-
-        NamedPipeKeyInputSpike namedPipeKeyInputSpike = new NamedPipeKeyInputSpike("/tmp/keys", presentationTier);
-        namedPipeKeyInputSpike.addObserver(new ExternalTimer.Observer() {
-            @Override
-            public void externalTimerOn() {
-                observers.forEach(ExternalTimer.Observer::externalTimerOn);
-            }
-
-            @Override
-            public void externalTimerOff() {
-                observers.forEach(ExternalTimer.Observer::externalTimerOff);
-            }
-        });
 
     }
 }
