@@ -13,30 +13,6 @@ public class NamedPipeKeyInputSpike implements ExternalTimer {
 
     private List<Observer> observers = new ArrayList<>();
 
-    public static void main(String...args) {
-        NamedPipeKeyInputSpike clockwise = new NamedPipeKeyInputSpike(args[0], new CanReceiveKeyInput() {
-            @Override
-            public void buttonPress() {
-                System.err.println("BUTTON PRESS");
-            }
-
-            @Override
-            public void clockWise() {
-                System.err.println("CLOCKWISE");
-            }
-        });
-        clockwise.addObserver(new Observer() {
-            @Override
-            public void externalTimerOn() {
-                System.err.println("ON");
-            }
-
-            @Override
-            public void externalTimerOff() {
-                System.err.println("OFF");
-            }
-        });
-    }
 
     public NamedPipeKeyInputSpike(String pathToPipe, CanReceiveKeyInput canReceiveKeyInput) {
 
@@ -89,5 +65,31 @@ public class NamedPipeKeyInputSpike implements ExternalTimer {
     @Override
     public void addObserver(Observer observer) {
         this.observers.add(observer);
+    }
+
+
+    public static void main(String...args) {
+        NamedPipeKeyInputSpike clockwise = new NamedPipeKeyInputSpike(args[0], new CanReceiveKeyInput() {
+            @Override
+            public void buttonPress() {
+                System.err.println("BUTTON PRESS");
+            }
+
+            @Override
+            public void clockWise() {
+                System.err.println("CLOCKWISE");
+            }
+        });
+        clockwise.addObserver(new Observer() {
+            @Override
+            public void externalTimerOn() {
+                System.err.println("ON");
+            }
+
+            @Override
+            public void externalTimerOff() {
+                System.err.println("OFF");
+            }
+        });
     }
 }
