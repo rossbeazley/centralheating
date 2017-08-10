@@ -1,0 +1,25 @@
+apply plugin: 'application'
+
+
+mainClassName = "uk.co.rossbeazley.centralheating.Main"
+
+dependencies {
+    compile project(':pi')
+}
+
+
+distributions {
+    main {
+        baseName = 'heating'
+        contents {
+            from { ['../hardware/rotary_switch',
+                    'heating.sh']
+            }
+        }
+    }
+}
+
+
+repositories {
+    jcenter()
+}

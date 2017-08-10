@@ -1,1 +1,1 @@
-include ':pi'
+include ':pi', ':main', ':hardware'

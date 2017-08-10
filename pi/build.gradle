@@ -19,7 +19,7 @@ sourceSets {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    testCompile fileTree(include: ['*.jar'], dir: 'libs')
     //https://github.com/mabe02/lanterna
     compile 'com.googlecode.lanterna:lanterna:3.0.0-rc1'
     //testCompile 'org.fluttercode.datafactory:datafactory:0.8'

@@ -20,23 +20,26 @@ public class NamedPipeKeyInputSpike implements ExternalTimer {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                System.err.println("Making filereader");
+                //System.err.println("Making filereader");
                 try {
                     fileReader[0] = new FileReader(pathToPipe);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
-                System.err.println("Got filereader");
+                //System.err.println("Got filereader " + pathToPipe);
                 final FileReader finalFileReader = fileReader[0];
 
                 char c='a';
                 do {
                     try {
                         c = (char) finalFileReader.read();
-                        System.err.println("read:"+c);
+                        //System.err.println("read:"+c);
                         switch (c) {
                             case 'c':
                                 canReceiveKeyInput.clockWise();
+                                break;
+                            case 'a':
+                                canReceiveKeyInput./*anti*/clockWise();
                                 break;
                             case 'b':
                                 canReceiveKeyInput.buttonPress();

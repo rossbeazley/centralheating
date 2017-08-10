@@ -5,6 +5,7 @@
 #http://www.stuffaboutcode.com/2015/05/raspberry-pi-and-ky040-rotary-encoder.html
 
 import RPi.GPIO as GPIO
+import sys
 from time import sleep
 
 class KY040:
@@ -55,9 +56,11 @@ if __name__ == "__main__":
     def rotaryChange(direction):
         if direction == 0:
             print "c"
+            sys.stdout.flush()
 
     def switchPressed():
         print "b"
+        sys.stdout.flush()
 
     GPIO.setmode(GPIO.BCM)
     

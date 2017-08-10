@@ -1,0 +1,19 @@
+configurations.maybeCreate("rotarySwitch")
+artifacts.add("rotarySwitch", file('rotary_switch/KY040.py'))
+
+configurations.maybeCreate("tempSensor")
+artifacts.add("tempSensor", file('temp/bme280.py'))
+
+/*
+
+configurations {
+  schema
+}
+
+
+//associating the task that produces the artifact with the configuration
+artifacts {
+  default :smp-an-droid:assembleRelease
+}
+
+ */

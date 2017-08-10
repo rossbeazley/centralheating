@@ -48,7 +48,8 @@ public class Main {
 
             PresentationTier presentationTier = new PresentationTier(new LanternaViewFramework(gui), centralHeatingSystem);
 
-            NamedPipeKeyInputSpike namedPipeKeyInputSpike = new NamedPipeKeyInputSpike("/tmp/keys", presentationTier);
+            String pathToPipe = args.length>0 ? args[0] : "/tmp/keys";
+            NamedPipeKeyInputSpike namedPipeKeyInputSpike = new NamedPipeKeyInputSpike(pathToPipe, presentationTier);
             namedPipeKeyInputSpike.addObserver(new ExternalTimer.Observer() {
                 @Override
                 public void externalTimerOn() {
