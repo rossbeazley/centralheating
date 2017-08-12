@@ -9,7 +9,7 @@ if __name__ == "__main__":
 
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(PIN, GPIO.OUT)
-    if sys.argv[1]=="on":
+    if sys.argv[1] == "on":
         GPIO.write(PIN, GPIO.HIGH)
     else:
         GPIO.write(PIN, GPIO.LOW)
