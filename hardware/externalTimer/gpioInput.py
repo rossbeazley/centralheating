@@ -12,34 +12,45 @@ class GpioInteruptInput:
 
     CLOCKWISE = 0
     ANTICLOCKWISE = 1
-    
-    def __init__(self, switchPin, switchCallback):
+
+    def __init__(self, switchPin, switchOn, switchOff):
         self.switchPin = switchPin
-        self.switchCallback = switchCallback
+        self.switchOn = switchOn
+        self.switchOff = switchOff
         GPIO.setup(switchPin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
     def start(self):
         GPIO.add_event_detect(self.switchPin, GPIO.FALLING, callback=self._switchCallback, bouncetime=300)
+        self.announceState()
 
     def stop(self):
         GPIO.remove_event_detect(self.switchPin)
 
     def _switchCallback(self, pin):
-        if GPIO.input(self.switchPin) == 0:
-            self.switchCallback()
+        self.announceState()
 
-#test
+    def announceState(self):
+        if GPIO.input(self.switchPin) == 0:
+            self.switchOn()
+        else:
+            self.switchOff()
+
+
 if __name__ == "__main__":
-    
+
     SWITCHPIN = 23
 
-    def switchPressed():
-        print "b"
+    def switchOn():
+        print "n"
+        sys.stdout.flush()
+
+    def switchOff():
+        print "f"
         sys.stdout.flush()
 
     GPIO.setmode(GPIO.BCM)
 
-    gpioInteruptInput = GpioInteruptInput(SWITCHPIN, switchPressed)
+    gpioInteruptInput = GpioInteruptInput(SWITCHPIN, switchOn, switchOff)
 
     gpioInteruptInput.start()
 
