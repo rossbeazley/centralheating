@@ -24,7 +24,7 @@ class LanternaMenuView implements MenuView {
         panel = new Panel();
         panel.setLayoutManager(new LinearLayout(VERTICAL));
 
-        TerminalSize size = new TerminalSize(30, 10);
+        TerminalSize size = new TerminalSize(27, 6);
 
         actionListBox = new ActionListBox(size){
             @Override
