@@ -39,7 +39,7 @@ public class NamedPipeKeyInputSpike implements ExternalTimer {
                                 canReceiveKeyInput.clockWise();
                                 break;
                             case 'a':
-                                canReceiveKeyInput./*anti*/clockWise();
+                                canReceiveKeyInput.antiClockWise();
                                 break;
                             case 'b':
                                 canReceiveKeyInput.buttonPress();
@@ -81,6 +81,11 @@ public class NamedPipeKeyInputSpike implements ExternalTimer {
             @Override
             public void clockWise() {
                 System.err.println("CLOCKWISE");
+            }
+
+            @Override
+            public void antiClockWise() {
+
             }
         });
         clockwise.addObserver(new Observer() {

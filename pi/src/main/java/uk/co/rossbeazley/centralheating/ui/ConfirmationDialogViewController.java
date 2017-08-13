@@ -21,4 +21,9 @@ class ConfirmationDialogViewController implements ViewController {
     public void buttonClockwise() {
 
     }
+
+    @Override
+    public void buttonAnticlockwise() {
+
+    }
 }

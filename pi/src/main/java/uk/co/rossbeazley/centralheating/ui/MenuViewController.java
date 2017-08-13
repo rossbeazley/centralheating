@@ -71,7 +71,18 @@ class MenuViewController implements ViewController {
         menuView.selectOption(selectedIndex);
     }
 
+    @Override
+    public void buttonAnticlockwise() {
+        this.selectedIndex--;
+        wrapAroundToEnd();
+        menuView.selectOption(selectedIndex);
+    }
+
     private void wrapAroundToStart() {
         this.selectedIndex = this.selectedIndex % this.optionsAsString.length;
+    }
+
+    private void wrapAroundToEnd() {
+        this.selectedIndex = this.selectedIndex < 0 ? this.optionsAsString.length-1 : this.selectedIndex;
     }
 }

@@ -56,7 +56,9 @@ if __name__ == "__main__":
     def rotaryChange(direction):
         if direction == 0:
             print "c"
-            sys.stdout.flush()
+        else:
+            print "a"
+        sys.stdout.flush()
 
     def switchPressed():
         print "b"

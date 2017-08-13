@@ -62,6 +62,7 @@ public class NamedPipeCharInput {
 
     private static class CollectingCanReceiveKeyInput implements CanReceiveKeyInput {
         private static final String Clockwise = "right";
+        private static final String Anticlockwise = "left";
         private static final String ButtonPress = "button press";
         private static final String None = "none";
         private String command = None;
@@ -74,6 +75,11 @@ public class NamedPipeCharInput {
         @Override
         public void clockWise() {
             command = Clockwise;
+        }
+
+        @Override
+        public void antiClockWise() {
+            command = Anticlockwise;
         }
 
         public void reset() {

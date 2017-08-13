@@ -4,4 +4,6 @@ public interface ViewController {
     void buttonPress();
 
     void buttonClockwise();
+
+    void buttonAnticlockwise();
 }

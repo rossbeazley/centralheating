@@ -28,6 +28,11 @@ public class PresentationTier implements CanReceiveKeyInput {
         topViewController.buttonClockwise();
     }
 
+    @Override
+    public void antiClockWise() {
+        topViewController.buttonAnticlockwise();
+    }
+
     void becomeFirstResponder(ViewController topViewController) {
         this.topViewController = topViewController;
     }

@@ -20,4 +20,9 @@ class ScheduleViewController implements ViewController {
     public void buttonClockwise() {
 
     }
+
+    @Override
+    public void buttonAnticlockwise() {
+
+    }
 }

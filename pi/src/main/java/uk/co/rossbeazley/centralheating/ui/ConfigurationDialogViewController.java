@@ -70,4 +70,9 @@ class ConfigurationDialogViewController implements ViewController {
             }
         }
     }
+
+    @Override
+    public void buttonAnticlockwise() {
+
+    }
 }
