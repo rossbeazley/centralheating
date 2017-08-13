@@ -13,7 +13,8 @@ distributions {
         baseName = 'heating'
         contents {
             from { ['../hardware/rotary_switch',
-                    'heating.sh']
+                    'heating.sh',
+                    '../shell']
             }
         }
     }
