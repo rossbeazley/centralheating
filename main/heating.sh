@@ -15,8 +15,12 @@ function killKY040() {
 kill -9 $KY_PID
 }
 
+echo setup gpio 4 relay
+sudo heating/gpio mode 4 out
+sudo heating/gpio state 4
+
 echo main $!
-bin/main /tmp/pipe
+bin/main /tmp/pipe /sys/class/gpio/gpio4/value
 
 killKY040
 

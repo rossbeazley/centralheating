@@ -14,7 +14,8 @@ distributions {
         contents {
             from { ['../hardware/rotary_switch',
                     'heating.sh',
-                    '../shell']
+                    '../shell',
+                    '../hardware/externalTimer']
             }
         }
     }
