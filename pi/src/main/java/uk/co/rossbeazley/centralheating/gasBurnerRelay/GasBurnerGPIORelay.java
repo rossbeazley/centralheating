@@ -8,14 +8,17 @@ import java.nio.file.Path;
 
 public class GasBurnerGPIORelay implements GasBurner {
 
+    private final String offValue;
+    private String onValue;
+
     @Override
     public void turnOn() {
-        write("1", this.filePath);
+        write(onValue, this.filePath);
     }
 
     @Override
     public void turnOff() {
-        write("0", this.filePath);
+        write(offValue, this.filePath);
     }
 
     private static void write(String value, Path filePath) {
@@ -24,8 +27,10 @@ public class GasBurnerGPIORelay implements GasBurner {
         } catch (IOException ignored) { }
     }
 
-    private GasBurnerGPIORelay(Path filePath) {
+    public GasBurnerGPIORelay(Path filePath, String offValue, String onValue) {
         this.filePath = filePath;
+        this.offValue = offValue;
+        this.onValue = onValue;
     }
 
 

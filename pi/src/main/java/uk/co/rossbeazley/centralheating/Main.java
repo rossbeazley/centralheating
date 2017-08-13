@@ -6,11 +6,14 @@ import com.googlecode.lanterna.screen.TerminalScreen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
 import uk.co.rossbeazley.centralheating.core.*;
+import uk.co.rossbeazley.centralheating.gasBurnerRelay.GasBurnerGPIORelay;
 import uk.co.rossbeazley.centralheating.ui.PresentationTier;
 import uk.co.rossbeazley.centralheating.ui.input.NamedPipeKeyInputSpike;
 import uk.co.rossbeazley.centralheating.ui.lanterna.LanternaViewFramework;
 
 import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -27,18 +30,9 @@ public class Main {
             ExternalTimer externalTimer = observers::add;
 
 
-            GasBurner gasBurner = new GasBurner() {
-                @Override
-                public void turnOn() {
-                    System.err.println("GASS BURNER ON");
-                }
+            Path gpioValueOutputPath = FileSystems.getDefault().getPath(args[1]);
+            GasBurner gasBurner = new GasBurnerGPIORelay(gpioValueOutputPath, "1", "0");
 
-                @Override
-                public void turnOff() {
-                    System.err.println("GASS BURNER OFF");
-
-                }
-            };
             ExternalTimerSystem externalTimerSystem = new ExternalTimerSystem("External Timer", externalTimer, gasBurner);
             BoostSystem boostSystem = new BoostSystem("Boost 1 hour", gasBurner);
 

@@ -16,13 +16,15 @@ import static org.junit.Assert.*;
 
 public class GasBurnerGPIORelayTest {
 
+    private final String offValue = "0";
+    private final String onValue = "1";
     private GasBurnerGPIORelay gasBurner;
     private Path filePath;
 
     @Before
     public void generateRandomFilePath() throws Exception {
         filePath = Files.createTempFile("GasBurnerGPIORelayTest", "");
-        gasBurner = new GasBurnerGPIORelay(filePath);
+        gasBurner = new GasBurnerGPIORelay(filePath, offValue, onValue);
     }
 
     @After
@@ -40,7 +42,7 @@ public class GasBurnerGPIORelayTest {
 
         gasBurner.turnOn();
 
-        assertThat(filePath, isFileWithContents("1"));
+        assertThat(filePath, isFileWithContents(onValue));
     }
 
 
@@ -49,7 +51,7 @@ public class GasBurnerGPIORelayTest {
     turnOffByWritingToFile() {
 
         gasBurner.turnOff();
-        assertThat(filePath, isFileWithContents("0"));
+        assertThat(filePath, isFileWithContents(offValue));
     }
 
     private Matcher<? super Path> isFileWithContents(String s) {
