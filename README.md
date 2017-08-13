@@ -26,6 +26,11 @@ Boost
 Python driver for the jog dial writes output to the named pipe
 might as well do the button press also
 
+setup gpio for output and use a file writer to send 1 or 0
 
-Python driver for relay?
-or could touch the file
+NamedPipeKeyInputSpike,
+firm up test,
+remove adapter code pushing up into test
+    given i configure it to invoke foo on an a
+    when i send a
+    then foo is invoked
