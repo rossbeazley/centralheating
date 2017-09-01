@@ -3,65 +3,28 @@ package uk.co.rossbeazley.centralheating.ui.input;
 import uk.co.rossbeazley.centralheating.core.ExternalTimer;
 import uk.co.rossbeazley.centralheating.ui.CanReceiveKeyInput;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.function.Function;
 
 public class NamedPipeKeyInputSpike implements ExternalTimer {
 
     private List<Observer> observers = new ArrayList<>();
 
+    private NamedPipeInputChannel.ParseFunction parseFunction;
 
-    public NamedPipeKeyInputSpike(String pathToPipe, CanReceiveKeyInput canReceiveKeyInput) {
+    public NamedPipeKeyInputSpike(final String pathToPipe, final CanReceiveKeyInput canReceiveKeyInput) {
 
-        final FileReader[] fileReader = {null};
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                //System.err.println("Making filereader");
-                try {
-                    fileReader[0] = new FileReader(pathToPipe);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-                //System.err.println("Got filereader " + pathToPipe);
-                final FileReader finalFileReader = fileReader[0];
+        HashMap<Character, Runnable> parseFunctions = new HashMap<>();
 
-                char c='a';
-                do {
-                    try {
-                        c = (char) finalFileReader.read();
-                        //System.err.println("read:"+c);
-                        switch (c) {
-                            case 'c':
-                                canReceiveKeyInput.clockWise();
-                                break;
-                            case 'a':
-                                canReceiveKeyInput.antiClockWise();
-                                break;
-                            case 'b':
-                                canReceiveKeyInput.buttonPress();
-                                break;
-                            case 'n':
-                                observers.forEach(Observer::externalTimerOn);
-                                break;
-                            case 'f':
-                                observers.forEach(Observer::externalTimerOff);
-                                break;
-                        }
-                        Thread.sleep(1);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+        parseFunctions.put('c', canReceiveKeyInput::clockWise);
+        parseFunctions.put('a', canReceiveKeyInput::antiClockWise);
+        parseFunctions.put('b', canReceiveKeyInput::buttonPress);
 
-                } while (c != 'q');
+        parseFunction = c -> parseFunctions.getOrDefault(c,()->{}).run();
 
-            }
-        }).start();
+        new NamedPipeInputChannel(pathToPipe, parseFunction);
 
     }
 
@@ -71,33 +34,4 @@ public class NamedPipeKeyInputSpike implements ExternalTimer {
     }
 
 
-    public static void main(String...args) {
-        NamedPipeKeyInputSpike clockwise = new NamedPipeKeyInputSpike(args[0], new CanReceiveKeyInput() {
-            @Override
-            public void buttonPress() {
-                System.err.println("BUTTON PRESS");
-            }
-
-            @Override
-            public void clockWise() {
-                System.err.println("CLOCKWISE");
-            }
-
-            @Override
-            public void antiClockWise() {
-
-            }
-        });
-        clockwise.addObserver(new Observer() {
-            @Override
-            public void externalTimerOn() {
-                System.err.println("ON");
-            }
-
-            @Override
-            public void externalTimerOff() {
-                System.err.println("OFF");
-            }
-        });
-    }
 }

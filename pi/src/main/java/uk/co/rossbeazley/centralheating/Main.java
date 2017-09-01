@@ -44,17 +44,6 @@ public class Main {
 
             String pathToPipe = args.length>0 ? args[0] : "/tmp/keys";
             NamedPipeKeyInputSpike namedPipeKeyInputSpike = new NamedPipeKeyInputSpike(pathToPipe, presentationTier);
-            namedPipeKeyInputSpike.addObserver(new ExternalTimer.Observer() {
-                @Override
-                public void externalTimerOn() {
-                    observers.forEach(ExternalTimer.Observer::externalTimerOn);
-                }
-
-                @Override
-                public void externalTimerOff() {
-                    observers.forEach(ExternalTimer.Observer::externalTimerOff);
-                }
-            });
 
         });
 
