@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 public class Main {
 
@@ -25,25 +27,15 @@ public class Main {
     public static void main(String... args) throws InterruptedException {
 
         Runnable textGUI = build(gui -> {
-            List<ExternalTimer.Observer> observers = new ArrayList<>();
 
-            ExternalTimer externalTimer = observers::add;
+            GasBurner gasBurner = createGasBurner(args[1]);
+            ExternalTimer externalTimer = createExternalTimer();
+            ExternalTimerSystem externalTimerSystem = createExternalTimerSystem(externalTimer, gasBurner);
+            BoostSystem boostSystem = createBoostSystem(gasBurner);
 
+            CentralHeatingSystem centralHeatingSystem = createCoreCentralHeatingSystem(gasBurner, externalTimerSystem, boostSystem);
 
-            Path gpioValueOutputPath = FileSystems.getDefault().getPath(args[1]);
-            GasBurner gasBurner = new GasBurnerGPIORelay(gpioValueOutputPath, "1", "0");
-
-            ExternalTimerSystem externalTimerSystem = new ExternalTimerSystem("External Timer", externalTimer, gasBurner);
-            BoostSystem boostSystem = new BoostSystem("Boost 1 hour", gasBurner);
-
-            Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> boostSystem.timeIsAt(System.currentTimeMillis()), 0, 1, TimeUnit.SECONDS);
-
-            CentralHeatingSystem centralHeatingSystem = new CentralHeatingSystem("On", "Off", externalTimerSystem, gasBurner, boostSystem);
-
-            PresentationTier presentationTier = new PresentationTier(new LanternaViewFramework(gui), centralHeatingSystem);
-
-            String pathToPipe = args.length>0 ? args[0] : "/tmp/keys";
-            NamedPipeKeyInputSpike namedPipeKeyInputSpike = new NamedPipeKeyInputSpike(pathToPipe, presentationTier);
+            createPresentationTier(gui, centralHeatingSystem, args);
 
         });
 
@@ -51,7 +43,38 @@ public class Main {
 
     }
 
-    public static Runnable build(AppCompositeBuilder app) {
+    public static ExternalTimer createExternalTimer() {
+        List<ExternalTimer.Observer> observers = new ArrayList<>();
+        return observers::add;
+    }
+
+    public static CentralHeatingSystem createCoreCentralHeatingSystem(GasBurner gasBurner, ExternalTimerSystem externalTimerSystem, BoostSystem boostSystem) {
+        return new CentralHeatingSystem("On", "Off", externalTimerSystem, gasBurner, boostSystem);
+    }
+
+    public static void createPresentationTier(Composite gui, CentralHeatingSystem centralHeatingSystem, String[] args) {
+        PresentationTier presentationTier = new PresentationTier(new LanternaViewFramework(gui), centralHeatingSystem);
+
+        String pathToPipe = args.length>0 ? args[0] : "/tmp/keys";
+        NamedPipeKeyInputSpike namedPipeKeyInputSpike = new NamedPipeKeyInputSpike(pathToPipe, presentationTier);
+    }
+
+    public static BoostSystem createBoostSystem(GasBurner gasBurner) {
+        BoostSystem boostSystem = new BoostSystem("Boost 1 hour", gasBurner);
+        Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> boostSystem.timeIsAt(System.currentTimeMillis()), 0, 1, TimeUnit.SECONDS);
+        return boostSystem;
+    }
+
+    public static ExternalTimerSystem createExternalTimerSystem(ExternalTimer externalTimer, GasBurner gasBurner) {
+        return new ExternalTimerSystem("External Timer", externalTimer, gasBurner);
+    }
+
+    public static GasBurner createGasBurner(String arg) {
+        Path gpioValueOutputPath = FileSystems.getDefault().getPath(arg);
+        return new GasBurnerGPIORelay(gpioValueOutputPath, "1", "0");
+    }
+
+    public static Runnable build(Consumer<Composite> app) {
         try {
             final WindowBasedTextGUI gui = buildTerminalGui();
 
@@ -60,7 +83,7 @@ public class Main {
 
             Composite c = wrapWindowInDirtyUpdater(window);
 
-            gui.getGUIThread().invokeLater(() -> app.gotoViewFramework(c));
+            gui.getGUIThread().invokeLater(() -> app.accept(c));
 
 
             return () -> gui.waitForWindowToClose(window);
@@ -101,19 +124,4 @@ public class Main {
         return new MultiWindowTextGUI(terminalScreen, new DefaultWindowManager(), new EmptySpace(TextColor.ANSI.BLUE));
     }
 
-    public interface AppCompositeBuilder {
-        void gotoViewFramework(Composite gui);
-    }
-
-    /**
-     * Contract requires the active window to have a component set on it then the gui told to update screen
-     *
-     * @param gui
-     * @throws IOException
-     * @throws InterruptedException
-     */
-    private static void gotoViewFramework(Composite gui) {
-
-
-    }
 }

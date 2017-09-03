@@ -49,9 +49,9 @@ class KY040:
 #test
 if __name__ == "__main__":
     
-    CLOCKPIN = 18 
-    DATAPIN = 15 
-    SWITCHPIN = 14
+    CLOCKPIN = 28
+    DATAPIN = 29
+    SWITCHPIN = 31
 
     def rotaryChange(direction):
         if direction == 0:

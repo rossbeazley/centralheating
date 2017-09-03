@@ -34,3 +34,6 @@ remove adapter code pushing up into test
     given i configure it to invoke foo on an a
     when i send a
     then foo is invoked
+    
+Complete test for "external timer" observable system using named pipe
+ - extract the named pipe integration test out of current parsing of rotation button stuff
