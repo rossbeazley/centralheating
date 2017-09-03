@@ -4,21 +4,22 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-class NamedPipeInputChannel {
-    public interface ParseFunction {
-        void parse(char c);
-    }
-    private final String pathToPipe;
-
-    private final ParseFunction parseFunction;
-
-
-    public NamedPipeInputChannel(String pathToPipe, ParseFunction parseFunction) {
+public class NamedPipeInputChannel implements CharInputChannel {
+    public NamedPipeInputChannel(String pathToPipe) {
         this.pathToPipe = pathToPipe;
-        this.parseFunction = parseFunction;
+    }
 
+    @Override
+    public void onChar(ParseFunction parseFunction) {
+        this.parseFunction = parseFunction;
         new Thread(new ReadLoop()).start();
     }
+
+    private final String pathToPipe;
+
+    private ParseFunction parseFunction;
+
+
 
     private class ReadLoop implements Runnable {
         @Override

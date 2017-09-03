@@ -8,7 +8,8 @@ import com.googlecode.lanterna.terminal.Terminal;
 import uk.co.rossbeazley.centralheating.core.*;
 import uk.co.rossbeazley.centralheating.gasBurnerRelay.GasBurnerGPIORelay;
 import uk.co.rossbeazley.centralheating.ui.PresentationTier;
-import uk.co.rossbeazley.centralheating.ui.input.NamedPipeKeyInputSpike;
+import uk.co.rossbeazley.centralheating.ui.input.KY040_controlKnobAdapter;
+import uk.co.rossbeazley.centralheating.ui.input.NamedPipeInputChannel;
 import uk.co.rossbeazley.centralheating.ui.lanterna.LanternaViewFramework;
 
 import java.io.IOException;
@@ -19,7 +20,6 @@ import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 public class Main {
 
@@ -56,7 +56,7 @@ public class Main {
         PresentationTier presentationTier = new PresentationTier(new LanternaViewFramework(gui), centralHeatingSystem);
 
         String pathToPipe = args.length>0 ? args[0] : "/tmp/keys";
-        NamedPipeKeyInputSpike namedPipeKeyInputSpike = new NamedPipeKeyInputSpike(pathToPipe, presentationTier);
+        KY040_controlKnobAdapter KY040controlKnobAdapter = new KY040_controlKnobAdapter(presentationTier, new NamedPipeInputChannel(pathToPipe));
     }
 
     public static BoostSystem createBoostSystem(GasBurner gasBurner) {

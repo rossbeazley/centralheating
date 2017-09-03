@@ -1,18 +1,14 @@
 package uk.co.rossbeazley.centralheating.ui.input;
 
-import uk.co.rossbeazley.centralheating.core.ExternalTimer;
 import uk.co.rossbeazley.centralheating.ui.CanReceiveKeyInput;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.function.Function;
 
 import static uk.co.rossbeazley.centralheating.ui.input.NamedPipeInputChannel.*;
 
-public class NamedPipeKeyInputSpike {
+public class KY040_controlKnobAdapter {
 
-    public NamedPipeKeyInputSpike(final String pathToPipe, final CanReceiveKeyInput canReceiveKeyInput) {
+    public KY040_controlKnobAdapter(final CanReceiveKeyInput canReceiveKeyInput, CharInputChannel namedPipeInputChannel) {
 
         HashMap<Character, Runnable> parseFunctions = new HashMap<Character, Runnable>() {{
                 put('c', canReceiveKeyInput::clockWise);
@@ -22,7 +18,7 @@ public class NamedPipeKeyInputSpike {
 
         ParseFunction parseFunction = c -> parseFunctions.getOrDefault(c, () -> {}).run();
 
-        new NamedPipeInputChannel(pathToPipe, parseFunction);
+        namedPipeInputChannel.onChar(parseFunction);
     }
 
 

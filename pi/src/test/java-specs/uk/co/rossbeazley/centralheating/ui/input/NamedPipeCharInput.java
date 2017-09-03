@@ -19,7 +19,7 @@ public class NamedPipeCharInput {
 
         String pathToPipe = generateNameOfPipeForWriting();
         createPipe(pathToPipe);
-        new NamedPipeKeyInputSpike(pathToPipe, canReceiveKeyInput);
+        new KY040_controlKnobAdapter(canReceiveKeyInput, new NamedPipeInputChannel(pathToPipe));
         FileWriter pipe = openPipe(pathToPipe);
 
         System.out.println("writing");
@@ -30,6 +30,47 @@ public class NamedPipeCharInput {
         Thread.sleep(1000);
 
         assertThat(canReceiveKeyInput.command, is(CollectingCanReceiveKeyInput.Clockwise));
+
+    }
+
+
+    @Test
+    public void
+    antiClockwise() throws Exception {
+
+        String pathToPipe = generateNameOfPipeForWriting();
+        createPipe(pathToPipe);
+        new KY040_controlKnobAdapter(canReceiveKeyInput, new NamedPipeInputChannel(pathToPipe));
+        FileWriter pipe = openPipe(pathToPipe);
+
+        System.out.println("writing");
+        pipe.write("a");
+
+        pipe.close();
+
+        Thread.sleep(1000);
+
+        assertThat(canReceiveKeyInput.command, is(CollectingCanReceiveKeyInput.Anticlockwise));
+
+    }
+
+    @Test
+    public void
+    button() throws Exception {
+
+        String pathToPipe = generateNameOfPipeForWriting();
+        createPipe(pathToPipe);
+        new KY040_controlKnobAdapter(canReceiveKeyInput, new NamedPipeInputChannel(pathToPipe));
+        FileWriter pipe = openPipe(pathToPipe);
+
+        System.out.println("writing");
+        pipe.write("b");
+
+        pipe.close();
+
+        Thread.sleep(1000);
+
+        assertThat(canReceiveKeyInput.command, is(CollectingCanReceiveKeyInput.ButtonPress  ));
 
     }
 
