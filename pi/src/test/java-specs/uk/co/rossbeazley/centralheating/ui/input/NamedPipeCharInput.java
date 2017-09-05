@@ -1,5 +1,6 @@
 package uk.co.rossbeazley.centralheating.ui.input;
 
+import org.junit.Before;
 import org.junit.Test;
 import uk.co.rossbeazley.centralheating.ui.CanReceiveKeyInput;
 
@@ -10,122 +11,38 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 public class NamedPipeCharInput {
-    private CollectingCanReceiveKeyInput canReceiveKeyInput = new CollectingCanReceiveKeyInput();
+    TestPipe theTestPipe;
 
+    @Before
+    public void setUp() throws Exception {
+        theTestPipe = new TestPipe(generateNameOfPipeForWriting());
+    }
 
     @Test
     public void
     clockwise() throws Exception {
 
-        String pathToPipe = generateNameOfPipeForWriting();
-        createPipe(pathToPipe);
-        new KY040_controlKnobAdapter(canReceiveKeyInput, new NamedPipeInputChannel(pathToPipe));
-        FileWriter pipe = openPipe(pathToPipe);
-
-        System.out.println("writing");
-        pipe.write("c");
-
-        pipe.close();
-
-        Thread.sleep(1000);
-
-        assertThat(canReceiveKeyInput.command, is(CollectingCanReceiveKeyInput.Clockwise));
+        MyParseFunction parseFunction = new MyParseFunction();
+        new NamedPipeInputChannel(theTestPipe.path()).onChar(parseFunction);
+        theTestPipe.open();
+        theTestPipe.write("c");
+        theTestPipe.close();
+        assertThat(parseFunction.capturedChar, is("c"));
 
     }
 
-
-    @Test
-    public void
-    antiClockwise() throws Exception {
-
-        String pathToPipe = generateNameOfPipeForWriting();
-        createPipe(pathToPipe);
-        new KY040_controlKnobAdapter(canReceiveKeyInput, new NamedPipeInputChannel(pathToPipe));
-        FileWriter pipe = openPipe(pathToPipe);
-
-        System.out.println("writing");
-        pipe.write("a");
-
-        pipe.close();
-
-        Thread.sleep(1000);
-
-        assertThat(canReceiveKeyInput.command, is(CollectingCanReceiveKeyInput.Anticlockwise));
-
-    }
-
-    @Test
-    public void
-    button() throws Exception {
-
-        String pathToPipe = generateNameOfPipeForWriting();
-        createPipe(pathToPipe);
-        new KY040_controlKnobAdapter(canReceiveKeyInput, new NamedPipeInputChannel(pathToPipe));
-        FileWriter pipe = openPipe(pathToPipe);
-
-        System.out.println("writing");
-        pipe.write("b");
-
-        pipe.close();
-
-        Thread.sleep(1000);
-
-        assertThat(canReceiveKeyInput.command, is(CollectingCanReceiveKeyInput.ButtonPress  ));
-
-    }
-
-    private FileWriter openPipe(String pathToPipe) {
-        FileWriter fileWriter = null;
-        try {
-            fileWriter = new FileWriter(pathToPipe, true);
-            System.out.println("Got filewriter");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return fileWriter;
-    }
-
-    private void createPipe(String pathToPipe) {
-        try {
-            System.out.println("Making " + pathToPipe);
-            ProcessBuilder processBuilder = new ProcessBuilder("/usr/bin/mkfifo", pathToPipe);
-            processBuilder.start();
-            System.out.println("Started");
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     private String generateNameOfPipeForWriting() {
         return "/tmp" + File.separator + UUID.randomUUID().toString();
     }
 
-    private static class CollectingCanReceiveKeyInput implements CanReceiveKeyInput {
-        private static final String Clockwise = "right";
-        private static final String Anticlockwise = "left";
-        private static final String ButtonPress = "button press";
-        private static final String None = "none";
-        private String command = None;
+
+    private static class MyParseFunction implements CharInputChannel.ParseFunction {
+        private String capturedChar;
 
         @Override
-        public void buttonPress() {
-            command = ButtonPress;
-        }
-
-        @Override
-        public void clockWise() {
-            command = Clockwise;
-        }
-
-        @Override
-        public void antiClockWise() {
-            command = Anticlockwise;
-        }
-
-        public void reset() {
-            command = None;
+        public void parse(char c) {
+            capturedChar = String.valueOf(c);
         }
     }
-
 }
