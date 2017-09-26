@@ -2,8 +2,8 @@ package uk.co.rossbeazley.centralheating.lanternaSpike;
 
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.TextColor;
-import com.googlecode.lanterna.gui2.ActionListBox;
 import com.googlecode.lanterna.gui2.BasicWindow;
+import com.googlecode.lanterna.gui2.Borders;
 import com.googlecode.lanterna.gui2.Composite;
 import com.googlecode.lanterna.gui2.DefaultWindowManager;
 import com.googlecode.lanterna.gui2.EmptySpace;
@@ -13,6 +13,7 @@ import com.googlecode.lanterna.gui2.MultiWindowTextGUI;
 import com.googlecode.lanterna.gui2.Panel;
 import com.googlecode.lanterna.gui2.Window;
 import com.googlecode.lanterna.gui2.WindowBasedTextGUI;
+import com.googlecode.lanterna.gui2.table.Table;
 import com.googlecode.lanterna.screen.TerminalScreen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
@@ -64,66 +65,63 @@ public class TempRange {
     private static void gotoViewFramework(WindowBasedTextGUI gui) {
 
         Composite window = gui.getActiveWindow();
-        createView(window, "Menu 1");
+        createListView(window, "timer");
+        //createPickerView(window, "08:00 on...");
         try {
             gui.updateScreen();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        createView(window, "Menu 2");
+
+
 
     }
 
-    public static void createView(Composite rootView, String labelText) {
+    public static void createPickerView(Composite rootView, String labelText) {
 
         Panel panel = new Panel();
         panel.setLayoutManager(new LinearLayout(VERTICAL));
-        Label label = new Label(labelText);
 
+        TerminalSize size = new TerminalSize(24, 9);
+
+        panel.setSize(size);
+
+        Label label = new Label("off at 09:00");
         panel.addComponent(label);
-        TerminalSize size = new TerminalSize(14, 3);
-        ActionListBox actionListBox = new ActionListBox(size){
-            @Override
-            public int hashCode() {
-                return 0x26;
-            }
-        };
 
-        actionListBox.addItem("On", () -> {
-        });
-        actionListBox.addItem("Off", () -> {
-        });
-        actionListBox.addItem("External", () -> {
-        });
-        actionListBox.addItem("Boost", () -> {
-        });
-        panel.addComponent(actionListBox);
-
-
+        Panel component = new Panel();
+        panel.addComponent(component);
         // Create gui and start gui
 
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
+        rootView.setComponent(panel.withBorder(Borders.singleLine(labelText)));
 
-                try {
-                    for (int i = 0; i < actionListBox.getItemCount(); i++) {
-                        Thread.sleep(1500);
-                        actionListBox.setSelectedIndex(i);
-                    }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
+    }
 
-        rootView.setComponent(panel);
+    public static void createListView(Composite rootView, String labelText) {
+
+        Panel panel = new Panel();
+        panel.setLayoutManager(new LinearLayout(VERTICAL));
+
+        TerminalSize size = new TerminalSize(24, 9);
+
+        panel.setSize(size);
+
+        Table<String> table = new Table<String>("On", "Off");
+        panel.addComponent(table);
+
+        table.getTableModel().addRow("08:00","---");
+
+        table.getTableModel().addRow("---","---");
+        table.getTableModel().addRow("-->","09:00");
+        table.getTableModel().addRow("---","---");
+        table.getTableModel().addRow("12:00","<--");
+        table.getTableModel().addRow("---","---");
+        table.getTableModel().addRow("-->","21:00");
+
+        // Create gui and start gui
+
+        rootView.setComponent(panel.withBorder(Borders.singleLine(labelText)));
 
     }
 }

@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/centralheating.iml" filepath="$PROJECT_DIR$/centralheating.iml" />
-      <module fileurl="file://$PROJECT_DIR$/pi/pi.iml" filepath="$PROJECT_DIR$/pi/pi.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/centralheating.iml" filepath="$PROJECT_DIR$/.idea/modules/centralheating.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/hardware/hardware.iml" filepath="$PROJECT_DIR$/.idea/modules/hardware/hardware.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/main/main.iml" filepath="$PROJECT_DIR$/.idea/modules/main/main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/pi/pi.iml" filepath="$PROJECT_DIR$/.idea/modules/pi/pi.iml" />
     </modules>
   </component>
 </project>
